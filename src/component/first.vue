@@ -40,8 +40,6 @@
 	#first{
 		margin-bottom: 106px;
 		.mint-swipe{
-			height: 125px;
-		.mint-swipe{
 			.mint-swipe-items-wrap{
 				.mint-swipe-item{
 					img{

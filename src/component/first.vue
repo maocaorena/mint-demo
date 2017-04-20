@@ -41,6 +41,7 @@
 		margin-bottom: 106px;
 		.mint-swipe{
 			height: 125px;
+		.mint-swipe{
 			.mint-swipe-items-wrap{
 				.mint-swipe-item{
 					img{
@@ -91,6 +92,7 @@
 		beforeMount() {
 			let that = this;
 			//获取轮播列表
+
 			api.getN("adv/advApi.json",{"appKey":"1111"})
 				.then(function(res) {
 					that.data = res.data.returnValue;

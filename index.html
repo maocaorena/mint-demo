@@ -5,11 +5,35 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>mint-ui-starter</title>
+<<<<<<< HEAD
 		<link rel="stylesheet" type="text/css" href="src/assets/css/common.css"/>
+=======
+>>>>>>> 6edcd3fb5492c8f6726d016c5a65065cc9e417a7
 	</head>
 
 	<body>
 		<div id="app"></div>
 		<script src="/dist/build.js"></script>
 	</body>
+<<<<<<< HEAD
+=======
+	<script>
+		(function(doc,win){
+			var docEl = doc.documentElement,resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+			recalc = function(){
+				var clientWidth = docEl.clientWidth;
+				if(!clientWidth) return;
+				if(clientWidth>=750){
+					docEl.style.fontSize = '100px';
+				}
+				else{
+					docEl.style.fontSize = 200 * (clientWidth / 750) + 'px';
+				}
+			};
+			if (!doc.addEventListener) return;
+	        win.addEventListener(resizeEvt, recalc, false);
+	        doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document,window);
+	</script>
+>>>>>>> 6edcd3fb5492c8f6726d016c5a65065cc9e417a7
 </html>

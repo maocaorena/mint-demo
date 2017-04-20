@@ -90,7 +90,6 @@
 		beforeMount() {
 			let that = this;
 			//获取轮播列表
-
 			api.getN("adv/advApi.json",{"appKey":"1111"})
 				.then(function(res) {
 					that.data = res.data.returnValue;

@@ -2,7 +2,6 @@ import axios from 'axios'
 import config from './config'
 import qs from 'qs'
 
-// axios(config);
 class API {
 	getAdv (param) {
 		param.noCache = "1";

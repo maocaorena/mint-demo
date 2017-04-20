@@ -28,14 +28,6 @@
 	            .catch(function(err){
 	                console.log(err);
 	            });
-	        let response1 = api.getN("product/getProductListApi.json",{"status":"popularity","page_index":"1","page_size":"6"});
-
-	        response1.then(function(res){
-	        		
-	            })
-	            .catch(function(err){
-	                console.log(err);
-	            });
 		},
 		data() {
 			return {

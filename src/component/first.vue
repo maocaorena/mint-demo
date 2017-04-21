@@ -119,11 +119,12 @@
 			},
 			loadBottom() {
 				setTimeout(() => {
+					console.log("2");
 					let lastValue = this.productList[this.productList.length - 1];
+					console.log(lastValue);
 					if(lastValue < 40) {
-						for(let i = 1; i <= 10; i++) {
-							this.productList.push(lastValue + i);
-						}
+						console.log("1");
+						this.getList();
 					} else {
 						this.allLoaded = true;
 					}
@@ -139,7 +140,10 @@
 					"page_size": "6"
 				})
 				.then(function(res) {
-					that.productList =res.data.returnValue;
+					for(let v = 0;v<res.data.returnValue.length;v++){
+						that.productList.push(res.data.returnValue[v]);
+					};
+					console.log(that.productList)
 				})
 				.catch(function(err) {
 					console.log(err);

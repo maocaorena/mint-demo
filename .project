@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>mint-ui-starter</name>
+	<name>mint-demo</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,18 +14,4 @@
 	<natures>
 		<nature>com.aptana.projects.webnature</nature>
 	</natures>
-<<<<<<< HEAD
-	<filteredResources>
-		<filter>
-			<id>1492658080814</id>
-			<name></name>
-			<type>26</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-node_modules</arguments>
-			</matcher>
-		</filter>
-	</filteredResources>
-=======
->>>>>>> 6edcd3fb5492c8f6726d016c5a65065cc9e417a7
 </projectDescription>

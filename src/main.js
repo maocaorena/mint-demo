@@ -4,21 +4,29 @@ import 'mint-ui/lib/style.css';
 import App from './App.vue';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
+import VueResource from 'vue-resource';
 
 Vue.use(MintUI);
 Vue.use(VueRouter);
 Vue.use(Vuex);
+Vue.use(VueResource)
 
 import first from './component/first.vue'
 import secondcomponent from './component/second.vue'
 import find from './component/find.vue'
 import me from './component/me.vue'
+import tab from './component/tab.vue'
 // 创建一个路由器实例
 // 并且配置路由规则
 const router = new VueRouter({
 	mode: 'history',
 	base: __dirname,
-	routes: [{
+	routes: [
+		{
+            path: '',
+            redirect: '/first'
+        },
+		{
 			path: '/first',
 			component: first
 		},
@@ -33,7 +41,12 @@ const router = new VueRouter({
 		{
 			path: '/me',
 			component: me
+		},
+		{
+			path: '/tab',
+			component: tab
 		}
+		
 	]
 });
 

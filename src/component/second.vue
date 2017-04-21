@@ -20,7 +20,7 @@
 	        let that = this;
 	        //获取信息列表
 	        let response = api.getN("adv/advApi.json",{"appKey":"1111"});
-
+			console.log("response",response);
 	        response.then(function(res){
 	        		that.data = res.data.returnValue;
 	        		Indicator.close();

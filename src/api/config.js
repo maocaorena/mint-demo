@@ -1,4 +1,4 @@
-import Qs from 'qs'
+import Qs from 'qs';
 export default {
 	//请求的接口，在请求的时候，如axios.get(url,config);这里的url会覆盖掉config中的url
 	url: '/user',
@@ -16,8 +16,14 @@ export default {
 
 	transformResponse: [function(data) {
 		// 这里提前处理返回的数据
-		//console.log("transformResponse",data);
-		return data;
+		let dataType = typeof(data);
+		if( dataType == "string"){
+			data = JSON.parse(data);
+			return data;
+		}else{
+			return data;
+		};
+		
 	}],
 	paramsSerializer: function(params) {
 		//console.log("paramsSerializer",params);
@@ -51,7 +57,6 @@ export default {
 	maxContentLength: 2000,
 
 	validateStatus: function (status) {
-		//console.log("validateStatus",status);
 	    return status >= 200 && status < 300; // default
 	},
 

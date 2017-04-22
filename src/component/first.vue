@@ -23,30 +23,13 @@
 				<span>分类</span>
 			</router-link>
 		</div>
-		<div class="page-loadmore">
-			<div class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
-				<mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" ref="loadmore">
-					<ul class="page-loadmore-list">
-						<li v-for="item in productList" class="page-loadmore-listitem productItem">
-							<img v-bind:src="item.image1" alt="" />
-							<p>{{item.productName}}</p>
-						</li>
-					</ul>
-					<div slot="bottom" class="mint-loadmore-bottom">
-						<span v-show="bottomStatus !== 'loading'" :class="{ 'is-rotate': bottomStatus === 'drop' }">↑</span>
-						<span v-show="bottomStatus === 'loading'">
-		            <mt-spinner type="snake"></mt-spinner>
-		          </span>
-					</div>
-				</mt-loadmore>
-			</div>
-		</div>
-		<!--<div class="homeList">
-			<div class="homeItem" v-for="item in productList">
+		<div class="homeList">
+			<div class="productItem" v-for="item in list">
 				<img v-bind:src="item.image1"/>
 				<p>{{item.productName}}</p>
 			</div>
-		</div>-->
+			<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading"></infinite-loading>
+		</div>
 	</div>
 </template>
 <style lang="scss">
@@ -96,43 +79,27 @@
 	import API from '../api/API';
 	const api = new API();
 	import { Indicator } from 'mint-ui';
+	import InfiniteLoading from 'vue-infinite-loading';
 	export default {
 		name: "first",
-		beforeMount() {
-			
-		},
 		data() {
 			return {
 				name: "damaoa",
 				swiperImgs: [],
 				data: [],
-				productList: [],
-				list: [],
-				allLoaded: false,
-				bottomStatus: '',
-				wrapperHeight: 0
+				list: []
 			}
 		},
+		components: {
+		    InfiniteLoading
+		},
 		methods: {
-			handleBottomChange(status) {
-				this.bottomStatus = status;
-			},
-			loadBottom() {
-				setTimeout(() => {
-					console.log("2");
-					let lastValue = this.productList[this.productList.length - 1];
-					console.log(lastValue);
-					if(lastValue < 40) {
-						console.log("1");
-						this.getList();
-					} else {
-						this.allLoaded = true;
-					}
-					this.$refs.loadmore.onBottomLoaded();
-				}, 500);
-			},
-			getList(){
-				let that = this;
+			onInfinite() {
+				console.log("111");
+				this.getData();
+		  	},
+		  	getData(){
+		  		let that = this;
 				api.getN("product/getProductListApi.json", {
 					"appKey": "1111",
 					"status": "popularity",
@@ -140,24 +107,28 @@
 					"page_size": "6"
 				})
 				.then(function(res) {
-					for(let v = 0;v<res.data.returnValue.length;v++){
-						that.productList.push(res.data.returnValue[v]);
+					if(res.data.returnValue.length == 6){
+						console.log("aaaa");
+						for(let v = 0;v < res.data.returnValue.length;v++){
+							that.list.push(res.data.returnValue[v]);
+						};
+						this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+						
+					}else{
+						this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
 					};
-					console.log(that.productList)
 				})
 				.catch(function(err) {
-					console.log(err);
+					
 				});
-			}
+		  	}
 			
 		},
 		created() {
-			this.getList();
-			//获取商品列表
 			
 	    },
 		mounted() {
-			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+			
 		}
 	}
 </script>

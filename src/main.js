@@ -5,6 +5,7 @@ import App from './App.vue';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import VueResource from 'vue-resource';
+import InfiniteLoading from 'vue-infinite-loading';
 
 Vue.use(MintUI);
 Vue.use(VueRouter);

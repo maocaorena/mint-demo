@@ -16,7 +16,6 @@ export default {
 
 	transformResponse: [function(data) {
 		// 这里提前处理返回的数据
-		console.log(data);
 		let dataType = typeof(data);
 		if( dataType == "string"){
 			data = JSON.parse(data);

@@ -1,10 +1,12 @@
 <template>
 	<div class="tab">
 		<div class="flex footerBar">
-			<router-link class="flex flex-s flex-sc" to="/first">
-				<img src="src/assets/img/discover/home_sorts@2x.png"/>
-				<span>夺宝a</span>
-			</router-link>
+			<transition>
+				<router-link class="flex flex-s flex-sc" to="/first">
+					<img src="src/assets/img/discover/home_sorts@2x.png"/>
+					<span>夺宝a</span>
+				</router-link>
+			</transition>
 			<router-link class="flex flex-s flex-sc" to="/second">
 				<img src="src/assets/img/discover/home_sorts@2x.png"/>
 				<span>最新揭晓</span>

@@ -17,6 +17,7 @@ import secondcomponent from './component/second.vue'
 import find from './component/find.vue'
 import me from './component/me.vue'
 import tab from './component/tab.vue'
+import detail from './component/detail.vue'
 // 创建一个路由器实例
 // 并且配置路由规则
 const router = new VueRouter({
@@ -46,8 +47,11 @@ const router = new VueRouter({
 		{
 			path: '/tab',
 			component: tab
+		},
+		{
+			path: '/detail',
+			component: detail
 		}
-		
 	]
 });
 

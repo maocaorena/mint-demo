@@ -23,27 +23,36 @@
 				<span>分类</span>
 			</router-link>
 		</div>
-		<div class="homeList">
+		
+	      <ul class="page-infinite-list" 
+	      	v-infinite-scroll="loadMore"
+	      	 infinite-scroll-disabled="loading" 
+	      	 infinite-scroll-distance="50" 
+	      	 infinite-scroll-immediate-check="true">
+	        <li v-for="item in list" class="page-infinite-listitem">
+	        	<transition>
+		        	<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
+						<img style="width: 20%;" :src="item.image1" />
+						<span>{{ item.productName }}</span>
+					</router-link>
+				</transition>
+	        </li>
+	      </ul>
+	      <p v-show="loading" class="page-infinite-loading">
+	        <mt-spinner type="fading-circle"></mt-spinner>
+	        	加载中...
+	      </p>
+		<!--<div class="homeList">
 			<div class="productItem" v-for="item in list">
 				<img v-bind:src="item.image1"/>
 				<p>{{item.productName}}</p>
 			</div>
 			<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading"></infinite-loading>
-		</div>
+		</div>-->
 	</div>
 </template>
 <style lang="scss">
 	#first {
-		margin-bottom: 106px;
-		.mint-swipe {
-			.mint-swipe-items-wrap {
-				.mint-swipe-item {
-					img {
-						width: 100%;
-					}
-				}
-			}
-		}
 		.nav {
 			width: 100%;
 			padding: 10px 0;
@@ -60,10 +69,6 @@
 				}
 			}
 		}
-		.mint-loadmore {
-			overflow: visible;
-		}
-		
 		.productItem {
 			width: 50%;
 			padding: 1px;
@@ -72,7 +77,17 @@
 				width: 80%;
 			}
 		}
-		
+		.page-infinite-listitem{
+			height: 100px;
+			text-align: center;
+			border-bottom: 1px solid #ccc;
+		}
+		.page-infinite-loading{
+			text-align: center;
+		}
+		.mint-spinner-fading-circle{
+			margin: 0 auto;
+		}
 	}
 </style>
 <script type="text/javascript">
@@ -87,47 +102,41 @@
 				name: "damaoa",
 				swiperImgs: [],
 				data: [],
-				list: []
+				list: [],
+				page: 1,
+		        loading: false,
+		        allLoaded: false,
+		        wrapperHeight: 0
 			}
 		},
-		components: {
-		    InfiniteLoading
-		},
 		methods: {
-			onInfinite() {
-				console.log("111");
-				this.getData();
-		  	},
-		  	getData(){
-		  		let that = this;
-				api.getN("product/getProductListApi.json", {
-					"appKey": "1111",
-					"status": "popularity",
-					"page_index": "1",
-					"page_size": "6"
-				})
-				.then(function(res) {
-					if(res.data.returnValue.length == 6){
-						console.log("aaaa");
+			loadMore() {
+		        this.loading = true;
+		        let that = this;
+		        console.log(that.page);
+		        setTimeout(() => {
+					api.getN("product/getProductListApi.json", {
+						"appKey": "1111",
+						"status": "popularity",
+						"page_index": that.page,
+						"page_size": "6"
+					})
+					.then(function(res) {
 						for(let v = 0;v < res.data.returnValue.length;v++){
 							that.list.push(res.data.returnValue[v]);
 						};
-						this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-						
-					}else{
-						this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-					};
-				})
-				.catch(function(err) {
-					
-				});
-		  	}
-			
+						that.page++;
+					});
+		          	this.loading = false;
+		        },500)
+		    }
+
 		},
 		created() {
-			
-	    },
+			this.loadMore();
+		},
 		mounted() {
+	      	let that = this;
 			
 		}
 	}

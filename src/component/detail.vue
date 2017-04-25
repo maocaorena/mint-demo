@@ -1,6 +1,8 @@
 <template>
 	<div id="detail">
 		<h1>1111111111</h1>
+		<input type="text" name="" id="" value="aaa" />
+		<img :src="productDetail.image1" alt="" />
 		<img :src="productDetail.image1" alt="" />
 		<p>{{ productDetail.productId }}</p>
 		<p>{{ productDetail.productName }}</p>
@@ -9,7 +11,9 @@
 </template>
 <style lang="scss">
 	#detail {
-		
+		img{
+			width: 100%;
+		}
 	}
 </style>
 <script type="text/javascript">

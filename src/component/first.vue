@@ -1,10 +1,5 @@
 <template>
 	<div id="first">
-		<!--<mt-swipe :auto="4000">
-		  	<mt-swipe-item v-for="item in data">
-		  		<img v-bind:src="item.adImgUrl"/>
-		  	</mt-swipe-item>
-		</mt-swipe>-->
 		<div class="flex nav">
 			<router-link class="flex flex-s flex-zhong" to="/second">
 				<img src="src/assets/img/discover/home_sorts@2x.png" />
@@ -23,32 +18,24 @@
 				<span>分类</span>
 			</router-link>
 		</div>
-		
-	      <ul class="page-infinite-list" 
-	      	v-infinite-scroll="loadMore"
-	      	 infinite-scroll-disabled="loading" 
-	      	 infinite-scroll-distance="50" 
-	      	 infinite-scroll-immediate-check="true">
-	        <li v-for="item in list" class="page-infinite-listitem">
-	        	<transition>
-		        	<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
-						<img style="width: 20%;" :src="item.image1" />
-						<span>{{ item.productName }}</span>
-					</router-link>
-				</transition>
-	        </li>
-	      </ul>
-	      <p v-show="loading" class="page-infinite-loading">
-	        <mt-spinner type="fading-circle"></mt-spinner>
-	        	加载中...
-	      </p>
-		<!--<div class="homeList">
-			<div class="productItem" v-for="item in list">
-				<img v-bind:src="item.image1"/>
-				<p>{{item.productName}}</p>
-			</div>
-			<infinite-loading :on-infinite="onInfinite" ref="infiniteLoading"></infinite-loading>
-		</div>-->
+		<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
+			<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
+				<li v-for="item in list" class="page-infinite-listitem">
+					<transition>
+						<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
+							<img style="width: 80%;" :src="item.image1" />
+							<span>{{ item.productName }}</span>
+						</router-link>
+					</transition>
+				</li>
+				<li style="height: 0;width: 0;clear: both;"></li>
+			</ul>
+			<p v-show="!loadMoreSwitch" class="noMore paddingBottom50">没有更多了</p>
+			<p v-show="loading" class="page-infinite-loading paddingBottom50">
+				<mt-spinner type="fading-circle"></mt-spinner>
+				加载中...
+			</p>
+		</div>
 	</div>
 </template>
 <style lang="scss">
@@ -77,15 +64,17 @@
 				width: 80%;
 			}
 		}
-		.page-infinite-listitem{
-			height: 100px;
+		.page-infinite-listitem {
+			width: 50%;
+			height: 241px;
+			float: left;
 			text-align: center;
 			border-bottom: 1px solid #ccc;
 		}
-		.page-infinite-loading{
+		.page-infinite-loading {
 			text-align: center;
 		}
-		.mint-spinner-fading-circle{
+		.mint-spinner-fading-circle {
 			margin: 0 auto;
 		}
 	}
@@ -95,6 +84,8 @@
 	const api = new API();
 	import { Indicator } from 'mint-ui';
 	import InfiniteLoading from 'vue-infinite-loading';
+	/*import 'src/plugins/swiper/swiper.min.js';
+	import 'src/plugins/swiper/swiper.min.css';*/
 	export default {
 		name: "first",
 		data() {
@@ -104,39 +95,49 @@
 				data: [],
 				list: [],
 				page: 1,
-		        loading: false,
-		        allLoaded: false,
-		        wrapperHeight: 0
+				loading: false,
+				allLoaded: false,
+				wrapperHeight: 0,
+				loadMoreSwitch: true
 			}
 		},
 		methods: {
 			loadMore() {
-		        this.loading = true;
-		        let that = this;
-		        console.log(that.page);
-		        setTimeout(() => {
-					api.getN("product/getProductListApi.json", {
-						"appKey": "1111",
-						"status": "popularity",
-						"page_index": that.page,
-						"page_size": "6"
-					})
-					.then(function(res) {
-						for(let v = 0;v < res.data.returnValue.length;v++){
-							that.list.push(res.data.returnValue[v]);
-						};
-						that.page++;
-					});
-		          	this.loading = false;
-		        },500)
-		    }
+				this.loading = true;
+				let that = this;
+				if(that.loadMoreSwitch){
+					setTimeout(() => {
+						api.getN("product/getProductListApi.json", {
+								"appKey": "1111",
+								"status": "popularity",
+								"page_index": that.page,
+								"page_size": "6"
+							})
+							.then(function(res) {
+								for(let v = 0; v < res.data.returnValue.length; v++) {
+									that.list.push(res.data.returnValue[v]);
+								};
+								if(res.data.returnValue.length==0){
+									that.loadMoreSwitch = false;
+									console.log("that.loading",that.loading);
+								};
+								that.page++;
+							}).catch(function(err){
+								console.log(err);
+							});
+						this.loading = false;
+					}, 500);
+				}else{
+					this.loading = false;
+				};
+			}
 
 		},
 		created() {
 			this.loadMore();
 		},
 		mounted() {
-	      	let that = this;
+			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 			
 		}
 	}

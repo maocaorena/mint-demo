@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<section><router-view></router-view></section>
+		<router-view></router-view>
 		<footer-bar></footer-bar>
 	</div>
 </template>
@@ -10,7 +10,7 @@
 		name: 'App',
 		data() {
 			return {
-				selected: 'home'
+				
 			}
 		},
 		components: {
@@ -20,18 +20,5 @@
 </script>
 
 <style lang="scss">
-	#app{
-		height: 99%;
-		width: 100%;
-		position: relative;
-		section{
-			height: 100%;
-			width: 100%;
-			padding-bottom: 45px;
-			overflow: auto;
-			img{
-				width: 100%;
-			}
-		}
-	}
+
 </style>

@@ -18,15 +18,16 @@
 				<span>分类</span>
 			</router-link>
 		</div>
+		<shopping></shopping>
 		<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 			<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
 				<li v-for="item in list" class="page-infinite-listitem">
-					<transition>
-						<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
-							<img style="width: 80%;" :src="item.image1" />
-							<span>{{ item.productName }}</span>
-						</router-link>
-					</transition>
+					<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
+						<img style="width: 80%;" v-lazy.container="item.image1" />
+					</router-link>
+					<p class="productName ellipsis">{{ item.productName }}</p>
+					<p>总需{{item.dbTotalCount}}|剩余{{item.dbSurplusCount}}</p>
+					<button @click="buy(item)">购买</button>
 				</li>
 				<li style="height: 0;width: 0;clear: both;"></li>
 			</ul>
@@ -70,6 +71,14 @@
 			float: left;
 			text-align: center;
 			border-bottom: 1px solid #ccc;
+			.productName{
+				width: 100%;
+				height: 42px;
+			}
+			button{
+				width: 100%;
+				height: 20px;
+			}
 		}
 		.page-infinite-loading {
 			text-align: center;
@@ -83,7 +92,7 @@
 	import API from '../api/API';
 	const api = new API();
 	import { Indicator } from 'mint-ui';
-	import InfiniteLoading from 'vue-infinite-loading';
+	import alertshopping from './shopping.vue';
 	/*import 'src/plugins/swiper/swiper.min.js';
 	import 'src/plugins/swiper/swiper.min.css';*/
 	export default {
@@ -100,6 +109,9 @@
 				wrapperHeight: 0,
 				loadMoreSwitch: true
 			}
+		},
+		components: {
+			"shopping" : alertshopping
 		},
 		methods: {
 			loadMore() {
@@ -130,8 +142,10 @@
 				}else{
 					this.loading = false;
 				};
+			},
+			buy(item){
+				console.log("item",item);
 			}
-
 		},
 		created() {
 			this.loadMore();

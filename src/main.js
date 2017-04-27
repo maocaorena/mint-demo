@@ -12,6 +12,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueResource)
 
+import routes from './router/router.js'
 import first from './component/first.vue'
 import secondcomponent from './component/second.vue'
 import find from './component/find.vue'
@@ -21,38 +22,7 @@ import detail from './component/detail.vue'
 // 创建一个路由器实例
 // 并且配置路由规则
 const router = new VueRouter({
-	mode: 'history',
-	base: __dirname,
-	routes: [
-		{
-            path: '',
-            redirect: '/first'
-        },
-		{
-			path: '/first',
-			component: first
-		},
-		{
-			path: '/second',
-			component: secondcomponent
-		},
-		{
-			path: '/find',
-			component: find
-		},
-		{
-			path: '/me',
-			component: me
-		},
-		{
-			path: '/tab',
-			component: tab
-		},
-		{
-			path: '/detail',
-			component: detail
-		}
-	]
+	routes
 });
 
 // 现在我们可以启动应用了！

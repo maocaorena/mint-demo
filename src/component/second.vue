@@ -3,6 +3,7 @@
 		<p v-for="item in data">
 			<img style="width: 100%;" v-bind:src="item.adImgUrl"/>
 		</p>
+		<footer-bar></footer-bar>
 	</div>
 </template>
 <script>
@@ -10,8 +11,21 @@
 	const api = new API();
 	import { Indicator } from 'mint-ui';
 	import {Toast} from 'mint-ui';
+	import footerbar from './tab.vue';
+	
 	export default {
 		name: "secondcomponent",
+		data() {
+			return {
+				author: "微信公众号 jinkey-love",
+				articles: [],
+				data: [],
+    			busy: false
+			}
+		},
+		components: {
+			"footer-bar" : footerbar
+		},
 		beforeMount(){
 			Indicator.open({
 	            text: '加载中...',
@@ -27,14 +41,6 @@
 	            .catch(function(err){
 	                console.log(err);
 	            });
-		},
-		data() {
-			return {
-				author: "微信公众号 jinkey-love",
-				articles: [],
-				data: [],
-    			busy: false
-			}
 		},
 		mounted: function() {
 			

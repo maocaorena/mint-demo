@@ -1,17 +1,25 @@
-import App from '../../App'
+import App from '../App.vue'
+import first from '../component/first.vue'
+import second from '../component/second.vue'
+import find from '../component/find.vue'
+import me from '../component/me.vue'
+import detail from '../component/detail.vue'
 
-const first = r => require.ensure([], () => r(require('./component/first')), 'first')
-
-/*const router = new VueRouter({
-	mode: 'history',
-	base: __dirname,
-	routes: [{
+export default [{
+    path: '/',
+    component: App,
+	children: [
+		{
+            path: '',
+            redirect: '/first'
+        },
+		{
 			path: '/first',
 			component: first
 		},
 		{
 			path: '/second',
-			component: secondcomponent
+			component: second
 		},
 		{
 			path: '/find',
@@ -20,18 +28,10 @@ const first = r => require.ensure([], () => r(require('./component/first')), 'fi
 		{
 			path: '/me',
 			component: me
+		},
+		{
+			path: '/detail',
+			component: detail
 		}
 	]
-});*/
-export default [{
-    path: '/',
-    component: App, //顶层路由，对应index.html
-    children: [ //二级路由。对应App.vue
-        //地址为空时跳转home页面
-        {
-            path: '',
-            redirect: '/first'
-        },
-        
-    ]
 }]

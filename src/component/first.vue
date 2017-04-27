@@ -1,5 +1,10 @@
 <template>
 	<div id="first">
+		<div class="swiper-wrapper">
+	        <div class="swiper-slide" v-for="item in swiperImgs">
+	        	<img style="width: 100%;" :src="item.adImgUrl"/>
+	        </div>
+	    </div>
 		<div class="flex nav">
 			<router-link class="flex flex-s flex-zhong" to="/second">
 				<img src="src/assets/img/discover/home_sorts@2x.png" />
@@ -18,7 +23,7 @@
 				<span>分类</span>
 			</router-link>
 		</div>
-		<shopping></shopping>
+		<shopping v-bind:message="goShopping" v-if="showShopping"></shopping>
 		<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 			<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
 				<li v-for="item in list" class="page-infinite-listitem">
@@ -37,6 +42,7 @@
 				加载中...
 			</p>
 		</div>
+		<footer-bar></footer-bar>
 	</div>
 </template>
 <style lang="scss">
@@ -93,8 +99,10 @@
 	const api = new API();
 	import { Indicator } from 'mint-ui';
 	import alertshopping from './shopping.vue';
-	/*import 'src/plugins/swiper/swiper.min.js';
-	import 'src/plugins/swiper/swiper.min.css';*/
+	import footerbar from './tab.vue';
+	import store from '../store/';
+	import '../plugins/swiper/swiper.min.js';
+	import '../plugins/swiper/swiper.min.css';
 	export default {
 		name: "first",
 		data() {
@@ -107,13 +115,39 @@
 				loading: false,
 				allLoaded: false,
 				wrapperHeight: 0,
-				loadMoreSwitch: true
+				loadMoreSwitch: true,
+				showShopping: false,
+				goShopping: null
 			}
 		},
+		computed: {
+		    count () {
+		      	return store.state.count
+		    }
+		},
 		components: {
-			"shopping" : alertshopping
+			"shopping" : alertshopping,
+			"footer-bar" : footerbar
 		},
 		methods: {
+			getBannerImg(){
+				let that = this;
+		        //获取信息列表
+		        let response = api.getN("adv/advApi.json",{"appKey":"1111"});
+		        response.then(function(res){
+		        		that.swiperImgs = res.data.returnValue;
+		            })
+		        	.then(function(){
+		        		console.log("111")
+		        		let mySwiper = new Swiper ('.swiper-container', {
+						    direction: 'vertical',
+						    loop: true,
+						})
+		        	})
+		            .catch(function(err){
+		                console.log(err);
+		            });
+			},
 			loadMore() {
 				this.loading = true;
 				let that = this;
@@ -145,14 +179,18 @@
 			},
 			buy(item){
 				console.log("item",item);
+				this.goShopping = item;
+				this.showShopping = !this.showShopping;
 			}
 		},
 		created() {
 			this.loadMore();
+			this.getBannerImg();
 		},
 		mounted() {
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-			
+			console.log(this.count);
+			  
 		}
 	}
 </script>

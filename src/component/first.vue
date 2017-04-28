@@ -1,10 +1,12 @@
 <template>
 	<div id="first">
-		<div class="swiper-wrapper">
-	        <div class="swiper-slide" v-for="item in swiperImgs">
-	        	<img style="width: 100%;" :src="item.adImgUrl"/>
-	        </div>
-	    </div>
+		<div class="siper" style="height: 125px;">
+			<mt-swipe :auto="4000">
+			  	<mt-swipe-item v-for="item in swiperImgs">
+			  		<img style="width: 100%;" :src="item.adImgUrl"/>
+			  	</mt-swipe-item>
+			</mt-swipe>
+		</div>
 		<div class="flex nav">
 			<router-link class="flex flex-s flex-zhong" to="/second">
 				<img src="src/assets/img/discover/home_sorts@2x.png" />
@@ -23,12 +25,12 @@
 				<span>分类</span>
 			</router-link>
 		</div>
-		<shopping v-bind:message="goShopping" v-if="showShopping"></shopping>
+		<shopping v-if="shoppingAlert"></shopping>
 		<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 			<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
 				<li v-for="item in list" class="page-infinite-listitem">
 					<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
-						<img style="width: 80%;" v-lazy.container="item.image1" />
+						<img style="width: 50%;" v-lazy.container="item.image1" />
 					</router-link>
 					<p class="productName ellipsis">{{ item.productName }}</p>
 					<p>总需{{item.dbTotalCount}}|剩余{{item.dbSurplusCount}}</p>
@@ -101,19 +103,14 @@
 	import alertshopping from './shopping.vue';
 	import footerbar from './tab.vue';
 	import store from '../store/';
-	import '../plugins/swiper/swiper.min.js';
-	import '../plugins/swiper/swiper.min.css';
 	export default {
 		name: "first",
 		data() {
 			return {
-				name: "damaoa",
 				swiperImgs: [],
-				data: [],
 				list: [],
 				page: 1,
 				loading: false,
-				allLoaded: false,
 				wrapperHeight: 0,
 				loadMoreSwitch: true,
 				showShopping: false,
@@ -123,6 +120,12 @@
 		computed: {
 		    count () {
 		      	return store.state.count
+		    },
+		    shopping(){
+		    	return store.state.shopping
+		    },
+		    shoppingAlert(){
+		    	return store.state.shoppingAlert
 		    }
 		},
 		components: {
@@ -136,14 +139,7 @@
 		        let response = api.getN("adv/advApi.json",{"appKey":"1111"});
 		        response.then(function(res){
 		        		that.swiperImgs = res.data.returnValue;
-		            })
-		        	.then(function(){
-		        		console.log("111")
-		        		let mySwiper = new Swiper ('.swiper-container', {
-						    direction: 'vertical',
-						    loop: true,
-						})
-		        	})
+		           })
 		            .catch(function(err){
 		                console.log(err);
 		            });
@@ -179,18 +175,19 @@
 			},
 			buy(item){
 				console.log("item",item);
-				this.goShopping = item;
-				this.showShopping = !this.showShopping;
+				store.commit('goShopping', item);
+				store.commit('hideShopping', true);
 			}
 		},
 		created() {
 			this.loadMore();
+			console.log("created");
 			this.getBannerImg();
 		},
 		mounted() {
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 			console.log(this.count);
-			  
+			console.log("mounted");
 		}
 	}
 </script>

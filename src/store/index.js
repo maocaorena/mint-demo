@@ -8,6 +8,8 @@ Vue.use(Vuex)
 
 const state = {
 	count: "damaoa", //首页商品列表
+	shopping:null,
+	shoppingAlert: false
 }
 
 export default new Vuex.Store({

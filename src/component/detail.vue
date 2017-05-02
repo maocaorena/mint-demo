@@ -17,8 +17,6 @@
 	}
 </style>
 <script type="text/javascript">
-	import API from '../api/API';
-	const api = new API();
 	import { Indicator } from 'mint-ui';
 	export default {
 		name: "first",
@@ -35,12 +33,14 @@
 		},
 		created() {
 			let that = this;
-			let getProductDetail = api.getN("product/getProductDetailApi.json",{"periodId":this.periodId});
-			getProductDetail.then(function(res){
+			this.axios.get("product/getProductDetailApi.json",{
+				params:{
+					"periodId":this.periodId
+				}
+			}).then(function(res){
 				that.productDetail = res.data.returnValue;
 				console.log(that.productDetail);
-			})
-			.catch(function(err){
+			}).catch(function(err){
 				
 			})
 		},

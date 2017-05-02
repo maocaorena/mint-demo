@@ -1,3 +1,6 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import store from '../store/';//引入vuex
 import App from '../App.vue'
 import first from '../component/first.vue'
 import second from '../component/second.vue'
@@ -5,7 +8,9 @@ import find from '../component/find.vue'
 import me from '../component/me.vue'
 import detail from '../component/detail.vue'
 
-export default [{
+Vue.use(VueRouter)
+
+const routes = [{
     path: '/',
     component: App,
 	children: [
@@ -23,6 +28,9 @@ export default [{
 		},
 		{
 			path: '/find',
+			meta: {
+	            requireAuth: true,
+	        },
 			component: find
 		},
 		{
@@ -34,4 +42,27 @@ export default [{
 			component: detail
 		}
 	]
-}]
+}];
+
+const router = new VueRouter({
+    routes
+});
+
+router.beforeEach((to, from, next) => {
+	console.log("ccccc");
+    if (to.matched.some(r => r.meta.requireAuth)) {
+    	console.log("ccccc");
+        if (store.state.token) {
+            next();
+        }else {
+            next({
+                path: '/me',
+                query: {}
+            })
+        };
+    }else {
+        next();
+    };
+});
+
+export default router;

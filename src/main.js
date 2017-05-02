@@ -2,27 +2,23 @@ import Vue from 'vue';
 import MintUI from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import App from './App.vue';
-import VueRouter from 'vue-router';
 import Vuex from 'vuex';
+import axios from './api/http.js';
 import VueResource from 'vue-resource';
-import InfiniteLoading from 'vue-infinite-loading';
 
 Vue.use(MintUI);
-Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueResource);
 
-import routes from './router/router.js'
+import router from './router/router.js';
 
-// 创建一个路由器实例
-// 并且配置路由规则
-const router = new VueRouter({
-	routes
-});
+Vue.prototype.axios = axios;
+
 
 // 现在我们可以启动应用了！
 // 路由器会创建一个 App 实例，并且挂载到选择符 #app 匹配的元素上。
 const app = new Vue({
-	router: router,
+	router,
+	axios,
 	render: h => h(App)
 }).$mount('#app')

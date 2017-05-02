@@ -1,54 +1,62 @@
 <template>
 	<div id="first">
-		<div class="siper" style="height: 125px;">
-			<mt-swipe :auto="4000">
-			  	<mt-swipe-item v-for="item in swiperImgs">
-			  		<img style="width: 100%;" :src="item.adImgUrl"/>
-			  	</mt-swipe-item>
-			</mt-swipe>
-		</div>
-		<div class="flex nav">
-			<router-link class="flex flex-s flex-zhong" to="/second">
-				<img src="src/assets/img/discover/home_sorts@2x.png" />
-				<span>分类</span>
-			</router-link>
-			<router-link class="flex flex-s flex-sc" to="/second">
-				<img src="src/assets/img/discover/home_sorts@2x.png" />
-				<span>分类</span>
-			</router-link>
-			<router-link class="flex flex-s flex-sc" to="/find">
-				<img src="src/assets/img/discover/home_sorts@2x.png" />
-				<span>分类</span>
-			</router-link>
-			<router-link class="flex flex-s flex-sc" to="/me">
-				<img src="src/assets/img/discover/home_sorts@2x.png" />
-				<span>分类</span>
-			</router-link>
+		<div class="content">
+			<div class="siper" style="height: 125px;">
+				<mt-swipe :auto="4000">
+				  	<mt-swipe-item v-for="item in swiperImgs">
+				  		<img style="width: 100%;" :src="item.adImgUrl"/>
+				  	</mt-swipe-item>
+				</mt-swipe>
+			</div>
+			<div class="flex nav">
+				<router-link class="flex flex-s flex-zhong" to="/second">
+					<img src="src/assets/img/discover/home_sorts@2x.png" />
+					<span>分类</span>
+				</router-link>
+				<router-link class="flex flex-s flex-sc" to="/second">
+					<img src="src/assets/img/discover/home_sorts@2x.png" />
+					<span>分类</span>
+				</router-link>
+				<router-link class="flex flex-s flex-sc" to="/find">
+					<img src="src/assets/img/discover/home_sorts@2x.png" />
+					<span>分类</span>
+				</router-link>
+				<router-link class="flex flex-s flex-sc" to="/me">
+					<img src="src/assets/img/discover/home_sorts@2x.png" />
+					<span>分类</span>
+				</router-link>
+			</div>
+			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
+				<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
+					<li v-for="item in list" class="page-infinite-listitem">
+						<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
+							<img v-lazy.container="item.image1" />
+						</router-link>
+						<p class="productName">{{ item.productName }}</p>
+						<p>总需{{item.dbTotalCount}}|剩余{{item.dbSurplusCount}}</p>
+						<button @click="buy(item)">购买</button>
+					</li>
+					<li style="height: 0;width: 0;clear: both;"></li>
+				</ul>
+				<p v-show="!loadMoreSwitch" class="noMore paddingBottom50">没有更多了</p>
+				<p v-show="loading" class="page-infinite-loading paddingBottom50">
+					<mt-spinner type="fading-circle"></mt-spinner>
+					加载中...
+				</p>
+			</div>
 		</div>
 		<shopping v-if="shoppingAlert"></shopping>
-		<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
-			<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
-				<li v-for="item in list" class="page-infinite-listitem">
-					<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
-						<img style="width: 50%;" v-lazy.container="item.image1" />
-					</router-link>
-					<p class="productName ellipsis">{{ item.productName }}</p>
-					<p>总需{{item.dbTotalCount}}|剩余{{item.dbSurplusCount}}</p>
-					<button @click="buy(item)">购买</button>
-				</li>
-				<li style="height: 0;width: 0;clear: both;"></li>
-			</ul>
-			<p v-show="!loadMoreSwitch" class="noMore paddingBottom50">没有更多了</p>
-			<p v-show="loading" class="page-infinite-loading paddingBottom50">
-				<mt-spinner type="fading-circle"></mt-spinner>
-				加载中...
-			</p>
-		</div>
 		<footer-bar></footer-bar>
 	</div>
 </template>
 <style lang="scss">
 	#first {
+		height: 100%;
+		overflow: hidden;
+		.content{
+			height: 100%;
+			overflow: auto;
+		}
 		.nav {
 			width: 100%;
 			padding: 10px 0;
@@ -65,23 +73,24 @@
 				}
 			}
 		}
-		.productItem {
-			width: 50%;
-			padding: 1px;
-			float: left;
-			img {
-				width: 80%;
-			}
-		}
 		.page-infinite-listitem {
 			width: 50%;
 			height: 241px;
 			float: left;
 			text-align: center;
 			border-bottom: 1px solid #ccc;
+			img{
+				width: 135px;
+				height: 135px;
+			}
 			.productName{
 				width: 100%;
-				height: 42px;
+				height: 34px;
+				padding: 0 10px;
+				font-size: 13px;
+				text-align: left;
+				overflow: hidden;
+				color: #50575d;
 			}
 			button{
 				width: 100%;
@@ -97,12 +106,10 @@
 	}
 </style>
 <script type="text/javascript">
-	import API from '../api/API';
-	const api = new API();
-	import { Indicator } from 'mint-ui';
-	import alertshopping from './shopping.vue';
-	import footerbar from './tab.vue';
-	import store from '../store/';
+	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
+	import alertshopping from './shopping.vue';//引入购买弹窗
+	import footerbar from './tab.vue';//引入底部栏
+	import store from '../store/';//引入vuex
 	export default {
 		name: "first",
 		data() {
@@ -135,25 +142,26 @@
 		methods: {
 			getBannerImg(){
 				let that = this;
-		        //获取信息列表
-		        let response = api.getN("adv/advApi.json",{"appKey":"1111"});
-		        response.then(function(res){
-		        		that.swiperImgs = res.data.returnValue;
-		           })
-		            .catch(function(err){
-		                console.log(err);
-		            });
+				this.axios.get('adv/advApi.json')
+					.then(function (response) {
+					    that.swiperImgs = response.data.returnValue;
+					})
+					.catch(function (error) {
+					    console.log(error);
+					});
 			},
 			loadMore() {
 				this.loading = true;
 				let that = this;
 				if(that.loadMoreSwitch){
 					setTimeout(() => {
-						api.getN("product/getProductListApi.json", {
-								"appKey": "1111",
-								"status": "popularity",
-								"page_index": that.page,
-								"page_size": "6"
+						this.axios.get('product/getProductListApi.json', {
+								params:{
+									"appKey": "1111",
+									"status": "popularity",
+									"page_index": that.page,
+									"page_size": "6"
+								}
 							})
 							.then(function(res) {
 								for(let v = 0; v < res.data.returnValue.length; v++) {
@@ -183,6 +191,7 @@
 			this.loadMore();
 			console.log("created");
 			this.getBannerImg();
+			
 		},
 		mounted() {
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;

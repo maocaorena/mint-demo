@@ -2,15 +2,14 @@ import Vue from 'vue';
 import MintUI from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import App from './App.vue';
-import Vuex from 'vuex';
 import axios from './api/http.js';
 import VueResource from 'vue-resource';
 
 Vue.use(MintUI);
-Vue.use(Vuex);
 Vue.use(VueResource);
 
 import router from './router/router.js';
+import store from './store/';
 
 Vue.prototype.axios = axios;
 
@@ -20,5 +19,6 @@ Vue.prototype.axios = axios;
 const app = new Vue({
 	router,
 	axios,
+	store,
 	render: h => h(App)
 }).$mount('#app')

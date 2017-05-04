@@ -10,7 +10,8 @@ const state = {
 	count: "damaoa", //首页商品列表
 	shopping:null,
 	shoppingAlert: false,
-	token : false
+	token : false,
+	footerbarState: 1
 }
 
 export default new Vuex.Store({

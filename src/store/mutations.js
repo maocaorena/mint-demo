@@ -7,5 +7,8 @@ export default {
 	},
 	hideShopping(state,shoppingAlert){
 		state.shoppingAlert = shoppingAlert;
+	},
+	selectTab(state,footerbarState){
+		state.footerbarState = footerbarState;
 	}
 }

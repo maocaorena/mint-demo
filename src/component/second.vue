@@ -1,5 +1,14 @@
 <template>
 	<div id="secondcomponent">
+		<div class="swiper-container">
+		    <div class="swiper-wrapper">
+		        <div v-for="item in data" class="swiper-slide">
+		        	<img style="width: 100%;" v-bind:src="item.adImgUrl"/>
+		        </div>
+		    </div>
+		    <!-- 如果需要分页器 -->
+		    <div class="swiper-pagination"></div>
+		</div>
 		<p v-for="item in data">
 			<img style="width: 100%;" v-bind:src="item.adImgUrl"/>
 		</p>
@@ -10,6 +19,8 @@
 	import { Indicator } from 'mint-ui';
 	import {Toast} from 'mint-ui';
 	import footerbar from './tab.vue';
+	import '../plugins/swiper/swiper.min.js';
+	import '../plugins/swiper/swiper.min.css';
 	
 	export default {
 		name: "secondcomponent",
@@ -38,7 +49,14 @@
 	        	}).then(function(res){
 	        		that.data = res.data.returnValue;
 	        		Indicator.close();
-	           }).catch(function(err){
+	           	}).then(function(){
+	           		var mySwiper = new Swiper ('.swiper-container', {
+				    loop: true,
+				    
+				    // 如果需要分页器
+				    pagination: '.swiper-pagination',
+				  })        
+	           	}).catch(function(err){
 	                console.log(err);
 	            });
 		},

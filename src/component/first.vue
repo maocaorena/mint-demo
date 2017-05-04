@@ -1,12 +1,14 @@
 <template>
 	<div id="first">
 		<div class="content">
-			<div class="siper" style="height: 125px;">
-				<mt-swipe :auto="4000">
-				  	<mt-swipe-item v-for="item in swiperImgs">
-				  		<img style="width: 100%;" :src="item.adImgUrl"/>
-				  	</mt-swipe-item>
-				</mt-swipe>
+			<div class="swiper-container">
+			    <div class="swiper-wrapper">
+			        <div v-for="item in swiperImgs" class="swiper-slide">
+			        	<img style="width: 100%;" :src="item.adImgUrl"/>
+			        </div>
+			    </div>
+			    <!-- 如果需要分页器 -->
+			    <div class="swiper-pagination"></div>
 			</div>
 			<div class="flex nav">
 				<router-link class="flex flex-s flex-zhong" to="/second">
@@ -110,6 +112,9 @@
 	import alertshopping from './shopping.vue';//引入购买弹窗
 	import footerbar from './tab.vue';//引入底部栏
 	import store from '../store/';//引入vuex
+	import '../plugins/swiper/swiper.min.js';
+	import '../plugins/swiper/swiper.min.css';
+	
 	export default {
 		name: "first",
 		data() {
@@ -145,8 +150,15 @@
 				this.axios.get('adv/advApi.json')
 					.then(function (response) {
 					    that.swiperImgs = response.data.returnValue;
-					})
-					.catch(function (error) {
+					}).then(function(){
+		           		let mySwiper = new Swiper ('.swiper-container', {
+						    loop: true,
+						    autoplay: 2000,
+						    autoplayDisableOnInteraction: false,
+						    // 如果需要分页器
+						    pagination: '.swiper-pagination',
+						})        
+		           }).catch(function (error) {
 					    console.log(error);
 					});
 			},

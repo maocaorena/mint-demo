@@ -28,10 +28,13 @@
 					<span>分类</span>
 				</router-link>
 			</div>
+			<transition name="router-slid" mode="out-in">
+	            <router-view></router-view>
+	        </transition>
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
 					<li v-for="item in list" class="page-infinite-listitem">
-						<router-link class="flex flex-s flex-sc" :to="{ path: 'detail', query: { id: item.productId ,periodId: item.periodsId}}">
+						<router-link class="flex flex-s flex-sc" :to="{ path: '/first/detail', query: { id: item.productId ,periodId: item.periodsId}}">
 							<img v-lazy.container="item.image1" />
 						</router-link>
 						<p class="productName">{{ item.productName }}</p>

@@ -33,11 +33,11 @@
 		},
 		created() {
 			let that = this;
-			this.axios.get("product/getProductDetailApi.json",{
-				params:{
+			this.api.getN("product/getProductDetailApi.json",
+				{
 					"periodId":this.periodId
 				}
-			}).then(function(res){
+			).then(function(res){
 				that.productDetail = res.data.returnValue;
 				console.log(that.productDetail);
 			}).catch(function(err){

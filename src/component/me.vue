@@ -31,6 +31,9 @@
 				store.commit('getData', "10");
 				console.log(this.count);
 			}
+		},
+		created(){
+			
 		}
 	}
 </script>

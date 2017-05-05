@@ -20,7 +20,11 @@ const routes = [{
         },
 		{
 			path: '/first',
-			component: first
+			component: first,
+			children: [{
+				path: 'detail',
+				component: detail
+			}]
 		},
 		{
 			path: '/second',
@@ -36,10 +40,6 @@ const routes = [{
 		{
 			path: '/me',
 			component: me
-		},
-		{
-			path: '/detail',
-			component: detail
 		}
 	]
 }];

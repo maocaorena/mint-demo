@@ -10,7 +10,8 @@ import Qs from 'qs';
 axios.defaults.timeout = 10000;//设置超时时间
 
 //axios.defaults.baseURL = 'http://1.migree.com.cn/duobao/';
-axios.defaults.baseURL = 'http://duobao.bianxianmao.com/duobao/';
+//axios.defaults.baseURL = 'http://duobao.bianxianmao.com/duobao/';
+axios.defaults.baseURL = 'http://118.178.131.193:8098/duobao/';
 
 axios.defaults.transformResponse = function(data){
 	// 这里提前处理返回的数据

@@ -1,7 +1,7 @@
 <template>
 	<div id="first">
 		<div class="content">
-			<div class="swiper-container">
+			<div class="swiper-container" id="homeSwipe">
 			    <div class="swiper-wrapper">
 			        <div v-for="item in swiperImgs" class="swiper-slide">
 			        	<img style="width: 100%;" :src="item.adImgUrl"/>
@@ -28,26 +28,25 @@
 					<span>分类</span>
 				</router-link>
 			</div>
-			<transition name="router-slid" mode="out-in">
-	            <router-view></router-view>
-	        </transition>
+			<div class="swiper-container" id="homelaba">
+			    <div class="swiper-wrapper">
+			        <div v-for="item in labas" class="swiper-slide ellipsis">
+			        	恭喜{{item.nickName}}夺取{{item.productName}}
+			        </div>
+			    </div>
+			</div>
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
 					<li v-for="item in list" class="page-infinite-listitem">
-						<router-link class="flex flex-s flex-sc" :to="{ path: '/first/detail', query: { id: item.productId ,periodId: item.periodsId}}">
+						<router-link class="flex flex-s flex-sc" :to="{ path: '/home/detail', query: { id: item.productId ,periodId: item.periodsId}}">
 							<img v-lazy.container="item.image1" />
 						</router-link>
 						<p class="productName">{{ item.productName }}</p>
 						<p>总需{{item.dbTotalCount}}|剩余{{item.dbSurplusCount}}</p>
 						<button @click="buy(item)">购买</button>
 					</li>
-					<li style="height: 0;width: 0;clear: both;"></li>
 				</ul>
-				<p v-show="!loadMoreSwitch" class="noMore paddingBottom50">没有更多了</p>
-				<p v-show="loading" class="page-infinite-loading paddingBottom50">
-					<mt-spinner type="fading-circle"></mt-spinner>
-					加载中...
-				</p>
+
 			</div>
 		</div>
 		<shopping v-if="shoppingAlert"></shopping>
@@ -56,11 +55,13 @@
 </template>
 <style lang="scss">
 	#first {
+		width: 100%;
 		height: 100%;
-		overflow: hidden;
+		position: absolute;
 		.content{
 			height: 100%;
 			overflow: auto;
+			padding-bottom: 45px;
 		}
 		.nav {
 			width: 100%;
@@ -77,6 +78,14 @@
 					font-size: 14px;
 				}
 			}
+		}
+		#homelaba{
+			height: 30px;
+			width: 100%;
+			border-bottom: 1px solid #eee;
+			line-height: 30px;
+			font-size: 12px;
+			padding-left: 30px;
 		}
 		.page-infinite-listitem {
 			width: 50%;
@@ -129,7 +138,8 @@
 				wrapperHeight: 0,
 				loadMoreSwitch: true,
 				showShopping: false,
-				goShopping: null
+				goShopping: null,
+				labas:[]
 			}
 		},
 		computed: {
@@ -154,47 +164,68 @@
 					.then(function (response) {
 					    that.swiperImgs = response.data.returnValue;
 					}).then(function(){
-		           		let mySwiper = new Swiper ('.swiper-container', {
+		           		let mySwiper = new Swiper ('#homeSwipe', {
 						    loop: true,
 						    autoplay: 2000,
 						    autoplayDisableOnInteraction: false,
 						    // 如果需要分页器
 						    pagination: '.swiper-pagination',
 						})        
-		           }).catch(function (error) {
+		           	}).catch(function (error) {
+					    console.log(error);
+					});
+			},
+			getLaba(){
+				let that = this;
+				this.axios.get('period/getwinMemberPeriodData.json')
+					.then(function (response) {
+					    that.labas = response.data.returnValue;
+					}).then(function(){
+		           		let mySwiper = new Swiper ('#homelaba', {
+		           			direction : 'vertical',
+		           			speed: 1000,
+						    loop: true,
+						    autoplay: 2000,
+						    autoplayDisableOnInteraction: false,
+						    
+						})        
+		           	}).catch(function (error) {
 					    console.log(error);
 					});
 			},
 			loadMore() {
+				Indicator.open({
+		            text: '加载中...',
+		            spinnerType: 'fading-circle'
+		        });
 				this.loading = true;
 				let that = this;
-				if(that.loadMoreSwitch){
-					setTimeout(() => {
-						this.axios.get('product/getProductListApi.json', {
-								params:{
-									"appKey": "1111",
-									"status": "popularity",
-									"page_index": that.page,
-									"page_size": "6"
-								}
-							})
-							.then(function(res) {
-								for(let v = 0; v < res.data.returnValue.length; v++) {
-									that.list.push(res.data.returnValue[v]);
-								};
-								if(res.data.returnValue.length==0){
-									that.loadMoreSwitch = false;
-									console.log("that.loading",that.loading);
-								};
-								that.page++;
-							}).catch(function(err){
-								console.log(err);
-							});
-						this.loading = false;
-					}, 500);
-				}else{
+				setTimeout(() => {
+					this.axios.get('product/getProductListApi.json', {
+							params:{
+								"appKey": "1111",
+								"status": "popularity",
+								"page_index": that.page,
+								"page_size": "6"
+							}
+						})
+						.then(function(res) {
+							for(let v = 0; v < res.data.returnValue.length; v++) {
+								that.list.push(res.data.returnValue[v]);
+							};
+							if(res.data.returnValue.length==0){
+								that.loading = true;
+							}else{
+								that.loading = false;
+							};
+							that.page++;
+							Indicator.close();
+						}).catch(function(err){
+							Indicator.close();
+						});
 					this.loading = false;
-				};
+				}, 500);
+				
 			},
 			buy(item){
 				console.log("item",item);
@@ -206,7 +237,7 @@
 			this.loadMore();
 			console.log("created");
 			this.getBannerImg();
-			
+			this.getLaba();
 		},
 		mounted() {
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;

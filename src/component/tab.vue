@@ -1,11 +1,11 @@
 <template>
 	<div class="tab">
 		<div class="flex footerBar">
-			<router-link class="footerBarItem flex flex-s flex-sc" :class="{ footerBarItem1: tabState == 1 }" to="/first">
+			<router-link class="footerBarItem flex flex-s flex-sc" :class="{ footerBarItem1: tabState == 1 }" to="/home">
 				<img src="src/assets/img/discover/home_sorts@2x.png"/>
 				<span>夺宝a</span>
 			</router-link>
-			<router-link class="footerBarItem flex flex-s flex-sc" :class="{ footerBarItem1: tabState == 2 }" to="/second">
+			<router-link class="footerBarItem flex flex-s flex-sc" :class="{ footerBarItem1: tabState == 2 }" to="/latestAnnounced">
 				<img src="src/assets/img/discover/home_sorts@2x.png"/>
 				<span>最新揭晓</span>
 			</router-link>
@@ -35,8 +35,8 @@
 		},
 		created(){
 			let thisPath = this.$route.fullPath;
-			let isFirst = thisPath.indexOf("first");
-			let isSecond = thisPath.indexOf("second");
+			let isFirst = thisPath.indexOf("home");
+			let isSecond = thisPath.indexOf("latestAnnounced");
 			let isFind = thisPath.indexOf("find");
 			let isMe = thisPath.indexOf("me");
 			if(isFirst > 0){
@@ -61,14 +61,14 @@
 <style lang="scss">
 	.tab{
 		width: 100%;
-		height: 47px;
+	    height: 45px;
+		position: absolute;
+	    left: 0;
+	    
+	    bottom: 0;
+	    z-index: 99;
 		.footerBar{
 			width: 100%;
-			position: fixed;
-		    left: 0;
-		    right: 0;
-		    bottom: 0;
-		    z-index: 99;
 		    height: 45px;
 		    background: #f5f5f5;
 			.footerBarItem{

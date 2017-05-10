@@ -16,18 +16,14 @@ const routes = [{
 	children: [
 		{
             path: '',
-            redirect: '/first'
+            redirect: '/home'
         },
 		{
-			path: '/first',
-			component: first,
-			children: [{
-				path: 'detail',
-				component: detail
-			}]
+			path: '/home',
+			component: first
 		},
 		{
-			path: '/second',
+			path: '/latestAnnounced',
 			component: second
 		},
 		{
@@ -40,6 +36,10 @@ const routes = [{
 		{
 			path: '/me',
 			component: me
+		},
+		{
+			path: '/home/detail',
+			component: detail
 		}
 	]
 }];

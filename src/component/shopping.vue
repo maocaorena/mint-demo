@@ -41,7 +41,6 @@
 	}
 </style>
 <script type="text/javascript">
-	import store from '../store/';
 	export default {
 		data () {
 			return {
@@ -50,13 +49,13 @@
 		},
 		computed: {
 		    shopping () {
-		      	return store.state.shopping
+		      	return this.$store.state.shopping
 		    },
 		},
 		props: ['message'],
 		methods:{
 			hide(){
-				store.commit('hideShopping', false);
+				this.$store.commit('hideShopping', false);
 			},
 			changeBuynum(type){
 				if(type == "1" ){

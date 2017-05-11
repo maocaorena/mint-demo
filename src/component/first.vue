@@ -42,11 +42,12 @@
 							<img v-lazy.container="item.image1" />
 						</router-link>
 						<p class="productName">{{ item.productName }}</p>
+						<progrees-v class="jindu" :length="(item.dbTotalCount-item.dbSurplusCount)/item.dbTotalCount"></progrees-v>
 						<p>总需{{item.dbTotalCount}}|剩余{{item.dbSurplusCount}}</p>
 						<button @click="buy(item)">购买</button>
 					</li>
+					<li style="clear: both;"></li>
 				</ul>
-
 			</div>
 		</div>
 		<shopping v-if="shoppingAlert"></shopping>
@@ -59,63 +60,74 @@
 		height: 100%;
 		position: absolute;
 		.content{
-			height: 100%;
+			width: 100%;
+			height: auto;
+			position: absolute;
+			top: 0;
+			bottom: 45px;
 			overflow: auto;
-			padding-bottom: 45px;
-		}
-		.nav {
-			width: 100%;
-			padding: 10px 0;
-			border-bottom: 1px solid #eee;
-			.flex {
-				width: 25%;
-				text-align: center;
-				img {
-					width: 50%;
-				}
-				span {
-					display: block;
-					font-size: 14px;
-				}
-			}
-		}
-		#homelaba{
-			height: 30px;
-			width: 100%;
-			border-bottom: 1px solid #eee;
-			line-height: 30px;
-			font-size: 12px;
-			padding-left: 30px;
-		}
-		.page-infinite-listitem {
-			width: 50%;
-			height: 241px;
-			float: left;
-			text-align: center;
-			border-bottom: 1px solid #ccc;
-			img{
-				width: 135px;
-				height: 135px;
-			}
-			.productName{
+			.nav {
 				width: 100%;
-				height: 34px;
-				padding: 0 10px;
-				font-size: 13px;
-				text-align: left;
-				overflow: hidden;
-				color: #50575d;
+				padding: 10px 0;
+				border-bottom: 1px solid #eee;
+				.flex {
+					width: 25%;
+					text-align: center;
+					img {
+						width: 50%;
+					}
+					span {
+						display: block;
+						font-size: 14px;
+					}
+				}
 			}
-			button{
+			#homelaba{
+				height: 30px;
 				width: 100%;
-				height: 20px;
+				border-bottom: 1px solid #eee;
+				line-height: 30px;
+				font-size: 12px;
+				padding-left: 30px;
 			}
-		}
-		.page-infinite-loading {
-			text-align: center;
-		}
-		.mint-spinner-fading-circle {
-			margin: 0 auto;
+			.page-infinite-wrapper{
+				width: 100%;
+				.page-infinite-list{
+					width: 100%;
+					.page-infinite-listitem {
+						width: 50%;
+						height: 241px;
+						float: left;
+						text-align: center;
+						border-bottom: 1px solid #ccc;
+						img{
+							width: 135px;
+							height: 135px;
+						}
+						.jindu{
+							width: 80%;
+							margin: 0 auto;
+						}
+						.productName{
+							width: 100%;
+							height: 34px;
+							padding: 0 10px;
+							font-size: 13px;
+							text-align: left;
+							overflow: hidden;
+							color: #50575d;
+						}
+						button{
+							width: 100%;
+							height: 20px;
+						}
+					}
+					
+				}
+			}
+			.mint-spinner-fading-circle {
+				margin: 0 auto;
+			}
 		}
 	}
 </style>
@@ -123,6 +135,7 @@
 	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
 	import alertshopping from './shopping.vue';//引入购买弹窗
 	import footerbar from './tab.vue';//引入底部栏
+	import progrees from '../components/progrees.vue';//引入进度条
 	import store from '../store/';//引入vuex
 	import '../plugins/swiper/swiper.min.js';
 	import '../plugins/swiper/swiper.min.css';
@@ -155,7 +168,8 @@
 		},
 		components: {
 			"shopping" : alertshopping,
-			"footer-bar" : footerbar
+			"footer-bar" : footerbar,
+			"progrees-v" : progrees
 		},
 		methods: {
 			getBannerImg(){

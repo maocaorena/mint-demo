@@ -2,7 +2,6 @@
 	<div id="secondcomponent">
 		<header>22222222222222</header>
 		<div class="content">
-			
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<ul class="page-infinite-list" v-infinite-scroll="getList" infinite-scroll-disabled="loading" infinite-scroll-distance="10" infinite-scroll-immediate-check="true">
 					<li v-for="item in list" class="page-infinite-listitem flex">

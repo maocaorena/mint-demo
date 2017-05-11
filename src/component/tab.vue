@@ -63,8 +63,6 @@
 		width: 100%;
 	    height: 45px;
 		position: absolute;
-	    left: 0;
-	    
 	    bottom: 0;
 	    z-index: 99;
 		.footerBar{

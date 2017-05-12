@@ -16,16 +16,20 @@
 					<span>分类</span>
 				</router-link>
 				<router-link class="flex flex-s flex-sc" to="/second">
-					<img src="src/assets/img/discover/home_sorts@2x.png" />
-					<span>分类</span>
+					<img src="src/assets/img/discover/home_share@2x.png" />
+					<span>晒单</span>
 				</router-link>
 				<router-link class="flex flex-s flex-sc" to="/find">
-					<img src="src/assets/img/discover/home_sorts@2x.png" />
-					<span>分类</span>
+					<img src="src/assets/img/discover/home_packet@2x.png" />
+					<span>充值</span>
 				</router-link>
 				<router-link class="flex flex-s flex-sc" to="/me">
-					<img src="src/assets/img/discover/home_sorts@2x.png" />
-					<span>分类</span>
+					<img src="src/assets/img/discover/pk@2x.png" />
+					<span>PK</span>
+				</router-link>
+				<router-link class="flex flex-s flex-sc" to="/me">
+					<img src="src/assets/img/discover/home_service@2x.png" />
+					<span>客服</span>
 				</router-link>
 			</div>
 			<div class="swiper-container" id="homelaba">
@@ -38,7 +42,7 @@
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
 					<li v-for="item in list" class="page-infinite-listitem">
-						<router-link class="flex flex-s flex-sc" :to="{ path: '/home/detail', query: { id: item.productId ,periodId: item.periodsId}}">
+						<router-link class="flex flex-s flex-sc" :to="{ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}}">
 							<img v-lazy.container="item.image1" />
 						</router-link>
 						<p class="productName">{{ item.productName }}</p>
@@ -242,21 +246,17 @@
 				
 			},
 			buy(item){
-				console.log("item",item);
 				store.commit('goShopping', item);
 				store.commit('hideShopping', true);
 			}
 		},
 		created() {
 			this.loadMore();
-			console.log("created");
 			this.getBannerImg();
 			this.getLaba();
 		},
 		mounted() {
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-			console.log(this.count);
-			console.log("mounted");
 		}
 	}
 </script>

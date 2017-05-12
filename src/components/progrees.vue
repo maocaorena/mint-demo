@@ -1,6 +1,6 @@
 <template>
 	<div id="progrees">
-		<mt-progress :value="length*100" :bar-height="3"></mt-progress>
+		<mt-progress :value="length*100" :bar-height="4"></mt-progress>
 	</div>
 </template>
 <style lang="scss">

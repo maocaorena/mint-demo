@@ -2,11 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/';//引入vuex
 import App from '../App.vue'
-import first from '../component/first.vue'
-import second from '../component/second.vue'
+import home from '../component/home.vue'
+import latestAnnounced from '../component/latestAnnounced.vue'
 import find from '../component/find.vue'
 import me from '../component/me.vue'
-import detail from '../component/detail.vue'
+import productDetail from '../component/productDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -16,30 +16,30 @@ const routes = [{
 	children: [
 		{
             path: '',
-            redirect: '/home'
+            redirect: '/tab/home'
         },
 		{
-			path: '/home',
-			component: first
+			path: '/tab/home',
+			component: home
 		},
 		{
-			path: '/latestAnnounced',
-			component: second
+			path: '/tab/latestAnnounced',
+			component: latestAnnounced
 		},
 		{
-			path: '/find',
+			path: '/tab/find',
 			meta: {
 	            requireAuth: true,
 	        },
 			component: find
 		},
 		{
-			path: '/me',
+			path: '/tab/me',
 			component: me
 		},
 		{
-			path: '/home/detail',
-			component: detail
+			path: '/tab/home/productDetail',
+			component: productDetail
 		}
 	]
 }];
@@ -49,14 +49,15 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	console.log("ccccc");
+	if(from.path == "/tab/home/productDetail" || from.path == "/tab/home"){
+		store.commit('hideShopping', false);
+	};
     if (to.matched.some(r => r.meta.requireAuth)) {
-    	console.log("ccccc");
         if (store.state.token) {
             next();
         }else {
             next({
-                path: '/me',
+                path: '/tab/me',
                 query: {}
             })
         };

@@ -40,9 +40,6 @@
             'togo',
             'icon',
             'title'
-        ],
-        mounted(){
-        	console.log(this.icon)
-        }
+        ]
 	}
 </script>

@@ -85,7 +85,10 @@ html,body{
 .paddingBottom50{
 	padding-bottom: 50px;
 }
-
+/*mint-ui 提示框字体颜色*/
+.toastStyle .mint-toast-text{
+	color: #fff;
+}
 /*flex兼容写法*/
 .flex {
   display: box;

@@ -6,7 +6,7 @@
 				<ul class="page-infinite-list" v-infinite-scroll="getList" infinite-scroll-disabled="loading" infinite-scroll-distance="10" infinite-scroll-immediate-check="true">
 					<li v-for="item in list" class="page-infinite-listitem flex">
 						<div class="left flex-zhong">
-							<router-link :to="{ path: '/home/detail', query: { id: item.productId ,periodId: item.periodsId}}">
+							<router-link :to="{ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}}">
 								<img v-lazy.container="item.img1" />
 							</router-link>
 						</div>

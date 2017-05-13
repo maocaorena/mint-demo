@@ -8,14 +8,13 @@
 				<div slot="bottom" class="mint-loadmore-bottom">
 					<span v-show="bottomStatus !== 'loading'" :class="{ 'is-rotate': bottomStatus === 'drop' }">↑</span>
 					<span v-show="bottomStatus === 'loading'">
-            <mt-spinner type="snake"></mt-spinner>
-          </span>
+			            <mt-spinner type="snake"></mt-spinner>
+			        </span>
 				</div>
 			</mt-loadmore>
 		</div>
 		<footer-bar></footer-bar>
 	</div>
-	
 </template>
 
 <style>

@@ -126,7 +126,7 @@
 							height: 20px;
 						}
 					}
-					
+
 				}
 			}
 			.mint-spinner-fading-circle {
@@ -143,7 +143,7 @@
 	import store from '../store/';//引入vuex
 	import '../plugins/swiper/swiper.min.js';
 	import '../plugins/swiper/swiper.min.css';
-	
+
 	export default {
 		name: "first",
 		data() {
@@ -188,7 +188,7 @@
 						    autoplayDisableOnInteraction: false,
 						    // 如果需要分页器
 						    pagination: '.swiper-pagination',
-						})        
+						})
 		           	}).catch(function (error) {
 					    console.log(error);
 					});
@@ -205,8 +205,8 @@
 						    loop: true,
 						    autoplay: 2000,
 						    autoplayDisableOnInteraction: false,
-						    
-						})        
+
+						})
 		           	}).catch(function (error) {
 					    console.log(error);
 					});
@@ -243,7 +243,7 @@
 						});
 					this.loading = false;
 				}, 500);
-				
+
 			},
 			buy(item){
 				store.commit('goShopping', item);

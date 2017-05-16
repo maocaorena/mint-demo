@@ -12,7 +12,7 @@
 			    </div>
 			    <!-- 分页器 -->
 			    <div class="swiper-pagination"></div>
-			</div> 
+			</div>
 			<div class="productMessage">
 				<p class="pmTop">
 					<span v-if="productStaus == 'ing'">进行中</span>
@@ -59,8 +59,8 @@
 			<p v-if="isiPhone" class="isiPhone">
 				<span>!</span> 声明：所有商品抽奖活动与苹果公司（Apple Inc）无关
 			</p>
-			<menu-bar :togo="'/me'" :icon="'icon-tuwenxiangqing'" :title="'图文详情'"></menu-bar>
-			<menu-bar :togo="'/me'" :icon="'icon-camera'" :title="'晒单分享'"></menu-bar>
+			<menu-bar :togo="'/tab/home/imageTextMessage?goodsId='+productId+'&periodId='+periodId" :icon="'icon-tuwenxiangqing'" :title="'图文详情'"></menu-bar>
+			<menu-bar :togo="'/tab/home/single?goodsId='+productId" :icon="'icon-camera'" :title="'晒单分享'"></menu-bar>
 			<menu-bar :togo="'/me'" :icon="'icon-currentrecord'" :title="'本期参与记录'"></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-xunzhang1'" :title="'往期揭晓'"></menu-bar>
 		</div>
@@ -288,38 +288,33 @@
 		},
 		created() {
 			let that = this;
-			this.api.getN("product/getProductDetailApi.json",
-				{
-					"periodId":this.periodId
+			this.api.getProductDetail(this.periodId,
+				function(data){
+					let productDetail = data.data.returnValue;
+					that.productDetail = productDetail;
+					if(productDetail.state == '1'){
+						that.productStaus = 'ing';
+					}else if(productDetail.state == '2'){
+						that.productStaus = 'publishing';
+					}else if(productDetail.state == '3'){
+						that.productStaus = 'published';
+						that.api.getWinnerMessage(that.periodId,function(data){
+							that.winnnerMessage = data.data.returnValue;
+							that.winnnerMessage.dbOpenTime = data.data.returnValue.dbOpenTime.slice(0,16)
+						});
+					};
+				},
+				function () {
+					let mySwiper = new Swiper ('#detailSwiper', {
+						loop: true,
+						autoplay: 2000,
+						autoplayDisableOnInteraction: false,
+						// 如果需要分页器
+						pagination: '.swiper-pagination',
+					})
 				}
-			).then(function(res){
-				let productDetail = res.data.returnValue;
-				that.productDetail = productDetail;
-				if(productDetail.state == '1'){
-					that.productStaus = 'ing';
-				}else if(productDetail.state == '2'){
-					that.productStaus = 'publishing';
-				}else if(productDetail.state == '3'){
-					that.productStaus = 'published';
-					that.api.getWinnerMessage(that.periodId,function(res){
-						that.winnnerMessage = res.data.returnValue;
-						that.winnnerMessage.dbOpenTime = res.data.returnValue.dbOpenTime.slice(0,16)
-					});
-				};
-				console.log(that.productStaus);
-			}).then(()=>{
-				let mySwiper = new Swiper ('#detailSwiper', {
-           			loop: true,
-				    autoplay: 2000,
-				    autoplayDisableOnInteraction: false,
-				    // 如果需要分页器
-				    pagination: '.swiper-pagination',
-				})  
-			}).catch(function(err){
-				console.log(err);
-			});
-			
-			//判断是否是iPhone  
+			);
+			//判断是否是iPhone
 			let u = navigator.userAgent;
 			let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 			if(isiOS){
@@ -329,7 +324,7 @@
 		    };
 		},
 		mounted() {
-			
+
 		}
 	}
 </script>

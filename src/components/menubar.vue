@@ -21,7 +21,7 @@
 		span{
 			display: inline-block;
 			width: 80%;
-			
+
 		}
 		.flex{
 			height: 100%;

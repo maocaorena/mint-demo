@@ -84,7 +84,7 @@
 	import footerbar from './tab.vue';
 	import '../plugins/swiper/swiper.min.js';
 	import '../plugins/swiper/swiper.min.css';
-	
+
 	export default {
 		name: "secondcomponent",
 		data() {
@@ -112,31 +112,26 @@
 				this.loading = true;
 	        	//获取信息列表
 	        	setTimeout(() => {
-			        this.api.getN("period/getPeroidListByLastAnnounApi.json",
-						{
-							"page_index" : that.page,
-							"page_size"  : 6
+			        this.api.getLastAnnounList(that.page,6,
+						function (data) {
+							for(let v = 0; v < data.data.returnValue.length; v++) {
+								that.list.push(data.data.returnValue[v]);
+							};
+							if(data.data.returnValue.length==0){
+								that.loading = true;
+								that.noMore = true;
+							}else{
+								that.loading = false;
+							};
+							that.page++;
+							Indicator.close();
 						}
-					).then(function(res){
-						for(let v = 0; v < res.data.returnValue.length; v++) {
-							that.list.push(res.data.returnValue[v]);
-						};
-						if(res.data.returnValue.length==0){
-							that.loading = true;
-							that.noMore = true;
-						}else{
-							that.loading = false;
-						};
-						that.page++;
-						Indicator.close();
-					}).catch(function(err){
-						Indicator.close();
-					});
+					);
 				}, 500);
 			}
 		},
 		beforeMount(){
-			
+
 		},
 		created(){
 			this.getList();

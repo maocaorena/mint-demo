@@ -15,7 +15,7 @@
 					<img src="src/assets/img/discover/home_sorts@2x.png" />
 					<span>分类</span>
 				</router-link>
-				<router-link class="flex flex-s flex-sc" to="/second">
+				<router-link class="flex flex-s flex-sc" to="/tab/home/single">
 					<img src="src/assets/img/discover/home_share@2x.png" />
 					<span>晒单</span>
 				</router-link>
@@ -75,7 +75,7 @@
 				padding: 10px 0;
 				border-bottom: 1px solid #eee;
 				.flex {
-					width: 25%;
+					width: 20%;
 					text-align: center;
 					img {
 						width: 50%;
@@ -178,38 +178,36 @@
 		methods: {
 			getBannerImg(){
 				let that = this;
-				this.axios.get('adv/advApi.json')
-					.then(function (response) {
-					    that.swiperImgs = response.data.returnValue;
-					}).then(function(){
-		           		let mySwiper = new Swiper ('#homeSwipe', {
-						    loop: true,
-						    autoplay: 2000,
-						    autoplayDisableOnInteraction: false,
-						    // 如果需要分页器
-						    pagination: '.swiper-pagination',
-						})
-		           	}).catch(function (error) {
-					    console.log(error);
+				this.api.getHomeSwiperList('11111111',
+				function(data){
+					that.swiperImgs = data.data.returnValue;
+				},function(){
+					let mySwiper = new Swiper ('#homeSwipe', {
+						loop: true,
+						autoplay: 2000,
+						autoplayDisableOnInteraction: false,
+						// 如果需要分页器
+						pagination: '.swiper-pagination',
 					});
+				})
 			},
 			getLaba(){
 				let that = this;
-				this.axios.get('period/getwinMemberPeriodData.json')
-					.then(function (response) {
-					    that.labas = response.data.returnValue;
-					}).then(function(){
-		           		let mySwiper = new Swiper ('#homelaba', {
-		           			direction : 'vertical',
-		           			speed: 1000,
-						    loop: true,
-						    autoplay: 2000,
-						    autoplayDisableOnInteraction: false,
+				this.api.getHomeSwiperWinList('111111',
+					function (data) {
+						that.labas = data.data.returnValue;
+					},
+					function () {
+						let mySwiper = new Swiper ('#homelaba', {
+							direction : 'vertical',
+							speed: 1000,
+							loop: true,
+							autoplay: 2000,
+							autoplayDisableOnInteraction: false,
 
-						})
-		           	}).catch(function (error) {
-					    console.log(error);
-					});
+						});
+					}
+				);
 			},
 			loadMore() {
 				Indicator.open({
@@ -219,15 +217,8 @@
 				this.loading = true;
 				let that = this;
 				setTimeout(() => {
-					this.axios.get('product/getProductListApi.json', {
-							params:{
-								"appKey": "1111",
-								"status": "popularity",
-								"page_index": that.page,
-								"page_size": "6"
-							}
-						})
-						.then(function(res) {
+					this.api.getProductList("1111","popularity",that.page,"6",
+						function(res) {
 							for(let v = 0; v < res.data.returnValue.length; v++) {
 								that.list.push(res.data.returnValue[v]);
 							};
@@ -238,12 +229,9 @@
 							};
 							that.page++;
 							Indicator.close();
-						}).catch(function(err){
-							Indicator.close();
 						});
 					this.loading = false;
 				}, 500);
-
 			},
 			buy(item){
 				store.commit('goShopping', item);

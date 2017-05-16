@@ -7,6 +7,8 @@ import latestAnnounced from '../component/latestAnnounced.vue'
 import find from '../component/find.vue'
 import me from '../component/me.vue'
 import productDetail from '../component/productDetail.vue'
+import imageTextMessage from '../component/imageTextMessage.vue'
+import single from '../component/single.vue'
 
 Vue.use(VueRouter)
 
@@ -17,29 +19,30 @@ const routes = [{
 		{
             path: '',
             redirect: '/tab/home'
-        },
-		{
+        },{
 			path: '/tab/home',
 			component: home
-		},
-		{
+		},{
 			path: '/tab/latestAnnounced',
 			component: latestAnnounced
-		},
-		{
+		},{
 			path: '/tab/find',
 			meta: {
 	            requireAuth: true,
 	        },
 			component: find
-		},
-		{
+		},{
 			path: '/tab/me',
 			component: me
-		},
-		{
+		},{
 			path: '/tab/home/productDetail',
 			component: productDetail
+		},{
+			path: '/tab/home/imageTextMessage',
+			component: imageTextMessage
+		},{
+			path: '/tab/home/single',
+			component: single
 		}
 	]
 }];

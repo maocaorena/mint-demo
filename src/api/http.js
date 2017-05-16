@@ -44,7 +44,7 @@ axios.defaults.headers = {
 //返回数据类型
 axios.defaults.responseType = 'json';
 
-/*	
+/*
  * `validateStatus` 定义对于给定的HTTP 响应状态码是 resolve 或 reject  promise 。
  * 如果 `validateStatus` 返回 `true` (或者设置为 `null` 或 `undefined`)，promise 将被 resolve;
  * 否则，promise 将被 rejecte
@@ -52,13 +52,6 @@ axios.defaults.responseType = 'json';
 axios.defaults.validateStatus = function (status) {
 	return status >= 200 && status < 300; // default
 };
-
-//防止浏览器缓存
-let param = {};
-let randomNum1 = parseInt(Math.random() * 10);
-let randomNum2 = parseInt(Math.random() * 1000) + '' + new Date().getTime();
-param['noCache' + randomNum1] = randomNum2;
-axios.defaults.params = param;
 
 // http request 拦截器
 /*axios.interceptors.request.use(

@@ -11,7 +11,7 @@
 			    <div class="swiper-pagination"></div>
 			</div>
 			<div class="flex nav">
-				<router-link class="flex flex-s flex-zhong" to="/second">
+				<router-link class="flex flex-s flex-zhong" to="/tab/home/category">
 					<img src="src/assets/img/discover/home_sorts@2x.png" />
 					<span>分类</span>
 				</router-link>

@@ -69,6 +69,23 @@ class API {
 		},callback,then)
 	};
 
+	// 获取分类列表
+	getClassList (periodId,callback){
+		this.ajax("productClass/getProductClassApi.json",{
+
+		},callback)
+	};
+
+	// 获取分类商品列表
+	getClassProductList (page_index,page_size,appKey,product_class_id,callback){
+		this.ajax("product/getProductListApi.json",{
+			"page_index": page_index,
+			"page_size":page_size,
+			"appKey":appKey,
+			"product_class_id":product_class_id
+		},callback)
+	};
+
 	getN (url,param) {
 		/*防止缓存*/
 		var randomNum1 = parseInt(Math.random() * 10);

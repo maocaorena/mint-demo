@@ -9,6 +9,7 @@ import me from '../component/me.vue'
 import productDetail from '../component/productDetail.vue'
 import imageTextMessage from '../component/imageTextMessage.vue'
 import single from '../component/single.vue'
+import category from '../component/category.vue'
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,9 @@ const routes = [{
 		},{
 			path: '/tab/home/single',
 			component: single
+		},{
+			path: '/tab/home/category',
+			component: category
 		}
 	]
 }];
@@ -51,22 +55,22 @@ const router = new VueRouter({
     routes
 });
 
-router.beforeEach((to, from, next) => {
-	if(from.path == "/tab/home/productDetail" || from.path == "/tab/home"){
-		store.commit('hideShopping', false);
-	};
-    if (to.matched.some(r => r.meta.requireAuth)) {
-        if (store.state.token) {
-            next();
-        }else {
-            next({
-                path: '/tab/me',
-                query: {}
-            })
-        };
-    }else {
-        next();
-    };
-});
+// router.beforeEach((to, from, next) => {
+// 	if(from.path == "/tab/home/productDetail" || from.path == "/tab/home"){
+// 		store.commit('hideShopping', false);
+// 	};
+//     if (to.matched.some(r => r.meta.requireAuth)) {
+//         if (store.state.token) {
+//             next();
+//         }else {
+//             next({
+//                 path: '/tab/me',
+//                 query: {}
+//             })
+//         };
+//     }else {
+//         next();
+//     };
+// });
 
 export default router;

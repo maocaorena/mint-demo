@@ -5,6 +5,7 @@
 </template>
 <style lang="scss">
 	.buybutton{
+		display: block;
 		width: 95%;
 		height: 33px;
 		background: #f93069;

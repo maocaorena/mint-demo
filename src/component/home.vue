@@ -40,7 +40,7 @@
 			    </div>
 			</div>
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
-				<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">
+				<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60">
 					<li v-for="item in list" class="page-infinite-listitem">
 						<router-link class="flex flex-s flex-sc" :to="{ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}}">
 							<img v-lazy.container="item.image1" />
@@ -52,12 +52,129 @@
 					</li>
 					<li style="clear: both;"></li>
 				</ul>
+				<p v-if="noMore" class="noMore">
+					没有更多了
+				</p>
 			</div>
 		</div>
 		<shopping v-if="shoppingAlert"></shopping>
 		<footer-bar></footer-bar>
 	</div>
 </template>
+
+<script type="text/javascript">
+	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
+	import alertshopping from './shopping.vue';//引入购买弹窗
+	import footerbar from './tab.vue';//引入底部栏
+	import progrees from '../components/progrees.vue';//引入进度条
+	import store from '../store/';//引入vuex
+	import '../plugins/swiper/swiper.min.js';
+	import '../plugins/swiper/swiper.min.css';
+
+	export default {
+		name: "first",
+		data() {
+			return {
+				swiperImgs: [],
+				list: [],
+				page: 1,
+				loading: false,
+				wrapperHeight: 0,
+				loadMoreSwitch: true,
+				showShopping: false,
+				goShopping: null,
+				labas:[],
+				noMore: false
+			}
+		},
+		computed: {
+		    count () {
+		      	return store.state.count
+		    },
+		    shopping(){
+		    	return store.state.shopping
+		    },
+		    shoppingAlert(){
+		    	return store.state.shoppingAlert
+		    }
+		},
+		components: {
+			"shopping" : alertshopping,
+			"footer-bar" : footerbar,
+			"progrees-v" : progrees
+		},
+		methods: {
+			getBannerImg(){
+				let that = this;
+				this.api.getHomeSwiperList('11111111',
+				function(data){
+					that.swiperImgs = data.data.returnValue;
+				},function(){
+					let mySwiper = new Swiper ('#homeSwipe', {
+						loop: true,
+						autoplay: 2000,
+						autoplayDisableOnInteraction: false,
+						// 如果需要分页器
+						pagination: '.swiper-pagination',
+					});
+				})
+			},
+			getLaba(){
+				let that = this;
+				this.api.getHomeSwiperWinList('111111',
+					function (data) {
+						that.labas = data.data.returnValue;
+					},
+					function () {
+						let mySwiper = new Swiper ('#homelaba', {
+							direction : 'vertical',
+							speed: 1000,
+							loop: true,
+							autoplay: 2000,
+							autoplayDisableOnInteraction: false,
+
+						});
+					}
+				);
+			},
+			loadMore() {
+				Indicator.open({
+		            text: '加载中...',
+		            spinnerType: 'fading-circle'
+		        });
+				this.loading = true;
+				let that = this;
+				setTimeout(() => {
+					this.api.getProductList("1111","popularity",that.page,"6",
+						function(res) {
+							for(let v = 0; v < res.data.returnValue.length; v++) {
+								that.list.push(res.data.returnValue[v]);
+							};
+							if(res.data.returnValue.length==0){
+								that.loading = true;
+								that.noMore = true;
+							}else{
+								that.loading = false;
+							};
+							that.page++;
+							Indicator.close();
+						});
+				}, 500);
+			},
+			buy(item){
+				store.commit('goShopping', item);
+				store.commit('hideShopping', true);
+			}
+		},
+		created() {
+			this.getBannerImg();
+			this.getLaba();
+		},
+		mounted() {
+			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+		}
+	}
+</script>
 <style lang="scss">
 	#first {
 		width: 100%;
@@ -135,116 +252,3 @@
 		}
 	}
 </style>
-<script type="text/javascript">
-	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
-	import alertshopping from './shopping.vue';//引入购买弹窗
-	import footerbar from './tab.vue';//引入底部栏
-	import progrees from '../components/progrees.vue';//引入进度条
-	import store from '../store/';//引入vuex
-	import '../plugins/swiper/swiper.min.js';
-	import '../plugins/swiper/swiper.min.css';
-
-	export default {
-		name: "first",
-		data() {
-			return {
-				swiperImgs: [],
-				list: [],
-				page: 1,
-				loading: false,
-				wrapperHeight: 0,
-				loadMoreSwitch: true,
-				showShopping: false,
-				goShopping: null,
-				labas:[]
-			}
-		},
-		computed: {
-		    count () {
-		      	return store.state.count
-		    },
-		    shopping(){
-		    	return store.state.shopping
-		    },
-		    shoppingAlert(){
-		    	return store.state.shoppingAlert
-		    }
-		},
-		components: {
-			"shopping" : alertshopping,
-			"footer-bar" : footerbar,
-			"progrees-v" : progrees
-		},
-		methods: {
-			getBannerImg(){
-				let that = this;
-				this.api.getHomeSwiperList('11111111',
-				function(data){
-					that.swiperImgs = data.data.returnValue;
-				},function(){
-					let mySwiper = new Swiper ('#homeSwipe', {
-						loop: true,
-						autoplay: 2000,
-						autoplayDisableOnInteraction: false,
-						// 如果需要分页器
-						pagination: '.swiper-pagination',
-					});
-				})
-			},
-			getLaba(){
-				let that = this;
-				this.api.getHomeSwiperWinList('111111',
-					function (data) {
-						that.labas = data.data.returnValue;
-					},
-					function () {
-						let mySwiper = new Swiper ('#homelaba', {
-							direction : 'vertical',
-							speed: 1000,
-							loop: true,
-							autoplay: 2000,
-							autoplayDisableOnInteraction: false,
-
-						});
-					}
-				);
-			},
-			loadMore() {
-				Indicator.open({
-		            text: '加载中...',
-		            spinnerType: 'fading-circle'
-		        });
-				this.loading = true;
-				let that = this;
-				setTimeout(() => {
-					this.api.getProductList("1111","popularity",that.page,"6",
-						function(res) {
-							for(let v = 0; v < res.data.returnValue.length; v++) {
-								that.list.push(res.data.returnValue[v]);
-							};
-							if(res.data.returnValue.length==0){
-								that.loading = true;
-							}else{
-								that.loading = false;
-							};
-							that.page++;
-							Indicator.close();
-						});
-					this.loading = false;
-				}, 500);
-			},
-			buy(item){
-				store.commit('goShopping', item);
-				store.commit('hideShopping', true);
-			}
-		},
-		created() {
-			this.loadMore();
-			this.getBannerImg();
-			this.getLaba();
-		},
-		mounted() {
-			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-		}
-	}
-</script>

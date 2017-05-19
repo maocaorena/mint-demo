@@ -14,14 +14,14 @@
 		position: relative;
 		border-bottom: 1px solid #eee;
 		i:nth-child(1){
+			display: block;
 			width: 10%;
 			color: #bcbcbc;
 			font-size: 24px;
 		}
 		span{
-			display: inline-block;
+			display: block;
 			width: 80%;
-
 		}
 		.flex{
 			height: 100%;

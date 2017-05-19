@@ -3,7 +3,7 @@
 		<header>22222222222222</header>
 		<div class="content">
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
-				<ul class="page-infinite-list" v-infinite-scroll="getList" infinite-scroll-disabled="loading" infinite-scroll-distance="10" infinite-scroll-immediate-check="true">
+				<ul class="page-infinite-list" v-infinite-scroll="getList" infinite-scroll-disabled="loading" infinite-scroll-distance="50" >
 					<li v-for="item in list" class="page-infinite-listitem flex">
 						<div class="left flex-zhong">
 							<router-link :to="{ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}}">
@@ -134,7 +134,7 @@
 
 		},
 		created(){
-			this.getList();
+
 		},
 		mounted() {
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;

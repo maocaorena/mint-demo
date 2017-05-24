@@ -19,7 +19,7 @@
 		margin: auto;
 		width: 100%;
 		background: rgba(0,0,0,0.5);
-		z-index: 9999;
+		z-index: 110;
 		.ellipsis{
 			width: 100%;
 		}
@@ -31,7 +31,6 @@
 			position: absolute;
 			bottom: 0;
 			left: 0;
-			z-index: 999;
 			input{
 				border: 1px solid #333;
 				margin: 0 10px;
@@ -77,11 +76,11 @@
 			},
 			goPay(){
 				console.log(this.buyNum);
-				this.hide(); 
+				this.hide();
 			}
 		},
 		mounted(){
-			
+
 		}
 	}
 </script>

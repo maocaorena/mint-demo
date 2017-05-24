@@ -10,13 +10,23 @@
 								<img v-lazy.container="item.img1" />
 							</router-link>
 						</div>
-						<div class="right flex flex-s flex-hc">
+						<div v-if="item.state === '3'" class="right flex flex-s flex-hc">
 							<h5>{{item.productName}}</h5>
 							<p>期号：{{item.periodsNumber}}</p>
 							<p>获奖用户：{{item.winMemberName}}</p>
 							<p>参与人次：{{item.winMemberBuyCount}}</p>
 							<p>幸运号码：{{item.winNumber}}</p>
 							<p>揭晓时间：{{item.sscOpenTime}}</p>
+						</div>
+						<div v-if="item.state === '2'" class="right flex flex-s flex-hc">
+							<h5>{{item.productName}}</h5>
+							<p>期号：{{item.periodsNumber}}</p>
+							<p>
+								<i class="iconfont icon-zuixinjiexiao1"></i>
+								<span>即将揭晓</span>
+							</p>
+							<count-Down :time="item.dbOpenTimeLong"></count-Down>
+							<p></p>
 						</div>
 					</li>
 				</ul>
@@ -66,7 +76,7 @@
 							}
 						}
 						.right{
-							width: 70%;
+							width: 60%;
 							p{
 								width: 100%;
 								font-size: 12px;
@@ -82,6 +92,7 @@
 	import { Indicator } from 'mint-ui';
 	import {Toast} from 'mint-ui';
 	import footerbar from './tab.vue';
+	import countDown from '../components/countdown.vue';
 	import '../plugins/swiper/swiper.min.js';
 	import '../plugins/swiper/swiper.min.css';
 
@@ -100,7 +111,8 @@
 			}
 		},
 		components: {
-			"footer-bar" : footerbar
+			"footer-bar" : footerbar,
+			"count-Down" : countDown
 		},
 		methods:{
 			getList(){

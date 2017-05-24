@@ -4,6 +4,7 @@ import 'mint-ui/lib/style.css';
 import App from './App.vue';
 import API from './api/API.js';
 import VueResource from 'vue-resource';
+import './assets/css/common.css';
 
 Vue.use(MintUI);
 Vue.use(VueResource);

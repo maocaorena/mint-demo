@@ -1,5 +1,5 @@
 <template>
-	<router-link class="menubar flex-zhong" :to="togo">
+	<router-link class="menubar flex-zhong" :style="{ height: (height || 45)+'px' }" :to="togo">
 		<i class="iconfont" :class="icon"></i>
 		<span>{{title}}</span>
 		<div class="flex flex-sc">
@@ -10,7 +10,6 @@
 <style lang="scss">
 	.menubar{
 		width: 100%;
-		height: 45px;
 		position: relative;
 		border-bottom: 1px solid #eee;
 		i:nth-child(1){
@@ -22,6 +21,7 @@
 		span{
 			display: block;
 			width: 80%;
+			color: #666;
 		}
 		.flex{
 			height: 100%;
@@ -39,7 +39,8 @@
 		props: [
             'togo',
             'icon',
-            'title'
+            'title',
+			'height'
         ]
 	}
 </script>

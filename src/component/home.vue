@@ -12,23 +12,23 @@
 			</div>
 			<div class="flex nav">
 				<router-link class="flex flex-s flex-zhong" to="/tab/home/category">
-					<img src="src/assets/img/discover/home_sorts@2x.png" />
+					<img src="../assets/img/discover/home_sorts@2x.png" />
 					<span>分类</span>
 				</router-link>
 				<router-link class="flex flex-s flex-sc" to="/tab/home/single">
-					<img src="src/assets/img/discover/home_share@2x.png" />
+					<img src="../assets/img/discover/home_share@2x.png" />
 					<span>晒单</span>
 				</router-link>
 				<router-link class="flex flex-s flex-sc" to="/find">
-					<img src="src/assets/img/discover/home_packet@2x.png" />
+					<img src="../assets/img/discover/home_packet@2x.png" />
 					<span>充值</span>
 				</router-link>
 				<router-link class="flex flex-s flex-sc" to="/me">
-					<img src="src/assets/img/discover/pk@2x.png" />
+					<img src="../assets/img/discover/pk@2x.png" />
 					<span>PK</span>
 				</router-link>
-				<router-link class="flex flex-s flex-sc" to="/me">
-					<img src="src/assets/img/discover/home_service@2x.png" />
+				<router-link class="flex flex-s flex-sc" to="/tab/home" >
+					<img src="../assets/img/discover/home_service@2x.png" @click="showServer()"/>
 					<span>客服</span>
 				</router-link>
 			</div>
@@ -58,6 +58,7 @@
 			</div>
 		</div>
 		<shopping v-if="shoppingAlert"></shopping>
+		<server-alert v-if="serverState"></server-alert>
 		<footer-bar></footer-bar>
 	</div>
 </template>
@@ -67,7 +68,7 @@
 	import alertshopping from './shopping.vue';//引入购买弹窗
 	import footerbar from './tab.vue';//引入底部栏
 	import progrees from '../components/progrees.vue';//引入进度条
-	import store from '../store/';//引入vuex
+	import server from './server.vue';//引入进度条
 	import '../plugins/swiper/swiper.min.js';
 	import '../plugins/swiper/swiper.min.css';
 
@@ -84,26 +85,31 @@
 				showShopping: false,
 				goShopping: null,
 				labas:[],
-				noMore: false
+				noMore: false,
+				serverState : false
 			}
 		},
 		computed: {
 		    count () {
-		      	return store.state.count
+		      	return this.$store.state.count
 		    },
 		    shopping(){
-		    	return store.state.shopping
+		    	return this.$store.state.shopping
 		    },
 		    shoppingAlert(){
-		    	return store.state.shoppingAlert
+		    	return this.$store.state.shoppingAlert
 		    }
 		},
 		components: {
 			"shopping" : alertshopping,
 			"footer-bar" : footerbar,
-			"progrees-v" : progrees
+			"progrees-v" : progrees,
+			"server-alert" : server
 		},
 		methods: {
+			showServer(){
+				this.serverState = !this.serverState;
+			},
 			getBannerImg(){
 				let that = this;
 				this.api.getHomeSwiperList('11111111',
@@ -162,8 +168,8 @@
 				}, 500);
 			},
 			buy(item){
-				store.commit('goShopping', item);
-				store.commit('hideShopping', true);
+				this.$store.commit('goShopping', item);
+				this.$store.commit('hideShopping', true);
 			}
 		},
 		created() {

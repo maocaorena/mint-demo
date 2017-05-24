@@ -2,19 +2,19 @@
 	<div class="tab">
 		<div class="flex footerBar">
 			<router-link class="footerBarItem flex flex-s flex-sc" :class="{ footerBarItem1: tabState == 1 }" to="/tab/home">
-				<img src="src/assets/img/discover/home_sorts@2x.png"/>
+				<img src="../assets/img/discover/home_sorts@2x.png"/>
 				<span>夺宝a</span>
 			</router-link>
 			<router-link class="footerBarItem flex flex-s flex-sc" :class="{ footerBarItem1: tabState == 2 }" to="/tab/latestAnnounced">
-				<img src="src/assets/img/discover/home_sorts@2x.png"/>
+				<img src="../assets/img/discover/home_sorts@2x.png"/>
 				<span>最新揭晓</span>
 			</router-link>
 			<router-link class="footerBarItem flex flex-s flex-sc" :class="{ footerBarItem1: tabState == 3 }" to="/tab/find">
-				<img src="src/assets/img/discover/home_sorts@2x.png"/>
+				<img src="../assets/img/discover/home_sorts@2x.png"/>
 				<span>发现</span>
 			</router-link>
 			<router-link class="footerBarItem flex flex-s flex-sc" :class="{ footerBarItem1: tabState == 4 }" to="/tab/me">
-				<img src="src/assets/img/discover/home_sorts@2x.png"/>
+				<img src="../assets/img/discover/home_sorts@2x.png"/>
 				<span>我的</span>
 			</router-link>
 		</div>
@@ -25,7 +25,7 @@
 		name: "footer",
 		data() {
 			return {
-				
+
 			}
 		},
 		computed:{
@@ -48,11 +48,11 @@
 			}else if(isMe > 0){
 				this.$store.commit('selectTab', 4);
 			};
-			
+
 		},
 		methods:{
 			tabSelect(){
-				
+
 				console.log("aaab",this.tabState);
 			}
 		}
@@ -82,7 +82,6 @@
 				}
 			}
 			.footerBarItem1{
-				padding-top: 5px;
 				background: #ccc;
 			}
 		}

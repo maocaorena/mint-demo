@@ -40,12 +40,9 @@
 </template>
 <style lang="scss">
 	#secondcomponent {
-		width: 100%;
-		height: 100%;
-		position: absolute;
 		header{
 			width: 100%;
-			height: 45px;
+			height: 47px;
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -53,10 +50,6 @@
 			border-bottom: 1px solid #eee;
 		}
 		.content{
-			width: 100%;
-			height: auto;
-			overflow: auto;
-			position: absolute;
 			top: 45px;
 			bottom: 45px;
 			.page-infinite-wrapper{
@@ -139,7 +132,7 @@
 							Indicator.close();
 						}
 					);
-				}, 500);
+				}, 100);
 			}
 		},
 		beforeMount(){

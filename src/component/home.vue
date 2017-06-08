@@ -201,16 +201,9 @@
 </script>
 <style lang="scss">
 	#first {
-		width: 100%;
-		height: 100%;
-		position: absolute;
 		.content{
-			width: 100%;
-			height: auto;
-			position: absolute;
 			top: 0;
-			bottom: 45px;
-			overflow: auto;
+			bottom: 47px;
 			.nav {
 				width: 100%;
 				padding: 10px 0;
@@ -223,7 +216,8 @@
 					}
 					span {
 						display: block;
-						font-size: 14px;
+						font-size: 12px;
+						color: #666;
 					}
 				}
 			}

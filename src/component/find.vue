@@ -43,16 +43,9 @@
 </template>
 <style lang="scss">
 	#find{
-		position: absolute;
-        width: 100%;
-        height: 100%;
 		.content{
-			width: 100%;
-            height: auto;
-            position: absolute;
             top: 0;
-            bottom: 45px;
-            overflow: auto;
+            bottom: 47px;
 			.find-top{
 		        width: 100%;
 		        padding: 10px;

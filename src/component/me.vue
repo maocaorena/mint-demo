@@ -40,16 +40,9 @@
 </template>
 <style lang="scss">
 	#account{
-		position: absolute;
-        width: 100%;
-        height: 100%;
 		.content{
-			width: 100%;
-            height: auto;
-            position: absolute;
             top: 0;
-            bottom: 45px;
-            overflow: auto;
+            bottom: 47px;
 			.account-top{
 				height: 180px;
 				width: 100%;

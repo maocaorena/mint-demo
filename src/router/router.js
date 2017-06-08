@@ -11,6 +11,9 @@ import imageTextMessage from '../component/imageTextMessage.vue'//图文详情
 import single from '../component/single.vue'//晒单
 import category from '../component/category.vue'//分类
 import server from '../component/server.vue'//客服弹窗
+import two from '../component/two.vue'//双人夺宝
+import historyRecords from '../component/historyRecords.vue'//本期夺宝记录
+import announced from '../component/announced.vue'//本期夺宝记录
 
 Vue.use(VueRouter)
 
@@ -22,32 +25,41 @@ const routes = [{
             path: '',
             redirect: '/tab/home'
         },{
-			path: '/tab/home',
+			path: '/tab/home',//首页
 			component: home
 		},{
-			path: '/tab/latestAnnounced',
+			path: '/tab/latestAnnounced',//最新揭晓
 			component: latestAnnounced
 		},{
-			path: '/tab/find',
+			path: '/tab/find',//发现页
 			meta: {
 	            requireAuth: true,
 	        },
 			component: find
 		},{
-			path: '/tab/me',
+			path: '/tab/me',//我的
 			component: me
 		},{
-			path: '/tab/home/productDetail',
+			path: '/tab/home/productDetail',//商品详情
 			component: productDetail
 		},{
-			path: '/tab/home/imageTextMessage',
+			path: '/tab/home/imageTextMessage',//图文详情
 			component: imageTextMessage
 		},{
-			path: '/tab/home/single',
+			path: '/tab/home/single',//晒单
 			component: single
 		},{
-			path: '/tab/home/category',
+			path: '/tab/home/category',//分类
 			component: category
+		},{
+			path: '/tab/home/two',//双人夺宝
+			component: two
+		},{
+			path: '/tab/home/historyRecords',//本期夺宝记录
+			component: historyRecords
+		},{
+			path: '/tab/home/productDetail/announced',//往期揭晓
+			component: announced
 		}
 	]
 }];

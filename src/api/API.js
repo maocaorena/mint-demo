@@ -6,6 +6,65 @@ import { Toast } from 'mint-ui'
 import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
 
 class API {
+	getN (url,param) {
+		/*防止缓存*/
+		var randomNum1 = parseInt(Math.random() * 10);
+		var randomNum2 = parseInt(Math.random() * 1000) + '' + new Date().getTime();
+		param['noCache' + randomNum1] = randomNum2;
+		config.url = url;
+		config.params = param;
+		return axios.get(url,config);//使用get方式
+		//return axios(config);//使用post方式
+	};
+	ajax (url,param,callback){
+		this.getN(url,param).then(callback).catch(function(error){
+			Indicator.close();
+			if (error.response) {
+				// 请求已发出，但服务器响应的状态码不在 2xx 范围内
+				Toast({
+					message: '服务器未响应',
+					className: 'toastStyle',
+					duration: 1000
+				});
+			} else {
+				// Something happened in setting up the request that triggered an Error
+				console.log('Error', error.message);
+				if(error.message.indexOf("timeout")>=0){
+					Toast({
+						message: '服务器响应超时',
+						className: 'toastStyle',
+						duration: 1000
+					})
+				};
+			};
+			//console.log(error.config);
+		});
+	};
+	ajax1 (url,param,callback,then){
+		this.getN(url,param).then(callback).then(then).catch(function(error){
+			Indicator.close();
+			if (error.response) {
+				// 请求已发出，但服务器响应的状态码不在 2xx 范围内
+				Toast({
+					message: '服务器未响应',
+					className: 'toastStyle',
+					duration: 1000
+				});
+			} else {
+				// Something happened in setting up the request that triggered an Error
+				console.log('Error', error.message);
+				if(error.message.indexOf("timeout")>=0){
+					Toast({
+						message: '服务器响应超时',
+						className: 'toastStyle',
+						duration: 1000
+					})
+				};
+			};
+			//console.log(error.config);
+		});
+	};
+
 	// 获取商品列表
 	getProductList (appKey,status,page_index,page_size,callback){
 		this.ajax("product/getProductListApi.json",{
@@ -13,7 +72,12 @@ class API {
 			"status": status,
 			"page_index": page_index,
 			"page_size": page_size
-				},callback)
+		},callback)
+	};
+
+	// 获取活动商品列表
+	getActiveProductList (message,callback){
+		this.ajax("product/getProductListApi.json",message,callback)
 	};
 
 	// 获取首页banner轮播图
@@ -86,61 +150,23 @@ class API {
 		},callback)
 	};
 
-	getN (url,param) {
-		/*防止缓存*/
-		var randomNum1 = parseInt(Math.random() * 10);
-		var randomNum2 = parseInt(Math.random() * 1000) + '' + new Date().getTime();
-		param['noCache' + randomNum1] = randomNum2;
-		config.params = param;
-		return axios.get(url,config);
+	// 获取本期历史记录
+	getHistoryRecordsList (page_index,page_size,goodsId,periodId,callback){
+		this.ajax("order/getOrderRecordByDetailApi.json",{
+			"page_index": page_index,
+			"page_size":page_size,
+			"goodsId":goodsId,
+			"periodId":periodId
+		},callback)
 	};
-	ajax (url,param,callback){
-		this.getN(url,param).then(callback).catch(function(error){
-			Indicator.close();
-			if (error.response) {
-				// 请求已发出，但服务器响应的状态码不在 2xx 范围内
-				Toast({
-					message: '服务器未响应',
-					className: 'toastStyle',
-					duration: 1000
-				});
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				console.log('Error', error.message);
-				if(error.message.indexOf("timeout")>=0){
-					Toast({
-						message: '服务器响应超时',
-						className: 'toastStyle',
-						duration: 1000
-					})
-				};
-			};
-			//console.log(error.config);
-		});
-	};
-	ajax1 (url,param,callback,then){
-		this.getN(url,param).then(callback).then(then).catch(function(error){
-			Indicator.close();
-			if (error.response) {
-				// 请求已发出，但服务器响应的状态码不在 2xx 范围内
-				Toast({
-					message: '服务器未响应',
-					className: 'toastStyle',
-					duration: 1000
-				});
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				console.log('Error', error.message);
-				if(error.message.indexOf("timeout")>=0){
-					Toast({
-						message: '服务器响应超时',
-						className: 'toastStyle',
-						duration: 1000
-					})
-				};
-			};
-			//console.log(error.config);
-		});
+
+	// 获取往期揭晓记录
+	getAnnouncedList (page_index,page_size,goodsId,callback){
+		this.ajax("period/getPeroidListOtherPeriodsApi.json",{
+			"page_index": page_index,
+			"page_size":page_size,
+			"goodsId":goodsId
+		},callback)
 	};
 }
 export default API;

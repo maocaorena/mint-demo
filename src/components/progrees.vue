@@ -1,10 +1,8 @@
 <template>
-	<div id="progrees">
-		<mt-progress :value="length*100" :bar-height="4"></mt-progress>
-	</div>
+	<mt-progress :value="length*100" :bar-height="4"></mt-progress>
 </template>
 <style lang="scss">
-	#progrees{
+
 		.mt-progress{
 			height: 5px;
 			.mt-progress-content{
@@ -18,7 +16,7 @@
 				}
 			}
 		}
-	}
+
 </style>
 <script type="text/javascript">
 	import { Progress } from 'mint-ui';

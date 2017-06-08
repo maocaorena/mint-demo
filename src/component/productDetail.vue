@@ -1,5 +1,5 @@
 <template>
-	<div id="detail">
+	<div id="detail" class="wrapper">
 		<div class="content">
 			<div class="goHome" @click="goHome">
 				<img src="../assets/img/two/more@2x.png"/>
@@ -61,13 +61,13 @@
 			</p>
 			<menu-bar :togo="'/tab/home/imageTextMessage?goodsId='+productId+'&periodId='+periodId" :icon="'icon-tuwenxiangqing'" :title="'图文详情'"></menu-bar>
 			<menu-bar :togo="'/tab/home/single?goodsId='+productId" :icon="'icon-camera'" :title="'晒单分享'"></menu-bar>
-			<menu-bar :togo="'/me'" :icon="'icon-currentrecord'" :title="'本期参与记录'"></menu-bar>
-			<menu-bar :togo="'/home'" :icon="'icon-xunzhang1'" :title="'往期揭晓'"></menu-bar>
+			<menu-bar :togo="'/tab/home/historyRecords?goodsId='+productId+'&periodId='+periodId" :icon="'icon-currentrecord'" :title="'本期参与记录'"></menu-bar>
+			<menu-bar :togo="'/tab/home/productDetail/announced?goodsId='+productId" :icon="'icon-xunzhang1'" :title="'往期揭晓'"></menu-bar>
 		</div>
 		<div class="detailBottomBtn flex-zhong">
 			<buy-button @click.native="showBuy" :btntext="'立即购买'"></buy-button>
 		</div>
-		<shopping v-if="shoppingAlert"></shopping>
+		<shopping v-if="shoppingAlert === 'productDetail'"></shopping>
 	</div>
 </template>
 <style lang="scss">
@@ -280,7 +280,7 @@
 		methods: {
 			showBuy(){
 				this.$store.commit('goShopping', this.productDetail);
-				this.$store.commit('hideShopping', true);
+				this.$store.commit('showShopping', "productDetail");
 			},
 			goHome(){
 				this.$router.push('/tab/home');

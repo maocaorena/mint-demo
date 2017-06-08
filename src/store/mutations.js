@@ -5,8 +5,11 @@ export default {
 	goShopping (state,shopping){
 		state.shopping = shopping;
 	},
-	hideShopping(state,shoppingAlert){
+	showShopping(state,shoppingAlert){
 		state.shoppingAlert = shoppingAlert;
+	},
+	hideShopping(state,shoppingAlert){
+		state.shoppingAlert = 'close';
 	},
 	selectTab(state,footerbarState){
 		state.footerbarState = footerbarState;

@@ -7,7 +7,7 @@
                 </li>
             </ul>
         </div>
-        <div class="rightList">
+        <div class="rightList content">
             <div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
                 <ul class="page-infinite-list" v-infinite-scroll="getProductListByclass" infinite-scroll-disabled="loading" infinite-scroll-distance="50">
                     <li class="page-infinite-listitem" v-for="item in productList" :to="{ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}}">
@@ -135,12 +135,9 @@
         }
         .rightList{
             width: 78%;
-            height: auto;
-            position: absolute;
             top: 0;
             bottom: 0;
             left: 22%;
-            overflow: auto;
             .page-infinite-wrapper{
                 ul{
                     width: 100%;

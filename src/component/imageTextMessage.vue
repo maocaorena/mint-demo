@@ -36,7 +36,6 @@
 		created() {
             let that = this;
             this.api.getImageTextMessage(this.periodId,this.productId,function(data){
-                console.log(data);
                 that.productDetail = data.data.returnValue;
             })
 		},

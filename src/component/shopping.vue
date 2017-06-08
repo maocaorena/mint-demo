@@ -1,5 +1,5 @@
 <template>
-	<div id="alertshopping">
+	<div class="alertshopping">
 		<div class="shop">
 			<h1 class="ellipsis" @click="hide()" >shop{{shopping.productName}}</h1>
 			<span @click="changeBuynum(1)">-</span>
@@ -10,7 +10,7 @@
 	</div>
 </template>
 <style lang="scss">
-	#alertshopping{
+	.alertshopping{
 		position: fixed;
 		bottom: 0;
 		left: 0;
@@ -24,17 +24,18 @@
 			width: 100%;
 		}
 		.shop{
-			text-align: center;
-			width: 100%;
-			height: 260px;
-			background: #fff;
 			position: absolute;
 			bottom: 0;
 			left: 0;
+			width: 100%;
+			height: 260px;
+			background: #fff;
+			color: #333;
+			text-align: center;
 			input{
-				border: 1px solid #333;
 				margin: 0 10px;
 				padding: 0 10px;
+				border: 1px solid #333;
 			}
 		}
 	}
@@ -54,7 +55,7 @@
 		props: ['message'],
 		methods:{
 			hide(){
-				this.$store.commit('hideShopping', false);
+				this.$store.commit('hideShopping');
 			},
 			changeBuynum(type){
 				if(type == "1" ){

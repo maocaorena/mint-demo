@@ -74,7 +74,7 @@
 				width: 25%;
 				text-align: center;
 				img{
-					width: 25%;
+					width: 25px;
 				}
 				span{
 					display: block;

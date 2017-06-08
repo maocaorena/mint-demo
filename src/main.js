@@ -4,7 +4,9 @@ import 'mint-ui/lib/style.css';
 import App from './App.vue';
 import API from './api/API.js';
 import VueResource from 'vue-resource';
-import './assets/css/common.css';
+import './assets/css/common.css';//初始化样式
+import './assets/css/flex.css';//flex兼容样式
+import './assets/css/like.css';//公共样式
 
 Vue.use(MintUI);
 Vue.use(VueResource);

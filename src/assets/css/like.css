@@ -1,0 +1,51 @@
+.clear:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.clear{
+    zoom:1;
+}
+
+.ellipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.back_img{
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.margin{
+    margin: 0 auto;
+}
+
+.noMore{
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.wrapper{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+
+.content{
+    position: absolute;
+    width: 100%;
+    height: auto;
+    overflow: auto;
+}
+
+/*mint-ui 提示框字体颜色*/
+.toastStyle .mint-toast-text{
+	color: #fff;
+}

@@ -1,201 +1,52 @@
-body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4,h5, h6, i, b, textarea, button, input, select, figure, figcaption {
+*{
     padding: 0;
     margin: 0;
-    list-style: none;
-    font-style: normal;
-    text-decoration: none;
-    border: none;
-    color: #333;
     box-sizing: border-box;
-    font-family: "Microsoft Yahei",sans-serif;
+}
+a{
+    text-decoration: none;
     -webkit-tap-highlight-color:transparent;
-    -webkit-font-smoothing: antialiased;
-    &:focus {
-        outline: none;
-    }
+}
+ul,ol{
+    list-style: none;
 }
 button{
 	outline: none;
+    border: none;
+    -webkit-tap-highlight-color:transparent;
 }
-/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
-::-webkit-scrollbar  
-{  
-    width: 0px;  
-    height: 0px;  
-    background-color: #F5F5F5;  
-}  
-  
-/*定义滚动条轨道 内阴影+圆角*/  
-::-webkit-scrollbar-track  
-{  
-    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0);  
-    border-radius: 10px;  
-    background-color: #F5F5F5;  
-}  
-  
-/*定义滑块 内阴影+圆角*/  
-::-webkit-scrollbar-thumb  
-{  
-    border-radius: 10px;  
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
-    background-color: #555;  
-}  
 
 input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
     -webkit-appearance: none;
 }
 
-textarea { -webkit-appearance: none;}   
+textarea { -webkit-appearance: none;}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.content::-webkit-scrollbar
+{
+    width: 0;
+    height: 0;
+    background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+.content::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+/*定义滑块 内阴影+圆角*/
+.content::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
 
 html,body{
     height: 100%;
     width: 100%;
-}
-
-
-.clear:after{
-    content: '';
-    display: block;
-    clear: both;
-}
-
-.clear{
-    zoom:1;
-}
-
-.back_img{
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-}
-
-.margin{
-    margin: 0 auto;
-}
-
-.ellipsis{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.noMore{
-	text-align: center;
-}
-
-.paddingBottom50{
-	padding-bottom: 50px;
-}
-/*mint-ui 提示框字体颜色*/
-.toastStyle .mint-toast-text{
-	color: #fff;
-}
-/*flex兼容写法*/
-.flex {
-  display: box;
-  /* OLD - Android 4.4- */
-  display: -webkit-box;
-  /* OLD - iOS 6-, Safari 3.1-6 */
-  display: -moz-box;
-  /* OLD - Firefox 19- (buggy but mostly works) */
-  display: -ms-flexbox;
-  /* TWEENER - IE 10 */
-  display: -webkit-flex;
-  /* NEW - Chrome */
-  display: flex;
-  /* NEW, Spec - Opera 12.1, Firefox 20+ */
-}
-
-.flex-h {
-  /* 09版 */
-  -webkit-box-orient: horizontal;
-  /* 12版 */
-  -webkit-flex-direction: row;
-  -moz-flex-direction: row;
-  -ms-flex-direction: row;
-  -o-flex-direction: row;
-  flex-direction: row;
-}
-
-/* 父元素-横向换行 */
-.flex-hw {
-  /* 09版 */
-  -webkit-box-lines: multiple;
-  /* 12版 */
-  -webkit-flex-wrap: wrap;
-  -moz-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  -o-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-
-/* 父元素-水平居中（主轴是横向才生效） */
-.flex-hc {
-  /* 09版 */
-  -webkit-box-pack: center;
-  /* 12版 */
-  -webkit-justify-content: center;
-  -moz-justify-content: center;
-  -ms-justify-content: center;
-  -o-justify-content: center;
-  justify-content: center;
-  /* 其它取值如下： 
-        align-items     主轴原点方向对齐 
-        flex-end        主轴延伸方向对齐 
-        space-between   等间距排列，首尾不留白 
-        space-around    等间距排列，首尾留白 
-     */
-}
-
-.flex-s {
-  /* 09版 */
-  -webkit-box-orient: vertical;
-  /* 12版 */
-  -webkit-flex-direction: column;
-  -moz-flex-direction: column;
-  -ms-flex-direction: column;
-  -o-flex-direction: column;
-  flex-direction: column;
-}
-
-/* 父元素-竖直居中（主轴是横向才生效） */
-.flex-sc {
-  /* 09版 */
-  -webkit-box-align: center;
-  /* 12版 */
-  -webkit-align-items: center;
-  -moz-align-items: center;
-  -ms-align-items: center;
-  -o-align-items: center;
-  align-items: center;
-}
-
-.flex-zhong {
-  display: box;
-  /* OLD - Android 4.4- */
-  display: -webkit-box;
-  /* OLD - iOS 6-, Safari 3.1-6 */
-  display: -moz-box;
-  /* OLD - Firefox 19- (buggy but mostly works) */
-  display: -ms-flexbox;
-  /* TWEENER - IE 10 */
-  display: -webkit-flex;
-  /* NEW - Chrome */
-  display: flex;
-  /* NEW, Spec - Opera 12.1, Firefox 20+ */
-  /* 09版 */
-  -webkit-box-pack: center;
-  /* 12版 */
-  -webkit-justify-content: center;
-  -moz-justify-content: center;
-  -ms-justify-content: center;
-  -o-justify-content: center;
-  justify-content: center;
-  /* 09版 */
-  -webkit-box-align: center;
-  /* 12版 */
-  -webkit-align-items: center;
-  -moz-align-items: center;
-  -ms-align-items: center;
-  -o-align-items: center;
-  align-items: center;
 }

@@ -1,5 +1,5 @@
 <template>
-	<div id="first">
+	<div id="first" class="wrapper">
 		<div class="content">
 			<div class="swiper-container" id="homeSwipe">
 			    <div class="swiper-wrapper">
@@ -39,17 +39,12 @@
 			        </div>
 			    </div>
 			</div>
+			<tabbars-v v-on:clickThis="isThis" :names = '["人气","剩余"]' :tostatus = 'status' :showTop = '"y"'></tabbars-v>
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60">
-					<li v-for="item in list" class="page-infinite-listitem">
-						<router-link class="flex flex-s flex-sc" :to="{ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}}">
-							<img v-lazy.container="item.image1" />
-						</router-link>
-						<p class="productName">{{ item.productName }}</p>
-						<progrees-v class="jindu" :length="(item.dbTotalCount-item.dbSurplusCount)/item.dbTotalCount"></progrees-v>
-						<p>总需{{item.dbTotalCount}}|剩余{{item.dbSurplusCount}}</p>
-						<button @click="buy(item)">购买</button>
-					</li>
+					<li class="page-infinite-listitem" v-for="(goodsItem,index) in list" :class="{borderRight: index%2 == 0}">
+                        <goods-item :goodsMessage = "goodsItem" :from = "'home'"></goods-item>
+                    </li>
 					<li style="clear: both;"></li>
 				</ul>
 				<p v-if="noMore" class="noMore">
@@ -57,7 +52,7 @@
 				</p>
 			</div>
 		</div>
-		<shopping v-if="shoppingAlert"></shopping>
+		<shopping v-if="shoppingAlert === 'home'"></shopping>
 		<server-alert v-if="serverState"></server-alert>
 		<footer-bar></footer-bar>
 	</div>
@@ -68,7 +63,9 @@
 	import alertshopping from './shopping.vue';//引入购买弹窗
 	import footerbar from './tab.vue';//引入底部栏
 	import progrees from '../components/progrees.vue';//引入进度条
-	import server from './server.vue';//引入进度条
+	import server from './server.vue';//引入客服
+	import goodsItem from '../components/goodsItem.vue';//引入单个商品样式
+	import tabbars from '../components/tabbars.vue';//引入选项卡组件
 	import '../plugins/swiper/swiper.min.js';
 	import '../plugins/swiper/swiper.min.css';
 
@@ -79,6 +76,7 @@
 				swiperImgs: [],
 				list: [],
 				page: 1,
+				status: 'popularity',
 				loading: false,
 				wrapperHeight: 0,
 				loadMoreSwitch: true,
@@ -104,7 +102,9 @@
 			"shopping" : alertshopping,
 			"footer-bar" : footerbar,
 			"progrees-v" : progrees,
-			"server-alert" : server
+			"server-alert" : server,
+			"goods-item" : goodsItem,
+			"tabbars-v" : tabbars
 		},
 		methods: {
 			showServer(){
@@ -151,7 +151,7 @@
 				this.loading = true;
 				let that = this;
 				setTimeout(() => {
-					this.api.getProductList("1111","popularity",that.page,"6",
+					this.api.getProductList("1111",this.status,this.page,"6",
 						function(res) {
 							for(let v = 0; v < res.data.returnValue.length; v++) {
 								that.list.push(res.data.returnValue[v]);
@@ -165,11 +165,29 @@
 							that.page++;
 							Indicator.close();
 						});
-				}, 500);
+				}, 100);
 			},
 			buy(item){
 				this.$store.commit('goShopping', item);
-				this.$store.commit('hideShopping', true);
+				this.$store.commit('showShopping', "home");
+			},
+			isThis(index){
+				let _index = index;
+				if(_index === 0){
+					this.page = 1;
+					this.list = [];
+					this.status = "popularity";
+					this.loadMore();
+				}else if(_index === 1){
+					this.page = 1;
+					this.list = [];
+					if(this.status === "surplusasc"){
+						this.status = "surplusdesc";
+					}else{
+						this.status = "surplusasc";
+					}
+					this.loadMore();
+				};
 			}
 		},
 		created() {
@@ -201,7 +219,7 @@
 					width: 20%;
 					text-align: center;
 					img {
-						width: 50%;
+						width: 38px;
 					}
 					span {
 						display: block;
@@ -222,34 +240,16 @@
 				.page-infinite-list{
 					width: 100%;
 					.page-infinite-listitem {
+						padding: 0 3px 5px 3px;
 						width: 50%;
 						height: 241px;
 						float: left;
 						text-align: center;
-						border-bottom: 1px solid #ccc;
-						img{
-							width: 135px;
-							height: 135px;
-						}
-						.jindu{
-							width: 80%;
-							margin: 0 auto;
-						}
-						.productName{
-							width: 100%;
-							height: 34px;
-							padding: 0 10px;
-							font-size: 13px;
-							text-align: left;
-							overflow: hidden;
-							color: #50575d;
-						}
-						button{
-							width: 100%;
-							height: 20px;
-						}
+						border-bottom: 1px solid #f2f2f2;
 					}
-
+					.borderRight{
+						border-right: 1px solid #f2f2f2;
+					}
 				}
 			}
 			.mint-spinner-fading-circle {

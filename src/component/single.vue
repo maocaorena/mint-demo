@@ -1,5 +1,5 @@
 <template>
-	<div id="single">
+	<div id="single" class="wrapper">
         <div class="content">
             <div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60" infinite-scroll-immediate-check="true">

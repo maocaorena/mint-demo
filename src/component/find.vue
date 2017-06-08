@@ -1,5 +1,5 @@
 <template>
-	<div id="find">
+	<div id="find" class="wrapper">
 		<div class="content">
 			<div class="find-top flex-zhong">
 				<!--晒单-->
@@ -17,7 +17,7 @@
 			</div>
 			<div class="just-list">
 				<!--新手特权-->
-				<a class="flex item">
+				<router-link class="flex item" to="/tab/home/two">
 					<div class="left flex-zhong">
 			        	<img src="../assets/img/discover/find_new@2x.png" alt="" />
 			        </div>
@@ -25,9 +25,9 @@
 						<h2>新手特权</h2>
 						<p>首单送188元大红包</p>
 					</div>
-				</a>
+				</router-link>
 				<!--双人夺宝-->
-				<a class="flex item">
+				<router-link class="flex item" to="/tab/home/two">
 					<div class="left flex-zhong">
 			          	<img src="../assets/img/discover/find_pk@2x.png" alt="" />
 			        </div>
@@ -35,7 +35,7 @@
 						<h2>双人夺宝</h2>
 						<p>50%中奖概率，回血专区</p>
 					</div>
-				</a>
+				</router-link>
 			</div>
 		</div>
 		<footer-bar></footer-bar>

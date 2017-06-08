@@ -9,7 +9,7 @@ Vue.use(Vuex)
 const state = {
 	count: "damaoa", //首页商品列表
 	shopping:null,
-	shoppingAlert: false,
+	shoppingAlert: 'close',
 	token : false,
 	footerbarState: 1
 }

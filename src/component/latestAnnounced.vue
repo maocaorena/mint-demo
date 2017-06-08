@@ -1,5 +1,5 @@
 <template>
-	<div id="secondcomponent">
+	<div id="secondcomponent" class="wrapper">
 		<header>22222222222222</header>
 		<div class="content">
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">

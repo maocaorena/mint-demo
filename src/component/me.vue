@@ -1,5 +1,5 @@
 <template>
-	<div id="account">
+	<div id="account" class="wrapper">
 		<div class="content">
 			<div class="account-top">
 		    	<router-link class="account-message" to="/tab/home">

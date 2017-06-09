@@ -2,10 +2,9 @@
 	<div id="secondcomponent" class="wrapper">
 		<tabbars-v v-on:clickThis="isThis" :names = '["最新揭晓","我参与"]' :tostatus = 'status'></tabbars-v>
 		<div class="content">
-			<p>topStatus{{topStatus}}</p>
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<mt-loadmore :top-method="pullDown" :top-status.sync="topStatus" @top-status-change="handleTopChange">
-					<div slot="top" class="mint-loadmore-top">
+					<div v-show="topStatus === 'pull' || topStatus === 'drop' || topStatus === 'loading'" slot="top" class="mint-loadmore-top">
 				      	<span v-show="topStatus === 'pull'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
 						<span v-show="topStatus === 'drop'" :class="{ 'rotate': topStatus === 'drop' }">↑</span>
 				      	<span v-show="topStatus === 'loading'">Loading...</span>
@@ -131,7 +130,7 @@
 				wrapperHeight: 0,
 				noMore: false,
 				topStatus: '',
-				topStatus1: false,
+				topStatus1: true,
 			}
 		},
 		components: {
@@ -164,7 +163,7 @@
 							}else{
 								that.loading = false;
 							};
-							this.topStatus = '';
+							that.topStatus = '';
 							Indicator.close();
 						}
 					);
@@ -180,6 +179,7 @@
 			},
 			handleTopChange(status) {
 		        this.topStatus = status;
+				console.log(status);
 		    },
 			goDetail(item){
 				if(item.state === "2"){

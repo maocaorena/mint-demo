@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+
 import store from '../store/';//引入vuex
 import App from '../App.vue'
 import home from '../component/home.vue'//首页
@@ -14,8 +14,6 @@ import server from '../component/server.vue'//客服弹窗
 import two from '../component/two.vue'//双人夺宝
 import historyRecords from '../component/historyRecords.vue'//本期夺宝记录
 import announced from '../component/announced.vue'//本期夺宝记录
-
-Vue.use(VueRouter)
 
 const routes = [{
     path: '/',
@@ -64,9 +62,6 @@ const routes = [{
 	]
 }];
 
-const router = new VueRouter({
-    routes
-});
 
 // router.beforeEach((to, from, next) => {
 // 	if(from.path == "/tab/home/productDetail" || from.path == "/tab/home"){
@@ -86,4 +81,4 @@ const router = new VueRouter({
 //     };
 // });
 
-export default router;
+export default routes;

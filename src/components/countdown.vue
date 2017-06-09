@@ -1,6 +1,8 @@
+<!-- 倒计时组件，只需要传入开奖时间 -->
+<!-- 用法  <count-Down :time="productDetail.dbOpenTime"></count-Down> -->
 <template>
 	<p class="count-down">
-	    {{outTime}}
+	    <slot></slot>{{outTime}}
 	</p>
 </template>
 <style lang="scss">

@@ -1,3 +1,10 @@
+<!--
+	<tabbars-v v-on:clickThis="isThis" :names = '["最新揭晓","我参与"]' :tostatus = 'status' :showTop = '"y"'></tabbars-v>
+	isThis 父组件回调函数名字，传出点击按钮的index；
+	name是数组，tab栏内按钮名称；
+	tostatus 上下箭头对应的状态；
+	showTop = '"y"'  是否显示上下箭头，不写默认不显示；
+ -->
 <template>
 	<div class="tabbars flex">
         <div class="tabbars-item flex-zhong" v-on:click="clickThis(index)" v-for="(item, index) of itemName">
@@ -45,7 +52,6 @@
     }
 </style>
 <script type="text/javascript">
-
 	export default {
 		props: [
             "names",
@@ -66,7 +72,6 @@
             clickThis(index){
                 this.selectthis = index;
                 this.$emit('clickThis',index);
-                console.log(this.tostatus)
             }
         },
         created(){

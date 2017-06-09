@@ -1,38 +1,49 @@
 <template>
 	<div id="secondcomponent" class="wrapper">
-		<header>22222222222222</header>
+		<tabbars-v v-on:clickThis="isThis" :names = '["最新揭晓","我参与"]' :tostatus = 'status'></tabbars-v>
 		<div class="content">
+			<p>topStatus{{topStatus}}</p>
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
-				<ul class="page-infinite-list" v-infinite-scroll="getList" infinite-scroll-disabled="loading" infinite-scroll-distance="50" >
-					<li v-for="item in list" class="page-infinite-listitem flex">
-						<div class="left flex-zhong">
-							<router-link :to="{ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}}">
+				<mt-loadmore :top-method="pullDown" :top-status.sync="topStatus" @top-status-change="handleTopChange">
+					<div slot="top" class="mint-loadmore-top">
+				      	<span v-show="topStatus === 'pull'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
+						<span v-show="topStatus === 'drop'" :class="{ 'rotate': topStatus === 'drop' }">↑</span>
+				      	<span v-show="topStatus === 'loading'">Loading...</span>
+				    </div>
+					<p>{{topStatus}}</p>
+					<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="50" >
+						<li v-for="item of list" class="page-infinite-listitem flex">
+							<img class="badge" v-if="item.productType == 3" src="../assets/img/home/ten_s@2x.png">
+					        <img class="badge" v-if="item.productType == 4" src="../assets/img/two/two.png">
+					        <img class="badge" v-if="item.productType == 5" src="../assets/img/home/five_s@2x.png">
+					        <img class="badge" v-if="item.productType == 6" src="../assets/img/home/hundred_s@2x.png">
+							<div class="left flex-zhong" @click="goDetail(item)">
 								<img v-lazy.container="item.img1" />
-							</router-link>
-						</div>
-						<div v-if="item.state === '3'" class="right flex flex-s flex-hc">
-							<h5>{{item.productName}}</h5>
-							<p>期号：{{item.periodsNumber}}</p>
-							<p>获奖用户：{{item.winMemberName}}</p>
-							<p>参与人次：{{item.winMemberBuyCount}}</p>
-							<p>幸运号码：{{item.winNumber}}</p>
-							<p>揭晓时间：{{item.sscOpenTime}}</p>
-						</div>
-						<div v-if="item.state === '2'" class="right flex flex-s flex-hc">
-							<h5>{{item.productName}}</h5>
-							<p>期号：{{item.periodsNumber}}</p>
-							<p>
-								<i class="iconfont icon-zuixinjiexiao1"></i>
-								<span>即将揭晓</span>
-							</p>
-							<count-Down :time="item.dbOpenTimeLong"></count-Down>
-							<p></p>
-						</div>
-					</li>
-				</ul>
-				<p v-if="noMore" class="noMore">
-					没有更多了
-				</p>
+							</div>
+							<div v-if="item.state === '3'" class="right flex flex-s flex-hc right3">
+								<h5 class="ellipsis">{{item.productName}}</h5>
+								<p>期号：{{item.periodsNumber}}</p>
+								<p>获奖用户：<span class="color3">{{item.winMemberName}}</span></p>
+								<p>参与人次：{{item.winMemberBuyCount}}</p>
+								<p>幸运号码：<span>{{item.winNumber}}</span></p>
+								<p>揭晓时间：{{item.sscOpenTime}}</p>
+							</div>
+							<div v-if="item.state === '2'" class="right flex flex-s flex-hc right2">
+								<h5 class="ellipsis">{{item.productName}}</h5>
+								<p>期号：{{item.periodsNumber}}</p>
+								<p>
+									<i class="iconfont icon-zuixinjiexiao1"></i>
+									<span>即将揭晓</span>
+								</p>
+								<count-Down :time="item.dbOpenTimeLong"></count-Down>
+								<p></p>
+							</div>
+						</li>
+					</ul>
+					<p v-if="noMore" class="noMore">
+						没有更多了
+					</p>
+				</mt-loadmore>
 			</div>
 		</div>
 		<footer-bar></footer-bar>
@@ -40,26 +51,25 @@
 </template>
 <style lang="scss">
 	#secondcomponent {
-		header{
-			width: 100%;
-			height: 47px;
-			position: absolute;
-			top: 0;
-			left: 0;
-			background: #fff;
-			border-bottom: 1px solid #eee;
-		}
 		.content{
-			top: 45px;
-			bottom: 45px;
+			top: 39px;
+			bottom: 47px;
 			.page-infinite-wrapper{
 				width: 100%;
 				.page-infinite-list{
 					width: 100%;
 					.page-infinite-listitem{
+						position: relative;
 						width: 100%;
 						height: 134px;
 						border-bottom: 1px solid #eee;
+						.badge{
+							width:33px;
+							position: absolute;
+							top: 0;
+							left: 5px;
+							z-index: 2;
+						}
 						.left{
 							width: 40%;
 							padding: 0 8px;
@@ -70,10 +80,28 @@
 						}
 						.right{
 							width: 60%;
+							h5{
+								width: 95%;
+								height: 26px;
+								line-height: 26px;
+							    font-size: 13px;
+								font-weight: 400;
+							}
 							p{
 								width: 100%;
+								height: 18px;
 								font-size: 12px;
+								color: #999;
+								span{
+									color: #f03d52;
+								}
+								.color3{
+									color: #333;
+								}
 							}
+						}
+						.right2{
+
 						}
 					}
 				}
@@ -83,11 +111,12 @@
 </style>
 <script>
 	import { Indicator } from 'mint-ui';
-	import {Toast} from 'mint-ui';
-	import footerbar from './tab.vue';
-	import countDown from '../components/countdown.vue';
-	import '../plugins/swiper/swiper.min.js';
-	import '../plugins/swiper/swiper.min.css';
+	import { Toast } from 'mint-ui';
+	import footerbar from './tab.vue';//引入底部栏
+	import countDown from '../components/countdown.vue';//引入倒计时组件
+	import tabbars from '../components/tabbars.vue';//引入选项卡组件
+	import { setItem } from '../assets/js/util.js';//引入storage操作方法
+	import '../assets/js/util.js';//引入倒计时
 
 	export default {
 		name: "secondcomponent",
@@ -100,15 +129,18 @@
     			page: 1,
 				loading: false,
 				wrapperHeight: 0,
-				noMore: false
+				noMore: false,
+				topStatus: '',
+				topStatus1: false,
 			}
 		},
 		components: {
 			"footer-bar" : footerbar,
-			"count-Down" : countDown
+			"count-Down" : countDown,
+			"tabbars-v" : tabbars
 		},
 		methods:{
-			getList(){
+			getList(page){
 				Indicator.open({
 		            text: '加载中...',
 		            spinnerType: 'fading-circle'
@@ -117,22 +149,46 @@
 				this.loading = true;
 	        	//获取信息列表
 	        	setTimeout(() => {
-			        this.api.getLastAnnounList(that.page,6,
-						function (data) {
-							for(let v = 0; v < data.data.returnValue.length; v++) {
-								that.list.push(data.data.returnValue[v]);
+			        this.api.getLastAnnounList(page,6,
+						function ( data ) {
+							let res = data.data;
+							if(page === 1){
+								that.list = [];
 							};
-							if(data.data.returnValue.length==0){
+							for( let v = 0; v < res.returnValue.length; v++ ) {
+								that.list.push( res.returnValue[v] );
+							};
+							if( res.returnValue.length == 0 ){
 								that.loading = true;
 								that.noMore = true;
 							}else{
 								that.loading = false;
 							};
-							that.page++;
+							this.topStatus = '';
 							Indicator.close();
 						}
 					);
 				}, 100);
+			},
+			loadMore(){
+				this.getList(this.page);
+				this.page++;
+			},
+			pullDown(){
+				this.page = 1;
+				this.getList(this.page);
+			},
+			handleTopChange(status) {
+		        this.topStatus = status;
+		    },
+			goDetail(item){
+				if(item.state === "2"){
+					setItem('thisOpenTime',item.dbOpenTimeLong);
+				};
+				this.$router.push({ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}});
+			},
+			isThis(index){
+				console.log("fu",index);
 			}
 		},
 		beforeMount(){

@@ -14,6 +14,10 @@
 			    <div class="swiper-pagination"></div>
 			</div>
 			<div class="productMessage">
+				<img class="badge" v-if="productDetail.productType == 3" src="../assets/img/home/ten_l@2x.png">
+				<img class="badge" v-if="productDetail.productType == 4" src="../assets/img/two/twobig.png">
+				<img class="badge" v-if="productDetail.productType == 5" src="../assets/img/home/five_l@2x.png">
+				<img class="badge" v-if="productDetail.productType == 6" src="../assets/img/home/hundred_l@2x.png">
 				<p class="pmTop">
 					<span v-if="productStaus == 'ing'">进行中</span>
 					<span v-else-if="productStaus == 'publishing'">揭晓中</span>
@@ -30,8 +34,12 @@
 					<p>剩余 <span>{{productDetail.dbSurplusCount}}</span> 人次</p>
 				</div>
 			</div>
+			<!--揭晓中 倒计时-->
+			<count-Down v-else-if="productStaus == 'publishing'" :time="dbOpenTimeLong">
+				<i class="iconfont icon-nn"></i>
+			</count-Down>
 			<!--已揭晓 中奖信息-->
-			<div v-if="productStaus == 'published'" class="winnerMessage">
+			<div v-else class="winnerMessage">
 				<div class="wmTop flex">
 					<div class="left">
 						幸运号码：{{winnnerMessage.winNumber}}
@@ -95,6 +103,7 @@
 					vertical-align: bottom;
 				}
 			}
+
 			#detailSwiper{
 				.swiper-wrapper{
 					.swiper-slide{
@@ -108,8 +117,16 @@
 				padding-bottom: 40px;
 			}
 			.productMessage{
+				position: relative;
 				width: 100%;
 				padding: 0 15px;
+				.badge{
+					width: 46px;
+				    position: absolute;
+				    top: -63px;
+				    left: 15px;
+				    z-index: 2;
+				}
 				.pmTop{
 					font-size: 12px;
 					margin-bottom: 5px;
@@ -128,6 +145,16 @@
 					width: 100%;
 					padding: 5px 0 10px;
 					font-size: 13px;
+				}
+			}
+			.count-down{
+				margin-bottom: 10px;
+				width: 100%;
+				color: #f93069;
+				font-size: 28px;
+				text-align: center;
+				i{
+					font-size: 28px;
 				}
 			}
 			.winnerMessage{
@@ -248,8 +275,11 @@
 	import menubar from '../components/menubar.vue';//引入菜单跳转
 	import buybutton from '../components/buybutton.vue';//引入按钮
 	import alertshopping from './shopping.vue';//引入购买弹窗
+	import countDown from '../components/countdown.vue';//引入倒计时
+	import {setItem, getItem} from '../assets/js/util.js';//引入storage操作方法
 	import '../plugins/swiper/swiper.min.js';
 	import '../plugins/swiper/swiper.min.css';
+
 	export default {
 		name: "first",
 		data() {
@@ -276,6 +306,7 @@
 			"menu-bar" : menubar,
 			"buy-button" : buybutton,
 			"shopping" : alertshopping,
+			"count-Down" : countDown
 		},
 		methods: {
 			showBuy(){
@@ -295,12 +326,16 @@
 					if(productDetail.state == '1'){
 						that.productStaus = 'ing';
 					}else if(productDetail.state == '2'){
+						console.log("aaa")
 						that.productStaus = 'publishing';
+						that.dbOpenTimeLong = getItem('thisOpenTime');
+						console.log(that.dbOpenTimeLong)
 					}else if(productDetail.state == '3'){
 						that.productStaus = 'published';
 						that.api.getWinnerMessage(that.periodId,function(data){
-							that.winnnerMessage = data.data.returnValue;
-							that.winnnerMessage.dbOpenTime = data.data.returnValue.dbOpenTime.slice(0,16)
+							let res = data.data;
+							that.winnnerMessage = res.returnValue;
+							that.winnnerMessage.dbOpenTime = res.returnValue.dbOpenTime.slice(0,16)
 						});
 					};
 				},

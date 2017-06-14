@@ -13,6 +13,7 @@ ul,ol{
 button{
 	outline: none;
     border: none;
+    text-align: center;
     -webkit-tap-highlight-color:transparent;
 }
 

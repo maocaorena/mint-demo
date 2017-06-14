@@ -19,49 +19,42 @@ class API {
 	ajax (url,param,callback){
 		this.getN(url,param).then(callback).catch(function(error){
 			Indicator.close();
-			if (error.response) {
-				// 请求已发出，但服务器响应的状态码不在 2xx 范围内
-				Toast({
-					message: '服务器未响应',
-					className: 'toastStyle',
-					duration: 1000
-				});
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				console.log('Error', error.message);
-				if(error.message.indexOf("timeout")>=0){
-					Toast({
-						message: '服务器响应超时',
-						className: 'toastStyle',
-						duration: 1000
-					})
-				};
-			};
-			//console.log(error.config);
+			Toast({
+				message: '服务器未响应',
+				className: 'toastStyle',
+				duration: 1000
+			});
 		});
 	};
 	ajax1 (url,param,callback,then){
 		this.getN(url,param).then(callback).then(then).catch(function(error){
 			Indicator.close();
-			if (error.response) {
-				// 请求已发出，但服务器响应的状态码不在 2xx 范围内
-				Toast({
-					message: '服务器未响应',
-					className: 'toastStyle',
-					duration: 1000
-				});
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				console.log('Error', error.message);
-				if(error.message.indexOf("timeout")>=0){
-					Toast({
-						message: '服务器响应超时',
-						className: 'toastStyle',
-						duration: 1000
-					})
-				};
-			};
-			//console.log(error.config);
+			Toast({
+				message: '服务器未响应',
+				className: 'toastStyle',
+				duration: 1000
+			});
+		});
+	};
+
+	postN (url,param) {
+		/*防止缓存*/
+		var randomNum1 = parseInt(Math.random() * 10);
+		var randomNum2 = parseInt(Math.random() * 1000) + '' + new Date().getTime();
+		param['noCache' + randomNum1] = randomNum2;
+		config.url = url;
+		config.params = param;
+		return axios(config);//使用post方式
+	};
+
+	ajaxPost (url,param,callback){
+		this.postN(url,param).then(callback).catch(function(error){
+			Indicator.close();
+			Toast({
+				message: '服务器未响应',
+				className: 'toastStyle',
+				duration: 1000
+			});
 		});
 	};
 
@@ -97,33 +90,33 @@ class API {
 	// 获取商品商品详情页中奖人信息
 	getWinnerMessage (periodId,callback){
 		this.ajax("order/getUserByWinApi.json",{
-					"periodId":periodId
-				},callback)
+			"periodId":periodId
+		},callback)
 	};
 
 	// 图文详情
 	getImageTextMessage (periodId,goodsId,callback){
 		this.ajax("product/getProductDetailApi.json",{
-					"periodId":periodId,
-					"goodsId":goodsId
-				},callback)
+			"periodId":periodId,
+			"goodsId":goodsId
+		},callback)
 	};
 
 	// 商品详情页晒单
 	getSingle (page_index,page_size,goodsId = '',callback){
 		this.ajax("sunorder/getSunOrderListApi.json",{
-					"goodsId":goodsId,
-					"page_index":page_index,
-					"page_size":page_size
-				},callback)
+			"goodsId":goodsId,
+			"page_index":page_index,
+			"page_size":page_size
+		},callback)
 	};
 
 	// 最新揭晓
 	getLastAnnounList (page_index,page_size,callback){
 		this.ajax("period/getPeroidListByLastAnnounApi.json",{
-					"page_index":page_index,
-					"page_size":page_size
-				},callback)
+			"page_index":page_index,
+			"page_size":page_size
+		},callback)
 	};
 
 	// 获取商品详情
@@ -166,6 +159,31 @@ class API {
 			"page_index": page_index,
 			"page_size":page_size,
 			"goodsId":goodsId
+		},callback)
+	};
+
+	//账号密码登录
+	login (appKey,mobile,password,callback){
+		this.ajaxPost("userLogin/loginUserByPassword.json",{
+			"appKey": appKey,
+			"mobile": mobile,
+			"passWord":password,
+		},callback)
+	};
+	
+	//微信登录
+	wxLogin (appKey,code,callback){
+		this.ajaxPost("userLogin/weixinLogin.json",{
+			"appKey": appKey,
+			"code": code,
+		},callback)
+	};
+	
+	//QQ登录
+	qqLogin (appKey,code,callback){
+		this.ajaxPost("userLogin/qqLogin.json",{
+			"appKey": appKey,
+			"code": code,
 		},callback)
 	};
 }

@@ -14,7 +14,7 @@
                         <router-link :to="{ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}}">
                             <div class="flex">
                                 <div class="img">
-                                    <img :src="item.image1" alt="">
+                                    <img v-lazy.container="item.image1" alt="">
                                 </div>
                                 <div class="productmessage">
                                     <p>{{item.productName}}</p>
@@ -25,7 +25,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </router-link>
                     </li>
                 </ul>
@@ -151,6 +150,10 @@
                             img{
                                 width: 86px
                             }
+                            img[lazy=loading] {
+								width: 86px;
+								background: #ccc;
+						    }
                         }
                         .productmessage{
                             width: 67%;

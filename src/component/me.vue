@@ -29,7 +29,7 @@
 					<p>我的红包</p>
 		    	</router-link>
 			</div>
-			<menu-bar :togo="'/home'" :icon="'icon-share'" :height="50" :title="'我的晒单'"></menu-bar>
+			<menu-bar :togo="'/tab/account/login_account'" :icon="'icon-share'" :height="50" :title="'我的晒单'"></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-recharge'" :height="50" :title="'充值记录'"></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-ad'" :height="60" :title="'收货地址'" class="account-menubar" ></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-setting'" :height="50" :title="'设置'"></menu-bar>

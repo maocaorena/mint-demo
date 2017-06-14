@@ -1,17 +1,20 @@
 export default {
-	getData (state,count){
+	getData(state, count) {
 		state.count = count;
 	},
-	goShopping (state,shopping){
+	goShopping(state, shopping) {
 		state.shopping = shopping;
 	},
-	showShopping(state,shoppingAlert){
+	showShopping(state, shoppingAlert) {
 		state.shoppingAlert = shoppingAlert;
 	},
-	hideShopping(state,shoppingAlert){
+	hideShopping(state, shoppingAlert) {
 		state.shoppingAlert = 'close';
 	},
-	selectTab(state,footerbarState){
+	selectTab(state, footerbarState) {
 		state.footerbarState = footerbarState;
+	},
+	changeLoginState(state, loginState) {
+		state.loginState = loginState;
 	}
 }

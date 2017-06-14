@@ -1,4 +1,6 @@
-import Vue from 'vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
 
 import store from '../store/';//引入vuex
 import App from '../App.vue'
@@ -14,6 +16,8 @@ import server from '../component/server.vue'//客服弹窗
 import two from '../component/two.vue'//双人夺宝
 import historyRecords from '../component/historyRecords.vue'//本期夺宝记录
 import announced from '../component/announced.vue'//本期夺宝记录
+import login_account from '../component/login.vue'//登录页
+import register from '../component/register.vue'//注册页
 
 const routes = [{
     path: '/',
@@ -30,12 +34,12 @@ const routes = [{
 			component: latestAnnounced
 		},{
 			path: '/tab/find',//发现页
-			meta: {
-	            requireAuth: true,
-	        },
 			component: find
 		},{
 			path: '/tab/me',//我的
+			meta: {
+	            loginState: true,
+	        },
 			component: me
 		},{
 			path: '/tab/home/productDetail',//商品详情
@@ -58,27 +62,33 @@ const routes = [{
 		},{
 			path: '/tab/home/productDetail/announced',//往期揭晓
 			component: announced
+		},{
+			path: '/tab/account/login_account',//登录页
+			component: login_account
+		},{
+			path: '/tab/register',//注册页
+			component: register
 		}
 	]
 }];
 
+const router = new VueRouter({
+    routes: routes
+});
 
-// router.beforeEach((to, from, next) => {
-// 	if(from.path == "/tab/home/productDetail" || from.path == "/tab/home"){
-// 		store.commit('hideShopping', false);
-// 	};
-//     if (to.matched.some(r => r.meta.requireAuth)) {
-//         if (store.state.token) {
-//             next();
-//         }else {
-//             next({
-//                 path: '/tab/me',
-//                 query: {}
-//             })
-//         };
-//     }else {
-//         next();
-//     };
-// });
-
-export default routes;
+router.beforeEach((to, from, next) => {
+   	if (to.matched.some(r => r.meta.loginState)) {
+   		let loginState = localStorage.getItem('memberInfo')
+	    if (loginState) {
+	        next();
+   	    } else {
+  	        next({
+               	path: '/tab/account/login_account',
+            	query: {}
+           	})
+      	};
+	} else {
+	    next();
+  	};
+});
+export default router;

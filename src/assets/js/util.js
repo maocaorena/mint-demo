@@ -1,26 +1,20 @@
-/**
- * 存储localStorage
- */
-export const setItem = (name, content) => {
-	if (!name) return;
-	if (typeof content !== 'string') {
-		content = JSON.stringify(content);
+const Util = {
+	myAlert : function( text, time ){
+		if(!document.getElementById('id')){
+			let _time = time || 1000;
+			let parent = document.createElement('div');
+			parent.setAttribute('id', 'alertBg');
+			let child = document.createElement('p');
+			child.setAttribute('class', 'text');
+			let _text = document.createTextNode(text);
+			child.appendChild(_text);
+			parent.appendChild(child);
+			document.body.appendChild(parent);
+			setTimeout(() => {
+				document.body.removeChild(parent);
+			}, _time)
+		};
 	}
-	window.localStorage.setItem(name, content);
 }
 
-/**
- * 获取localStorage
- */
-export const getItem = name => {
-	if (!name) return;
-	return window.localStorage.getItem(name);
-}
-
-/**
- * 删除localStorage
- */
-export const removeItem = name => {
-	if (!name) return;
-	window.localStorage.removeItem(name);
-}
+export { Util }

@@ -1,7 +1,7 @@
 <template>
 	<div class="goodsItem">
         <router-link class="goodsItem-img" :to="{ path: '/tab/home/productDetail', query: { id: goodsItemMessage.productId ,periodId: goodsItemMessage.periodsId}}">
-            <img :src="goodsItemMessage.image1" alt="">
+            <img v-lazy.container="goodsItemMessage.image1" alt="">
         </router-link>
         <p  class="goodsItem-goodsName">
             {{goodsItemMessage.productName}}
@@ -43,11 +43,18 @@
         img{
             width: 135px;
         }
+		img[lazy=loading] {
+	        width: 135px;
+			background: #ccc;
+	    }
     }
     .goodsItem-goodsName{
+		width: 100%;
+		height: 34px;
         color: #50575d;
         font-size: 13px;
         text-align: left;
+		overflow: hidden;
     }
     .goodsItem-progress{
         width: 100%;

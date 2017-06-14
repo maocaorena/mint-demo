@@ -3,13 +3,12 @@
 		<tabbars-v v-on:clickThis="isThis" :names = '["最新揭晓","我参与"]' :tostatus = 'status'></tabbars-v>
 		<div class="content">
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
-				<mt-loadmore :top-method="pullDown" :top-status.sync="topStatus" @top-status-change="handleTopChange">
-					<div v-show="topStatus === 'pull' || topStatus === 'drop' || topStatus === 'loading'" slot="top" class="mint-loadmore-top">
-				      	<span v-show="topStatus === 'pull'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>
+				<mt-loadmore :top-method="pullDown" ref="loadmore" @top-status-change="handleTopChange">
+					<div slot="top" :top-all-loaded="allLoaded" class="mint-loadmore-top">
+				      	<span v-show="topStatus === 'pull'" :class="{ 'rotate': topStatus === 'pull' }">↓</span>
 						<span v-show="topStatus === 'drop'" :class="{ 'rotate': topStatus === 'drop' }">↑</span>
 				      	<span v-show="topStatus === 'loading'">Loading...</span>
 				    </div>
-					<p>{{topStatus}}</p>
 					<ul class="page-infinite-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="50" >
 						<li v-for="item of list" class="page-infinite-listitem flex">
 							<img class="badge" v-if="item.productType == 3" src="../assets/img/home/ten_s@2x.png">
@@ -76,6 +75,11 @@
 								width: 112px;
 								height: 112px;
 							}
+							img[lazy=loading] {
+								width: 112px;
+								height: 112px;
+								background: #ccc;
+						    }
 						}
 						.right{
 							width: 60%;
@@ -95,12 +99,9 @@
 									color: #f03d52;
 								}
 								.color3{
-									color: #333;
+									color: #333333;
 								}
 							}
-						}
-						.right2{
-
 						}
 					}
 				}
@@ -114,7 +115,7 @@
 	import footerbar from './tab.vue';//引入底部栏
 	import countDown from '../components/countdown.vue';//引入倒计时组件
 	import tabbars from '../components/tabbars.vue';//引入选项卡组件
-	import { setItem } from '../assets/js/util.js';//引入storage操作方法
+	import { Storage } from '../assets/js/storage.js';//引入storage操作方法
 	import '../assets/js/util.js';//引入倒计时
 
 	export default {
@@ -130,7 +131,6 @@
 				wrapperHeight: 0,
 				noMore: false,
 				topStatus: '',
-				topStatus1: true,
 			}
 		},
 		components: {
@@ -165,6 +165,7 @@
 							};
 							that.topStatus = '';
 							Indicator.close();
+							that.$refs.loadmore.onTopLoaded();
 						}
 					);
 				}, 100);
@@ -183,7 +184,7 @@
 		    },
 			goDetail(item){
 				if(item.state === "2"){
-					setItem('thisOpenTime',item.dbOpenTimeLong);
+					Storage.setItem('thisOpenTime',item.dbOpenTimeLong);
 				};
 				this.$router.push({ path: '/tab/home/productDetail', query: { id: item.productId ,periodId: item.periodsId}});
 			},

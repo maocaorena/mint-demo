@@ -96,6 +96,13 @@
 		    },
 		    shoppingAlert(){
 		    	return this.$store.state.shoppingAlert
+		    },
+		    loginState(){
+		    	console.log(11111);
+		    	if(this.$store.state.loginState == 2){
+//		    		this.showServer();
+		    	}
+		    	return this.$store.state.loginState
 		    }
 		},
 		components: {
@@ -136,7 +143,7 @@
 							direction : 'vertical',
 							speed: 1000,
 							loop: true,
-							autoplay: 2000,
+							autoplay: 1500,
 							autoplayDisableOnInteraction: false,
 
 						});
@@ -195,6 +202,7 @@
 			this.getLaba();
 		},
 		mounted() {
+			console.log('111');
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 		}
 	}
@@ -222,9 +230,9 @@
 				}
 			}
 			#homelaba{
-				height: 30px;
+				height: 38px;
 				width: 100%;
-				border-bottom: 1px solid #eee;
+				border-bottom: 8px solid #eee;
 				line-height: 30px;
 				font-size: 12px;
 				padding-left: 30px;

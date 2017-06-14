@@ -276,7 +276,7 @@
 	import buybutton from '../components/buybutton.vue';//引入按钮
 	import alertshopping from './shopping.vue';//引入购买弹窗
 	import countDown from '../components/countdown.vue';//引入倒计时
-	import {setItem, getItem} from '../assets/js/util.js';//引入storage操作方法
+	import { Storage } from '../assets/js/storage.js';//引入storage操作方法
 	import '../plugins/swiper/swiper.min.js';
 	import '../plugins/swiper/swiper.min.css';
 
@@ -328,7 +328,7 @@
 					}else if(productDetail.state == '2'){
 						console.log("aaa")
 						that.productStaus = 'publishing';
-						that.dbOpenTimeLong = getItem('thisOpenTime');
+						that.dbOpenTimeLong = Storage.getItem('thisOpenTime');
 						console.log(that.dbOpenTimeLong)
 					}else if(productDetail.state == '3'){
 						that.productStaus = 'published';

@@ -2,9 +2,8 @@
 	<mt-progress :value="length*100" :bar-height="4"></mt-progress>
 </template>
 <style lang="scss">
-
 		.mt-progress{
-			height: 5px;
+			height: 5px!important;
 			.mt-progress-content{
 				height: 5px;
 				.mt-progress-progress{

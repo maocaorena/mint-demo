@@ -11,7 +11,8 @@ const state = {
 	shopping:null,
 	shoppingAlert: 'close',
 	token : false,
-	footerbarState: 1
+	footerbarState: 1,
+	loginState: 1
 }
 
 export default new Vuex.Store({

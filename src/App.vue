@@ -7,7 +7,7 @@
 <script>
 	import { Storage } from './assets/js/storage.js'; //引入Storage
 	import { User } from './assets/js/user.js'; //引入User
-	import { Util } from './assets/js/util.js'; //引入User
+	import { Util } from './assets/js/util.js'; //引入Util
 	/*import Bus from './bus/bus.js';*/
 	
 	export default {

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import config from './config';
 import qs from 'qs';
-import { Toast } from 'mint-ui'
+import { Util } from '../assets/js/util.js'; //引入Util
 import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
 
 class API {
@@ -17,26 +17,26 @@ class API {
 		//return axios(config);//使用post方式
 	};
 	ajax (url,param,callback){
+		let that = this;
 		this.getN(url,param).then(callback).catch(function(error){
-			Indicator.close();
-			Toast({
-				message: '服务器未响应',
-				className: 'toastStyle',
-				duration: 1000
-			});
+			that.errorHandle(error);
 		});
 	};
 	ajax1 (url,param,callback,then){
+		let that = this;
 		this.getN(url,param).then(callback).then(then).catch(function(error){
-			Indicator.close();
-			Toast({
-				message: '服务器未响应',
-				className: 'toastStyle',
-				duration: 1000
-			});
+			that.errorHandle(error);
 		});
 	};
-
+	
+	ajaxPost (url,param,callback){
+		let that = this;
+		this.postN(url,param).then(callback).catch(function(error){
+			that.errorHandle(error);
+		});
+	};
+	
+	//post请求
 	postN (url,param) {
 		/*防止缓存*/
 		var randomNum1 = parseInt(Math.random() * 10);
@@ -47,17 +47,16 @@ class API {
 		return axios(config);//使用post方式
 	};
 
-	ajaxPost (url,param,callback){
-		this.postN(url,param).then(callback).catch(function(error){
+	//请求错误处理
+	errorHandle(error){
+		Indicator.close();
+		if (error.response || error.message.indexOf("timeout") > -1) {
+			//状态不在200和超时的处理
 			Indicator.close();
-			Toast({
-				message: '服务器未响应',
-				className: 'toastStyle',
-				duration: 1000
-			});
-		});
+			Util.myAlert("服务器未响应")
+		}
 	};
-
+	
 	// 获取商品列表
 	getProductList (appKey,status,page_index,page_size,callback){
 		this.ajax("product/getProductListApi.json",{
@@ -184,6 +183,39 @@ class API {
 		this.ajaxPost("userLogin/qqLogin.json",{
 			"appKey": appKey,
 			"code": code,
+		},callback)
+	};
+	
+	//注册获取验证码
+	registerGetCode (mobile,type,callback){
+		this.ajaxPost("userLogin/sendSMSCode.json",{
+			"mobile": mobile,
+			"type": type,
+		},callback)
+	};
+	
+	//注册
+	register (appKey,mobile,passWord,smsCode,callback){
+		this.ajaxPost("userLogin/phoneRegister.json",{
+			"appKey": appKey,
+			"mobile": mobile,
+			"passWord": passWord,
+			"smsCode": smsCode
+		},callback)
+	};
+	
+	//个人中心获取个人信息
+	getUserInfo (token,callback){
+		this.ajaxPost("user/getUserInfo.json",{
+			"token": token
+		},callback)
+	};
+	
+	//获取余额
+	getAmount (token,appKey,callback){
+		this.ajaxPost("user/getUserAmount.json",{
+			"token": token,
+			"appKey": appKey
 		},callback)
 	};
 }

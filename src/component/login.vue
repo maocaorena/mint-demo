@@ -100,7 +100,7 @@
                     font-size: 16px;
                     color: #ffffff;
                     border-radius: 5px;
-                    background: #CECECE;
+                    background: #E62E36;
                 }
             }
             .fu{
@@ -172,6 +172,8 @@
 <script type="text/javascript">
     import { Toast } from 'mint-ui';
     import { Util } from '../assets/js/util.js';//引入tanchuang
+    import { User } from '../assets/js/user.js';//引入tanchuang
+    import { Storage } from '../assets/js/storage.js';//引入tanchuang
     export default{
         data(){
             return{
@@ -185,13 +187,16 @@
             },
             login(){
                 console.log("qq",this.mobile,this.pw);
+                let that = this;
                 if(this.mobile != '' && this.pw != '') {
-    				this.api.login('111111111111', this.mobile, this.pw, function(data) {
+    				this.api.login(User.getAppKey(), this.mobile, this.pw, function(data) {
     					let res = data.data;
     					if(res.successed) {
+    						Storage.setItem('memberInfo',res.returnValue);
                             Util.myAlert('登录成功！');
+                            that.$router.push({ path: '/tab/home'})
     					} else {
-                            console.log("shibai")
+                            Util.myAlert('账号或密码错误！');
     					}
     				})
     			} else {

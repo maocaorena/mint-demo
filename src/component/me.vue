@@ -7,11 +7,11 @@
 		    		<i class="redPoint"></i>
 		    	</router-link>
 				<div class="account-userhead flex flex-s flex-hc flex-sc">
-					<img class="user-pic" src="../assets/img/alipay.png">
-					<p class="userName ellipsis">userInfo.nike</p>
+					<img class="user-pic" :src="userInfo.headIcon">
+					<p class="userName ellipsis">{{userInfo.nike}}</p>
 				</div>
 		    	<div class="account-ammount flex">
-				    <p>夺宝点 300</p>
+				    <p>夺宝点 {{amount}}</p>
 				    <button>充值</button>
 			    </div>
 			</div>
@@ -78,6 +78,7 @@
 					}
 					.userName{
 						width: 100%;
+						height: 40px;
 						padding: 5px 0 15px;
 						font-size: 16px;
 						color: #fff;
@@ -145,12 +146,15 @@
 <script type="text/javascript">
 	import footerbar from './tab.vue';
 	import menubar from '../components/menubar.vue';//引入菜单跳转
+	import { User } from '../assets/js/user.js'; //引入User
+	import { Util } from '../assets/js/util.js'; //引入User
 
 	export default {
 		name: "me",
 		data () {
 			return {
-
+				userInfo : {},
+				amount : 0
 			}
 		},
 		components: {
@@ -158,13 +162,32 @@
 			"menu-bar" : menubar
 		},
 		computed: {
-
+			
 		},
 		methods:{
-
+			getMyInfo(){
+				console.log(User.getToken());
+				let that = this;
+				this.api.getUserInfo(User.getToken(),function(data){
+					let res = data.data;
+					console.log(res);
+					if(res.successed){
+						that.userInfo = res.returnValue;
+						that.api.getAmount(User.getToken(),User.getAppKey(),function(data){
+							let _res = data.data;
+							if(_res.successed){
+								that.amount = _res.returnValue;
+							}
+						})
+					}else{
+						Util.myAlert("请登录");
+						that.$router.push("/tab/account/login_account")
+					}
+				})
+			}
 		},
 		created(){
-
+			this.getMyInfo();
 		}
 	}
 </script>

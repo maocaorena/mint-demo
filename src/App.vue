@@ -1,6 +1,11 @@
 <template>
 	<div>
-		<router-view></router-view>
+		<!--<transition :name="className">-->
+			<router-view></router-view>
+		<!--</transition>-->
+		<transition name="fade">
+			<alert-login v-if="alertLogin"></alert-login>
+		</transition>
 		<div class="none">{{loginState}}</div>
 	</div>
 </template>
@@ -8,22 +13,30 @@
 	import { Storage } from './assets/js/storage.js'; //引入Storage
 	import { User } from './assets/js/user.js'; //引入User
 	import { Util } from './assets/js/util.js'; //引入Util
-	/*import Bus from './bus/bus.js';*/
-	
+	import alertLogin from './components/alertLogin.vue';//引入登录弹窗
 	export default {
 		data() {
 			return {
-				search: this.$route.query
+				search: this.$route.query,
+				/*className: "fadeleft"*/
 			}
 		},
 		computed: {
 		    loginState(){
-		    	console.log(11111);
 		    	if(this.$store.state.loginState == 2){
-					console.log("登陆成功了！！");
+					console.log("登录成功了！！");
 		    	}
 		    	return this.$store.state.loginState
+		    },
+		    alertLogin(){
+		    	return this.$store.state.alertLoginState
 		    }
+		    /*count(){
+		    	return this.$store.state.count
+		    }*/
+		},
+		components:{
+			"alert-login" : alertLogin
 		},
 		methods: {
 			//保存 appEntrance 信息
@@ -166,7 +179,7 @@
 			};
 		},
 		mounted() {
-			
+
 		}
 	}
 </script>

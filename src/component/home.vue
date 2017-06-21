@@ -52,7 +52,9 @@
 				</p>
 			</div>
 		</div>
-		<shopping v-if="shoppingAlert === 'home'"></shopping>
+		<transition name="fade">
+			<shopping v-if="shoppingAlert === 'home'"></shopping>
+		</transition>
 		<server-alert v-if="serverState"></server-alert>
 		<footer-bar></footer-bar>
 	</div>
@@ -62,7 +64,6 @@
 	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
 	import alertshopping from './shopping.vue';//引入购买弹窗
 	import footerbar from './tab.vue';//引入底部栏
-	import progrees from '../components/progrees.vue';//引入进度条
 	import server from './server.vue';//引入客服
 	import goodsItem from '../components/goodsItem.vue';//引入单个商品样式
 	import tabbars from '../components/tabbars.vue';//引入选项卡组件
@@ -73,28 +74,19 @@
 		name: "first",
 		data() {
 			return {
-				swiperImgs: [],
-				list: [],
-				page: 1,
-				status: 'popularity',
-				loading: false,
+				swiperImgs: [],//轮播图片
+				list: [],//商品列表
+				page: 1,//页数
+				status: 'popularity',//排序方式
+				labas:[],//首页十条小喇叭
+				serverState : false,//控制客服显示和关闭
+				loading: false,//控制加载，true会停止加载
+				noMore: false,//没有更多
 				wrapperHeight: 0,
-				loadMoreSwitch: true,
-				showShopping: false,
-				goShopping: null,
-				labas:[],
-				noMore: false,
-				serverState : false
 			}
 		},
 		computed: {
-		    count () {
-		      	return this.$store.state.count
-		    },
-		    shopping(){
-		    	return this.$store.state.shopping
-		    },
-		    shoppingAlert(){
+		    shoppingAlert(){//是否显示购买弹窗
 		    	return this.$store.state.shoppingAlert
 		    },
 		    loginState(){
@@ -106,18 +98,17 @@
 		    }
 		},
 		components: {
-			"shopping" : alertshopping,
-			"footer-bar" : footerbar,
-			"progrees-v" : progrees,
-			"server-alert" : server,
-			"goods-item" : goodsItem,
-			"tabbars-v" : tabbars
+			"shopping" : alertshopping,//购买弹窗
+			"footer-bar" : footerbar,//底部栏
+			"server-alert" : server,//客服弹窗
+			"goods-item" : goodsItem,//单个商品
+			"tabbars-v" : tabbars//选项卡
 		},
 		methods: {
-			showServer(){
+			showServer(){//显示客服弹窗
 				this.serverState = !this.serverState;
 			},
-			getBannerImg(){
+			getBannerImg(){//获取轮播图片
 				let that = this;
 				this.api.getHomeSwiperList('11111111',
 				function(data){
@@ -132,7 +123,7 @@
 					});
 				})
 			},
-			getLaba(){
+			getLaba(){//获取首页十条喇叭信息
 				let that = this;
 				this.api.getHomeSwiperWinList('111111',
 					function (data) {
@@ -150,11 +141,8 @@
 					}
 				);
 			},
-			loadMore() {
-				Indicator.open({
-		            text: '加载中...',
-		            spinnerType: 'fading-circle'
-		        });
+			loadMore() {//获取商品列表
+				Indicator.open();
 				this.loading = true;
 				let that = this;
 				setTimeout(() => {
@@ -172,13 +160,10 @@
 							that.page++;
 							Indicator.close();
 						});
-				}, 100);
+				}, 500);
 			},
-			buy(item){
-				this.$store.commit('goShopping', item);
-				this.$store.commit('showShopping', "home");
-			},
-			isThis(index){
+			
+			isThis(index){//选项卡选择
 				let _index = index;
 				if(_index === 0){
 					this.page = 1;
@@ -202,7 +187,6 @@
 			this.getLaba();
 		},
 		mounted() {
-			console.log('111');
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 		}
 	}

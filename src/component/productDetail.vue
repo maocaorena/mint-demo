@@ -73,7 +73,7 @@
 			<menu-bar :togo="'/tab/home/productDetail/announced?goodsId='+productId" :icon="'icon-xunzhang1'" :title="'往期揭晓'"></menu-bar>
 		</div>
 		<div class="detailBottomBtn flex-zhong">
-			<buy-button @click.native="showBuy" :btntext="'立即购买'"></buy-button>
+			<buy-button @click.native="showBuy">立即购买</buy-button>
 		</div>
 		<shopping v-if="shoppingAlert === 'productDetail'"></shopping>
 	</div>
@@ -278,6 +278,7 @@
 	import countDown from '../components/countdown.vue';//引入倒计时
 	import { Storage } from '../assets/js/storage.js';//引入storage操作方法
 	import '../plugins/swiper/swiper.min.js';
+	
 	import '../plugins/swiper/swiper.min.css';
 
 	export default {

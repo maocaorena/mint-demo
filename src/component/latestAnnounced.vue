@@ -1,10 +1,10 @@
 <template>
 	<div id="secondcomponent" class="wrapper">
-		<tabbars-v v-on:clickThis="isThis" :names = '["最新揭晓","我参与"]' :tostatus = 'status'></tabbars-v>
+		<tabbars-v v-on:clickThis="isThis" :names = '["最新揭晓","我参与"]'></tabbars-v>
 		<div class="content">
 			<div class="page-infinite-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<mt-loadmore :top-method="pullDown" ref="loadmore" @top-status-change="handleTopChange">
-					<div slot="top" :top-all-loaded="allLoaded" class="mint-loadmore-top">
+					<div slot="top" class="mint-loadmore-top">
 				      	<span v-show="topStatus === 'pull'" :class="{ 'rotate': topStatus === 'pull' }">↓</span>
 						<span v-show="topStatus === 'drop'" :class="{ 'rotate': topStatus === 'drop' }">↑</span>
 				      	<span v-show="topStatus === 'loading'">Loading...</span>
@@ -116,7 +116,6 @@
 	import countDown from '../components/countdown.vue';//引入倒计时组件
 	import tabbars from '../components/tabbars.vue';//引入选项卡组件
 	import { Storage } from '../assets/js/storage.js';//引入storage操作方法
-	import '../assets/js/util.js';//引入倒计时
 
 	export default {
 		name: "secondcomponent",
@@ -140,10 +139,7 @@
 		},
 		methods:{
 			getList(page){
-				Indicator.open({
-		            text: '加载中...',
-		            spinnerType: 'fading-circle'
-		        });
+				Indicator.open();
 				let that = this;
 				this.loading = true;
 	        	//获取信息列表

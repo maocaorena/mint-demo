@@ -18,6 +18,8 @@ import historyRecords from '../component/historyRecords.vue'//本期夺宝记录
 import announced from '../component/announced.vue'//本期夺宝记录
 import login_account from '../component/login.vue'//登录页
 import register from '../component/register.vue'//注册页
+import payOrder from '../component/payOrder.vue'//支付页
+import payResult from '../component/payResult.vue'//支付结果页
 
 const routes = [{
     path: '/',
@@ -68,6 +70,12 @@ const routes = [{
 		},{
 			path: '/tab/register',//注册页
 			component: register
+		},{
+			path: '/tab/home/payOrder',//支付页
+			component: payOrder
+		},{
+			path: '/tab/home/wechatPayResult',//支付结果页
+			component: payResult
 		}
 	]
 }];
@@ -77,6 +85,31 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+	/*console.log("to:",to);
+	console.log("from:",from);
+	var str = to.fullPath;
+	var c = "/"; // 要计算的字符
+	var regex = new RegExp(c, 'g'); // 使用g表示整个字符串都要匹配
+	var result = str.match(regex);
+	var tocount = !result ? 0 : result.length;
+	
+	var fromstr = from.fullPath;
+	var fromc = "/"; // 要计算的字符
+	var fromregex = new RegExp(c, 'g'); // 使用g表示整个字符串都要匹配
+	var fromresult = fromstr.match(fromregex);
+	var fromcount = !fromresult ? 0 : fromresult.length;
+	
+	if(tocount>fromcount){
+		console.log("进")
+		store.commit('changeRouterAnimate','fadeleft')
+	}else if(tocount == fromcount){
+		console.log("平级")
+		store.commit('changeRouterAnimate','fade')
+	}else{
+		console.log("出")
+		store.commit('changeRouterAnimate','faderight')
+	};
+*/
    	if (to.matched.some(r => r.meta.loginState)) {
    		let loginState = localStorage.getItem('memberInfo')
 	    if (loginState) {

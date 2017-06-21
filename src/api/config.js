@@ -3,14 +3,14 @@ export default {
 	//请求的接口，在请求的时候，如axios.get(url,config);这里的url会覆盖掉config中的url
 	url: '/user',
 	// 基础url前缀
-	// baseURL: 'http://1.migree.com.cn/duobao/',
+	//baseURL: 'http://1.migree.com.cn/duobao/',
 	baseURL: 'http://duobao.bianxianmao.com/duobao/',
 	// 请求方法同上
 	method: 'POST', // default
 
 	transformRequest: [function(data) {
 		// 这里可以在发送请求之前对请求数据做处理，比如form-data格式化等，这里可以使用开头引入的Qs（这个模块在安装axios的时候就已经安装了，不需要另外安装）
-		return data;
+		 return Qs.stringify(data)
 	}],
 
 	transformResponse: [function(data) {
@@ -37,7 +37,9 @@ export default {
 	params: {
 
 	},
-
+	data:{
+		
+	},
 	//设置超时时间
 	timeout: 10000,
 	//返回数据类型

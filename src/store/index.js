@@ -7,12 +7,13 @@ import getters from './getters'
 Vue.use(Vuex)
 
 const state = {
-	count: "damaoa", //首页商品列表
+	count: "damaoa",
 	shopping:null,
 	shoppingAlert: 'close',
 	token : false,
 	footerbarState: 1,
-	loginState: 1
+	loginState: 1,
+	alertLoginState:false,
 }
 
 export default new Vuex.Store({

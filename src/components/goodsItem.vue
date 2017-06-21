@@ -1,5 +1,9 @@
 <template>
 	<div class="goodsItem">
+		<img class="shop-type" v-if="goodsItemMessage.productType == 3"  src="../assets/img/home/ten_s@2x.png">
+		<img class="shop-type" v-if="goodsItemMessage.productType == 4" src="../assets/img/two/two.png">
+		<img class="shop-type" v-if="goodsItemMessage.productType == 5" src="../assets/img/home/five_s@2x.png">
+		<img class="shop-type" v-if="goodsItemMessage.productType == 6" src="../assets/img/home/hundred_s@2x.png">
         <router-link class="goodsItem-img" :to="{ path: '/tab/home/productDetail', query: { id: goodsItemMessage.productId ,periodId: goodsItemMessage.periodsId}}">
             <img v-lazy.container="goodsItemMessage.image1" alt="">
         </router-link>
@@ -28,12 +32,19 @@
 </template>
 <style lang="scss">
     .goodsItem{
+    	position: relative;
         width: 100%;
         height: 240px;
         color: #fff;
         background: #fff;
         border-radius: 3px;
         padding: 0 3px;
+    }
+    .shop-type{
+    	position: absolute;
+    	left: 4px;
+    	top: 3px;
+    	width: 33px;
     }
     .goodsItem-img{
         display: block;
@@ -71,6 +82,9 @@
         .goodsItem-num{
             p{
                 width: 50%;
+                span{
+                	display: block;
+                }
             }
         }
         .goodsItem-all{
@@ -95,6 +109,9 @@
 </style>
 <script type="text/javascript">
     import progrees from './progrees.vue';//引入进度条
+    import { User } from '../assets/js/user.js'; //引入User
+    import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
+    import { Util } from '../assets/js/util.js'; //引入User
 	export default {
 		props: [
             'goodsMessage',
@@ -103,17 +120,37 @@
         data(){
             return {
                 goodsItemMessage : this.goodsMessage,
+                userInfo: {},//用户个人信息
             }
         },
         components:{
             "progrees-v" : progrees
         },
+        computed:{
+        	alertLogin(){
+		    	return this.$store.state.alertLogin
+		    }
+        },
         methods:{
             buy(goodsItemMessage){
                 let from = this.from;
-                this.$store.commit('goShopping', goodsItemMessage);
-				this.$store.commit('showShopping', from);
-            }
+                let that = this;
+                Indicator.open();
+                this.api.getUserInfo(User.getToken(),function(data){
+					Indicator.close();
+					let res = data.data;
+					console.log(res);
+					if(res.successed){
+						that.userInfo = res.returnValue;
+						that.$store.commit('goShopping', goodsItemMessage);
+						that.$store.commit('showShopping', from);
+					}else{
+						Util.myAlert("请登录");
+						that.$store.commit('changeAlertLogin', true);
+					}
+				})
+                
+            },
         },
         created(){
 

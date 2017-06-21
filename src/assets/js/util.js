@@ -1,6 +1,6 @@
 const Util = {
 	myAlert : function( text, time ){
-		if(!document.getElementById('id')){
+		if(!document.getElementById('alertBg')){
 			let _time = time || 1000;
 			let parent = document.createElement('div');
 			parent.setAttribute('id', 'alertBg');

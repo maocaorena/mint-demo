@@ -4,7 +4,6 @@ import config from './config';
 import qs from 'qs';
 import { Util } from '../assets/js/util.js'; //引入Util
 import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
-
 class API {
 	getN (url,param) {
 		/*防止缓存*/
@@ -12,6 +11,8 @@ class API {
 		var randomNum2 = parseInt(Math.random() * 1000) + '' + new Date().getTime();
 		param['noCache' + randomNum1] = randomNum2;
 		config.url = url;
+		config.data = {};
+		config.params = {};
 		config.params = param;
 		return axios.get(url,config);//使用get方式
 		//return axios(config);//使用post方式
@@ -43,7 +44,10 @@ class API {
 		var randomNum2 = parseInt(Math.random() * 1000) + '' + new Date().getTime();
 		param['noCache' + randomNum1] = randomNum2;
 		config.url = url;
-		config.params = param;
+		config.params = {};
+		config.data = {};
+		config.data = param;
+		console.log(param);
 		return axios(config);//使用post方式
 	};
 
@@ -56,7 +60,7 @@ class API {
 			Util.myAlert("服务器未响应")
 		}
 	};
-	
+
 	// 获取商品列表
 	getProductList (appKey,status,page_index,page_size,callback){
 		this.ajax("product/getProductListApi.json",{
@@ -89,33 +93,33 @@ class API {
 	// 获取商品商品详情页中奖人信息
 	getWinnerMessage (periodId,callback){
 		this.ajax("order/getUserByWinApi.json",{
-			"periodId":periodId
-		},callback)
+					"periodId":periodId
+				},callback)
 	};
 
 	// 图文详情
 	getImageTextMessage (periodId,goodsId,callback){
 		this.ajax("product/getProductDetailApi.json",{
-			"periodId":periodId,
-			"goodsId":goodsId
-		},callback)
+					"periodId":periodId,
+					"goodsId":goodsId
+				},callback)
 	};
 
 	// 商品详情页晒单
 	getSingle (page_index,page_size,goodsId = '',callback){
 		this.ajax("sunorder/getSunOrderListApi.json",{
-			"goodsId":goodsId,
-			"page_index":page_index,
-			"page_size":page_size
-		},callback)
+					"goodsId":goodsId,
+					"page_index":page_index,
+					"page_size":page_size
+				},callback)
 	};
 
 	// 最新揭晓
 	getLastAnnounList (page_index,page_size,callback){
 		this.ajax("period/getPeroidListByLastAnnounApi.json",{
-			"page_index":page_index,
-			"page_size":page_size
-		},callback)
+					"page_index":page_index,
+					"page_size":page_size
+				},callback)
 	};
 
 	// 获取商品详情
@@ -160,7 +164,7 @@ class API {
 			"goodsId":goodsId
 		},callback)
 	};
-
+	
 	//账号密码登录
 	login (appKey,mobile,password,callback){
 		this.ajaxPost("userLogin/loginUserByPassword.json",{
@@ -216,6 +220,24 @@ class API {
 		this.ajaxPost("user/getUserAmount.json",{
 			"token": token,
 			"appKey": appKey
+		},callback)
+	};
+	
+	//创建订单
+	creatOrder (params,callback){
+        this.ajaxPost('order/creatOrderApi.json',params,callback)
+	};
+	
+	//余额支付
+	balancePay(params,callback){
+		this.ajaxPost('order/payOrderApi.json',params,callback)
+	};
+	
+	// 查询订单是否成功
+	afterPayOrder(token,orderNums,callback){
+		this.ajax("order/afterPayOrderApi.json",{
+			"token": token,
+			"orderNums":orderNums
 		},callback)
 	};
 }

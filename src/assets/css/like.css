@@ -48,10 +48,10 @@
 .none{
 	display: none;
 }
+
 /*mint-ui 提示框字体颜色*/
 .toastStyle .mint-toast-text{
 	color: #fff;
-    font-size: 15px;
 }
 
 /*弹出提示框*/
@@ -61,7 +61,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    z-index: 13;
+    z-index: 1113;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -90,4 +90,47 @@
     text-align: center;
     text-overflow: ellipsis;
     font-size: 15px;
+}
+
+/*底部弹窗样式*/
+.alertBottom{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+	margin: auto;
+	width: 100%;
+	background: rgba(0,0,0,0.5);
+	z-index: 110;
+}
+
+/*上下滑入滑出动画*/
+.fade-enter-active, .fade-leave-active {
+  	-webkit-transition: .2s ease-out;
+  	transition: .2s ease-out;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  	-webkit-transform: translate3d(0,100%,0);
+  	transform: translate3d(0,100%,0);
+}
+
+/*左右滑入滑出动画*/
+.fadeleft-enter-active, .fadeleft-leave-active {
+  	-webkit-transition: .2s ease-out;
+  	transition: .2s ease-out;
+}
+.fadeleft-enter, .fadeleft-leave-to /* .fade-leave-active in <2.1.8 */ {
+  	-webkit-transform: translate3d(-100%,0,0);
+  	transform: translate3d(-100%,0,0);
+}
+
+/*左右滑入滑出动画*/
+.faderight-enter-active, .faderight-leave-active {
+  	-webkit-transition: .2s ease-out;
+  	transition: .2s ease-out;
+}
+.faderight-enter, .faderight-leave-to /* .fade-leave-active in <2.1.8 */ {
+  	-webkit-transform: translate3d(100%,0,0);
+  	transform: translate3d(100%,0,0);
 }

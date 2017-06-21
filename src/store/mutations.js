@@ -16,5 +16,11 @@ export default {
 	},
 	changeLoginState(state, loginState) {
 		state.loginState = loginState;
+	},
+	changeRouterAnimate(state, count) {
+		state.count = count;
+	},
+	changeAlertLogin(state, alertLoginState) {
+		state.alertLoginState = alertLoginState;
 	}
 }

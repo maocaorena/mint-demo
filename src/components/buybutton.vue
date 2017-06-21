@@ -1,10 +1,11 @@
 <template>
 	<button class="buybutton">
-		{{btntext}}
+		<slot></slot>
 	</button>
 </template>
 <style lang="scss">
 	.buybutton{
+		margin: 0 auto;
 		display: block;
 		width: 95%;
 		height: 33px;
@@ -16,11 +17,3 @@
 		color: #fff;
 	}
 </style>
-<script type="text/javascript">
-	import { Progress } from 'mint-ui';
-	export default {
-		props: [
-            'btntext'
-        ]
-	}
-</script>

@@ -47,7 +47,6 @@ class API {
 		config.params = {};
 		config.data = {};
 		config.data = param;
-		console.log(param);
 		return axios(config);//使用post方式
 	};
 
@@ -238,6 +237,26 @@ class API {
 		this.ajax("order/afterPayOrderApi.json",{
 			"token": token,
 			"orderNums":orderNums
+		},callback)
+	};
+	
+	// 获取订单列表
+	getOrderRecord(page_index,page_size,token,state,callback){
+		this.ajax("order/getOrderRecordByMymemberApi.json",{
+			"page_index": page_index,
+			"page_size":page_size,
+			"token":token,
+			"state":state,
+		},callback)
+	};
+	
+	// 获取中奖列表
+	getWinRecord(page_index,page_size,memberId,orderState,callback){
+		this.ajax("order/getWinOrderRecordApi.json",{
+			"page_index": page_index,
+			"page_size":page_size,
+			"memberId":memberId,
+			"orderState":orderState,
 		},callback)
 	};
 }

@@ -20,6 +20,8 @@ import login_account from '../component/login.vue'//登录页
 import register from '../component/register.vue'//注册页
 import payOrder from '../component/payOrder.vue'//支付页
 import payResult from '../component/payResult.vue'//支付结果页
+import duobaorecords from '../component/duobao-records.vue'//夺宝记录页
+import winningRecords from '../component/winningRecords.vue'//中奖记录页
 
 const routes = [{
     path: '/',
@@ -76,6 +78,12 @@ const routes = [{
 		},{
 			path: '/tab/home/wechatPayResult',//支付结果页
 			component: payResult
+		},{
+			path: '/tab/account/winningRecords',//中奖记录页
+			component: winningRecords
+		},{
+			path: '/tab/account/duobao-records',//夺宝记录页
+			component: duobaorecords
 		}
 	]
 }];

@@ -183,10 +183,10 @@
 			}
 		},
 		created() {
-			this.getBannerImg();
 			this.getLaba();
 		},
 		mounted() {
+			this.getBannerImg();
 			this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 		}
 	}

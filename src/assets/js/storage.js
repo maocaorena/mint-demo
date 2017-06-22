@@ -5,7 +5,7 @@
 	//本地存储字段
 	memberInfo: 'memberInfo', //用户信息
 	searchRecords: 'searchRecords', //搜索记录
-	memberId: 'memberId', //用户id
+	id: 'id', //用户id
 	token: 'token', //用户token值,
 	autoLoginQuery: 'autoLoginQuery',
 	redirectLoginUrl: 'redirectLoginUrl', //免登陆唤醒登陆地址，对方登陆页面

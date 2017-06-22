@@ -48,10 +48,11 @@
     }
     .tabbars button{
     	display: block;
-        width: 78%;
+        width: 90%;
         height: 100%;
         background: #fff;
         border-bottom: 2px solid #fff;
+        font-size: 16px;
     }
     .tabbars .redborder{
         border-color: #f93069;

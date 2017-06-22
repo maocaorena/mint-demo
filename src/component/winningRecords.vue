@@ -5,19 +5,20 @@
 			<ul class="page-infinite-list wr-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60">
 				<li class="page-infinite-listitem wr-item flex" v-for="(goodsItem,index) of list" :class="{borderRight: index%2 == 0}">
                     <div class="wr-item-img flex-zhong" @click="goProductDetail(goodsItem)">
-                    	<img v-lazy.container="goodsItem.image1"/>
+                    	<img class="pic" v-lazy.container="goodsItem.image1"/>
+                    	<img class="indexIcon" src="../assets/img/account/share_prize@2x.png"/>
                     </div>
                     <div class="wr-item-right">
                     	<h5 class="ellipsis"><span>【{{goodsItem.periodsNumber}}期】</span>{{goodsItem.productName}}</h5>
                     	<div class="wr-item-main">
-                    		<p class="db-mycount flex"><span >本期参与：<i class="red">{{goodsItem.buyCount}}</i></span></p>
-                    		<p class="db-optime">揭晓时间：<span class="red">{{goodsItem.dbOpenTime}}</span></p>
-                    		<p class="db-optime">幸运号码：<span class="red">{{goodsItem.winNumber}}</span></p>
+                    		<p class="db-mycount flex">本期参与：{{goodsItem.buyCount}}次</p>
+                    		<p class="db-optime">揭晓时间：{{goodsItem.dbOpenTime}}</p>
+                    		<p class="db-lucknum">幸运号码：{{goodsItem.winNumber}}</p>
                     		
                     	</div>
                     </div>
                     <!--进行中-->
-                    <button class="wr-buy" v-if="goodsItem.state == 1" @click="buy(goodsItem)">追加</button>
+                    <button class="wr-buy" @click="buy(goodsItem)">领取奖品</button>
                	</li>
 			</ul>
 			<p v-if="noMore" class="noMore">
@@ -133,28 +134,36 @@
 		.wr-item{
 			position: relative;
 			width: 100%;
-			padding: 15px 5px;
+			padding: 17px 5px;
 		}
 		.wr-item-img{
+			position: relative;
 			width: 32%;
-			img{
+			.pic{
 				display: block;
-				width: 100%;
+				width: 85%;
+			}
+			.indexIcon{
+				position: absolute;
+			    top: 65%;
+			    right: 13px;
+			    width: 30px;
 			}
 		}
 		.wr-item-right{
 			padding-left: 5px;
 			width: 66%;
 			h5{
-				margin-bottom: 6px;
-				width: 90%;
+				margin-bottom: 13px;
+				width: 100%;
 				font-size: 13px;
 				color: #333;
 				font-weight: 400;
+				span{
+					color: #999
+				}
 			}
 			p{
-				height: 18px;
-				font-size: 12px;
 				color: #999;
 			}
 			i{
@@ -163,6 +172,19 @@
 		}
 		.wr-item-main{
 			width: 100%;
+		}
+		.db-mycount{
+			width: 100%;
+			height: 20px;
+			font-size: 12px;
+		}
+		.db-optime{
+			width: 100%;
+			height: 35px;
+			font-size: 12px;
+		}
+		.db-lucknum{
+			font-size: 14px;
 		}
 		.wr-buy{
 			position: absolute;

@@ -10,10 +10,10 @@
                     <div class="dbr-item-right">
                     	<h5 class="ellipsis">{{goodsItem.productName}}</h5>
                     	<!--进行中-->
-                    	<div class="dbr-item-main" v-if="goodsItem.state == 1">
+                    	<div class="dbr-item-main ing" v-if="goodsItem.state == 1">
                     		<p class="db-periodsNumber">期数：{{goodsItem.periodsNumber}}</p>
                     		<p class="db-mycount flex"><span >本期参与：<i class="red">{{goodsItem.buyCount}}</i></span> <span class="blue" @click="showLuckNum(goodsItem)">wo的幸运号码</span></p>
-                    		<p class="db-optime">购买时间：{{goodsItem.created}}</p>
+                    		<p>购买时间：{{goodsItem.created}}</p>
                     		<progrees-v class="db-progrees" :length="(goodsItem.dbTotalCount-goodsItem.dbSurplusCount)/goodsItem.dbTotalCount"></progrees-v>
                     		<p class="flex db-num">
                     			<span>总需 <i>{{goodsItem.dbTotalCount}}</i></span>
@@ -24,7 +24,7 @@
                     	<div class="dbr-item-main" v-else-if="goodsItem.state == 2">
                     		<p class="db-periodsNumber">期数：{{goodsItem.periodsNumber}}</p>
                     		<p class="db-mycount flex"><span >本期参与：<i class="red">{{goodsItem.buyCount}}</i></span> <span class="blue">ta的幸运号码</span></p>
-                    		<p class="db-optime">购买时间：{{goodsItem.created}}</p>
+                    		<p>购买时间：{{goodsItem.created}}</p>
                     		<progrees-v class="db-progrees" :length="(goodsItem.dbTotalCount-goodsItem.dbSurplusCount)/goodsItem.dbTotalCount"></progrees-v>
                     		<p class="flex db-num">
                     			<span>总需 <i>{{goodsItem.dbTotalCount}}</i></span>
@@ -32,13 +32,13 @@
                     		</p>
                     	</div>
                     	<!--已揭晓-->
-                    	<div class="dbr-item-main" v-else>
+                    	<div class="dbr-item-main ed" v-else>
                     		<p class="db-periodsNumber">期数：{{goodsItem.periodsNumber}}</p>
-                    		<p class="db-optime">获奖用户：<span>{{goodsItem.winMemberName}}</span></p>
+                    		<p>获奖用户：<span>{{goodsItem.winMemberName}}</span></p>
                     		<p class="db-mycount flex"><span >本期参与：<i class="red">{{goodsItem.buyCount}}</i></span></p>
-                    		<p class="db-optime">幸运号码：<span class="red">{{goodsItem.winNumber}}</span></p>
-                    		<p class="db-optime">购买时间：<span class="red">{{goodsItem.created}}</span></p>
-                    		<p class="db-optime">揭晓时间：<span class="red">{{goodsItem.dbOpenTime}}</span></p>
+                    		<p>幸运号码：<span class="red">{{goodsItem.winNumber}}</span></p>
+                    		<p>购买时间：<span class="red">{{goodsItem.created}}</span></p>
+                    		<p>揭晓时间：<span class="red">{{goodsItem.dbOpenTime}}</span></p>
                     		
                     	</div>
                     </div>
@@ -219,11 +219,11 @@
 		.dbr-item{
 			position: relative;
 			width: 100%;
-			padding: 15px 5px;
+			padding: 17px 5px;
 			border-bottom: 1px solid #ccc;
 		}
 		.dbr-item-img{
-			width: 32%;
+			width: 33%;
 			img{
 				display: block;
 				width: 100%;
@@ -231,9 +231,8 @@
 		}
 		.dbr-item-right{
 			padding-left: 5px;
-			width: 66%;
+			width: 67%;
 			h5{
-				margin-bottom: 6px;
 				width: 90%;
 				font-size: 13px;
 				color: #333;
@@ -247,6 +246,12 @@
 			i{
 				font-style: normal;
 			}
+		}
+		.ed{
+			margin-top: 5px;
+		}
+		.ing{
+			margin-top: 10px;
 		}
 		.dbr-item-main{
 			width: 100%;
@@ -265,7 +270,7 @@
 			}
 		}
 		.db-progrees{
-			margin-top: 15px;
+			margin-top: 17px;
 			margin-bottom: 10px;
 			padding-right: 3px;
 			width: 70%;
@@ -297,14 +302,14 @@
 		    height: 60px;
 		    position: absolute;
 		    left: 80%;
-		    bottom: 10%;
+		    bottom: 16%;
 		}
 		.dbr-buy-img2{
 			width: 60px;
 		    height: 60px;
 		    position: absolute;
 		    left: 80%;
-		    bottom: 35%;
+		    bottom: 33%;
 		}
 	}
 </style>

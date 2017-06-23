@@ -259,5 +259,12 @@ class API {
 			"orderState":orderState,
 		},callback)
 	};
+	
+	// 获取收货地址列表
+	getDeliveryAddressList(token,callback){
+		this.ajax("deliveryAddress/getDeliveryAddressList.json",{
+			"token": token
+		},callback)
+	};
 }
 export default API;

@@ -22,6 +22,8 @@ import payOrder from '../component/payOrder.vue'//支付页
 import payResult from '../component/payResult.vue'//支付结果页
 import duobaorecords from '../component/duobao-records.vue'//夺宝记录页
 import winningRecords from '../component/winningRecords.vue'//中奖记录页
+import receiptAddress from '../component/receiptAddress.vue'//收货地址
+import receiptAddressHandle from '../component/receiptAddress-handle.vue'//收货地址
 
 const routes = [{
     path: '/',
@@ -84,6 +86,12 @@ const routes = [{
 		},{
 			path: '/tab/account/duobao-records',//夺宝记录页
 			component: duobaorecords
+		},{
+			path: '/tab/account/receiptAddress',//收货地址页
+			component: receiptAddress
+		},{
+			path: '/tab/account/receiptAddress/:handle',//收货地址页
+			component: receiptAddressHandle
 		}
 	]
 }];

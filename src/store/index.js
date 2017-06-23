@@ -14,6 +14,8 @@ const state = {
 	footerbarState: 1,
 	loginState: 1,
 	alertLoginState:false,
+	addrMode: {},
+	addrAdd: {}
 }
 
 export default new Vuex.Store({

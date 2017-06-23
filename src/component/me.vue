@@ -31,7 +31,7 @@
 			</div>
 			<menu-bar :togo="'/tab/account/duobao-records'" :icon="'icon-share'" :height="50" :title="'我的晒单'"></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-recharge'" :height="50" :title="'充值记录'"></menu-bar>
-			<menu-bar :togo="'/home'" :icon="'icon-ad'" :height="60" :title="'收货地址'" class="account-menubar" ></menu-bar>
+			<menu-bar :togo="'/tab/account/receiptAddress'" :icon="'icon-ad'" :height="60" :title="'收货地址'" class="account-menubar" ></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-setting'" :height="50" :title="'设置'"></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-QA'" :height="50" :title="'常见问题'"></menu-bar>
 		</div>

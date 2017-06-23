@@ -17,8 +17,8 @@
                     		
                     	</div>
                     </div>
-                    <!--进行中-->
-                    <button class="wr-buy" @click="buy(goodsItem)">领取奖品</button>
+                    <!--领取奖品-->
+                    <button class="wr-buy" @click="getPrize()">领取奖品</button>
                	</li>
 			</ul>
 			<p v-if="noMore" class="noMore">
@@ -62,6 +62,9 @@
 			"tabbars-v": tabbars,
 		},
 		methods:{
+			getPrize(){
+				console.log(111);
+			},
 			goHome(){
 				this.$router.push("/tab/home")
 			},

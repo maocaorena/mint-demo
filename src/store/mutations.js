@@ -22,5 +22,11 @@ export default {
 	},
 	changeAlertLogin(state, alertLoginState) {
 		state.alertLoginState = alertLoginState;
+	},
+	pushAddrMode(state, addrMode) {//更改收货地址  传入下一个页面信息
+		state.addrMode = addrMode;
+	},
+	pushAddrAdd(state, addrAdd) {//增加收货地址 传入下一个页面信息
+		state.addrAdd = addrAdd;
 	}
 }

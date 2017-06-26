@@ -266,5 +266,10 @@ class API {
 			"token": token
 		},callback)
 	};
+	
+	// 添加收货地址列表
+	addDeliveryAddress(params,callback){
+		this.ajaxPost("deliveryAddress/addDeliveryAddress.json",params,callback)
+	};
 }
 export default API;

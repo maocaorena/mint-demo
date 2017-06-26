@@ -26,7 +26,6 @@
 <script type="text/javascript">
 	import buybutton from '../components/buybutton.vue';//引入按钮
 	import alertlucknum from '../components/lucknum.vue';//引入幸运号弹窗
-	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
 	import { User } from '../assets/js/user.js'; //引入User
 	import { Util } from '../assets/js/util.js'; //引入Util
 	export default{

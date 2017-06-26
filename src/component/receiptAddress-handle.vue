@@ -12,25 +12,38 @@
 			</div>
 			<div class="addrMode-item flex flex-sc">
 				<p>所在地区</p>
-				<input type="text" id="name" placeholder="请选择省市区" @click="selectCity" v-model="addrCity" readonly/>
+				<input type="text" id="name" placeholder="请选择省市区" v-model="addrCity" readonly/>
 			</div>
 			<div class="addrMode-item flex flex-sc">
 				<p>详细地址</p>
 				<input type="text" placeholder="请填写详细地址" v-model="addrInfo.address"/>
 			</div>
+			<buy-button class="save" @click.native="save">保存</buy-button>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { User } from '../assets/js/user.js'; //引入User
+	import { Util } from '../assets/js/util.js'; //引入Util
 	import Picker from 'better-picker';
-	import {city} from '../plugins/city/city.js';
+	import { city } from '../plugins/city/city.js';
 	import '../plugins/city/picker.js';
+	import buybutton from '../components/buybutton.vue';//引入按钮
+	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
 
 	export default {
 		data() {
 			return {
-				addrInfo: {}, //编辑地址
+				addrInfo: {
+					consignee : '',
+					mobile : '',
+					province : '',
+					city : '',
+					region : '',
+					address : '',
+					token : ''
+				}, //编辑地址
 				addrCity: ''
 			}
 		},
@@ -44,14 +57,50 @@
 				return this.$store.state.addrMode;
 			}
 		},
+		components:{
+			"buy-button" : buybutton,
+		},
 		methods: {
-			selectCity(){
-				
+			save(){
+				let that = this;
+				console.log(this.addrInfo);
+			  	if(this.addrInfo.consignee.length == 0){
+			    	Util.myAlert('收货人不能为空');
+			    	return;
+			  	}else if(this.addrInfo.mobile.length == 0){
+			    	Util.myAlert('手机号码不能为空')
+			    	return;
+			  	}else if(!(/^1[3|4|5|7|8]\d{9}$/.test(this.addrInfo.mobile))){
+			    	Util.myAlert('手机号码格式不正确');
+			    	return;
+				}else if(this.addrCity.length == 0){
+				    Util.myAlert('省市区没有选');
+				    return;
+			  	}else if(this.addrInfo.address.length == 0){
+			   		Util.myAlert('具体地址不能为空');
+			    	return;
+			  	}else{
+			  		Indicator.open();
+			  		console.log("yes");
+			  		if(this.$route.params.handle === 'mode'){
+			  			console.log("mode");
+			  		}else{
+			  			console.log("add");
+			  			this.addrInfo.token = User.getToken();
+			  			this.api.addDeliveryAddress(this.addrInfo,function(data){
+			  				Indicator.close();
+			  				Util.myAlert('添加成功');
+			  				that.$router.go(-1);
+			  			})
+			  		}
+			  	};
 			}
 		},
 		created() {
-			this.addrInfo = this.addrMode;
-			this.addrCity = this.addrInfo.province +' '+ this.addrInfo.city + ' ' + this.addrInfo.region;
+			if(this.$route.params.handle === 'mode'){
+				this.addrInfo = this.addrMode;
+				this.addrCity = this.addrInfo.province +' '+ this.addrInfo.city + ' ' + this.addrInfo.region;
+			};
 		},
 		mounted() {
 			let that = this;
@@ -208,6 +257,9 @@
 				color: #aaa;
 				font-size: 13px;
 			}
+		}
+		.save{
+			margin-top: 30px;
 		}
 	}
 </style>

@@ -12,7 +12,7 @@
 				</div>
 			</div>
 		</div>
-		<button class="addAddr" @click="addAddr()">+新增地址</button>
+		<button class="addAddr" @click="addrAdd()">+新增地址</button>
 	</div>
 </template>
 
@@ -42,8 +42,7 @@
 				this.$store.commit("pushAddrMode",item)
 				this.$router.push("/tab/account/receiptAddress/mode");
 			},
-			addAddr(){
-				
+			addrAdd(){
 				this.$router.push({
 					path: "/tab/account/receiptAddress/add"
 				})

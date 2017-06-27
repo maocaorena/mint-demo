@@ -260,6 +260,14 @@ class API {
 		},callback)
 	};
 	
+	// 领奖到余额
+	addUserBalance(token,orderId,callback){
+		this.ajaxPost("user/addUserBalance.json",{
+			"token" : token,
+			"orderId" : orderId
+		},callback)
+	};
+	
 	// 获取收货地址列表
 	getDeliveryAddressList(token,callback){
 		this.ajax("deliveryAddress/getDeliveryAddressList.json",{
@@ -270,6 +278,19 @@ class API {
 	// 添加收货地址列表
 	addDeliveryAddress(params,callback){
 		this.ajaxPost("deliveryAddress/addDeliveryAddress.json",params,callback)
+	};
+	
+	// 删除收货地址
+	deleteAddress(token,id,callback){
+		this.ajaxPost("deliveryAddress/deleteDeliveryAddress.json",{
+			"token": token,
+			"id": id
+		},callback)
+	};
+	
+	// 编辑收货地址
+	updateAddress(params,callback){
+		this.ajaxPost("deliveryAddress/updateDeliveryAddress.json",params,callback)
 	};
 }
 export default API;

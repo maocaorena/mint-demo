@@ -202,7 +202,6 @@
 			        			cutTime--;
 			        			console.log('0000');
 								that.cutdown = cutTime + "秒后重发";
-								
 								if(cutTime == 0) {
 									clearInterval(myTime);
 									that.cutdown = "获取验证码";

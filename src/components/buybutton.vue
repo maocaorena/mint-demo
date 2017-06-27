@@ -10,7 +10,6 @@
 		width: 95%;
 		height: 33px;
 		background: #f93069;
-		text-align: center;
 		font-size: 16px;
 		line-height: 30px;
 		border-radius: 5px;

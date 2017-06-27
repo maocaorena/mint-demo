@@ -48,10 +48,6 @@
 			}
 		},
 		computed: {
-			//新增地址
-			addrAdd() {
-				return this.$store.state.addrAdd;
-			},
 			//编辑地址
 			addrMode() {
 				return this.$store.state.addrMode;
@@ -83,9 +79,14 @@
 			  		Indicator.open();
 			  		console.log("yes");
 			  		if(this.$route.params.handle === 'mode'){
-			  			console.log("mode");
+			  			this.addrInfo.id = this.addrMode.id;
+			  			this.addrInfo.token = User.getToken();
+			  			this.api.updateAddress(this.addrInfo,function(data){
+			  				Indicator.close();
+			  				Util.myAlert('修改成功');
+			  				that.$router.go(-1);
+			  			})
 			  		}else{
-			  			console.log("add");
 			  			this.addrInfo.token = User.getToken();
 			  			this.api.addDeliveryAddress(this.addrInfo,function(data){
 			  				Indicator.close();
@@ -98,7 +99,11 @@
 		},
 		created() {
 			if(this.$route.params.handle === 'mode'){
-				this.addrInfo = this.addrMode;
+				for (let s in this.addrMode) {
+					if(this.addrInfo[s] !== undefined ){
+						this.addrInfo[s] = this.addrMode[s];
+					};
+				};
 				this.addrCity = this.addrInfo.province +' '+ this.addrInfo.city + ' ' + this.addrInfo.region;
 			};
 		},
@@ -121,7 +126,7 @@
 					temp.value = index;
 					list.push(temp);
 				})
-			}
+			};
 
 			creatList(city, first);
 
@@ -132,8 +137,8 @@
 					text: '',
 					value: 0
 				}];
-			}
-
+			};
+			
 			if(city[selectedIndex[0]].sub[selectedIndex[1]].hasOwnProperty('sub')) {
 				creatList(city[selectedIndex[0]].sub[selectedIndex[1]].sub, third);
 			} else {
@@ -141,7 +146,7 @@
 					text: '',
 					value: 0
 				}];
-			}
+			};
 
 			var picker = new Picker({
 				data: [first, second, third],
@@ -183,7 +188,7 @@
 								value: 0
 							}];
 							checked[2] = 0;
-						}
+						};
 					} else {
 						second = [{
 							text: '',
@@ -195,13 +200,13 @@
 						}];
 						checked[1] = 0;
 						checked[2] = 0;
-					}
+					};
 
 					picker.refillColumn(1, second);
 					picker.refillColumn(2, third);
-					picker.scrollColumn(1, 0)
-					picker.scrollColumn(2, 0)
-				}
+					picker.scrollColumn(1, 0);
+					picker.scrollColumn(2, 0);
+				};
 
 				function secondChange() {
 					third = [];
@@ -220,8 +225,8 @@
 						checked[2] = 0;
 						picker.refillColumn(2, third);
 						picker.scrollColumn(2, 0)
-					}
-				}
+					};
+				};
 
 			});
 

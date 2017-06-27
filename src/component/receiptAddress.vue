@@ -1,14 +1,14 @@
 <template>
 	<div id="receiptAddress" class="wrapper">
 		<div class="content">
-			<div class="addItem" v-for="item of list">
+			<div class="addItem" v-for="(item, index) of list">
 				<h5 class="addItem-tit flex ellipsis">
 					<span>{{item.consignee}}</span>&nbsp;&nbsp;<span>{{item.mobile}}</span>
 				</h5>
 				<p class="addItem-addMessage">{{item.province}}{{item.city}}{{item.address}}</p>
 				<div class="addItem-addmode flex flex-hlr flex-sc">
 					<a href="javascript:;" @click="addrMode(item)"><i class="iconfont icon-bianji"></i>编辑</a>
-					<a href="javascript:;"><i class="iconfont icon-delete"></i>删除</a>
+					<a href="javascript:;" @click="deleteAddr(item.id,index)"><i class="iconfont icon-delete"></i>删除</a>
 				</div>
 			</div>
 		</div>
@@ -19,6 +19,7 @@
 <script type="text/javascript">
 	import { User } from '../assets/js/user.js'; //引入User
 	import { Util } from '../assets/js/util.js'; //引入Util
+	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
 	
 	export default{
 		data(){
@@ -27,6 +28,21 @@
 			}
 		},
 		methods:{
+			deleteAddr(id,index){
+				console.log(id,index);
+				let that = this;
+				Indicator.open();
+				this.api.deleteAddress(User.getToken(),id,function(data){
+					Indicator.close();
+					let res = data.data;
+					if(res.successed){
+						Util.myAlert('删除成功！')
+						that.list.splice(index,1);
+					}else{
+						Util.myAlert('删除失败，请稍后重试')
+					};
+				})
+			},
 			getAddList(){
 				let that = this;
 				this.api.getDeliveryAddressList(User.getToken(),function(data){

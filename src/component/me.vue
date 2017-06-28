@@ -16,11 +16,11 @@
 			    </div>
 			</div>
 			<div class="account-topthree flex">
-				<router-link class="account-topthree-item flex flex-s flex-hc flex-sc" to="/tab/account/duobao-records">
+				<router-link class="account-topthree-item flex flex-s flex-hc flex-sc" to="/tab/account/duobao-records/0">
 		    		<i class="iconfont icon-record"></i>
 					<p>夺宝记录</p>
 		    	</router-link>
-				<router-link class="account-topthree-item flex flex-s flex-hc flex-sc" to="/tab/account/winningRecords">
+				<router-link class="account-topthree-item flex flex-s flex-hc flex-sc" to="/tab/account/winningRecords/0">
 		    		<i class="iconfont icon-prize"></i>
 					<p>中奖记录</p>
 		    	</router-link>
@@ -32,7 +32,7 @@
 			<menu-bar :togo="'/tab/account/duobao-records'" :icon="'icon-share'" :height="50" :title="'我的晒单'"></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-recharge'" :height="50" :title="'充值记录'"></menu-bar>
 			<menu-bar :togo="'/tab/account/receiptAddress'" :icon="'icon-ad'" :height="60" :title="'收货地址'" class="account-menubar" ></menu-bar>
-			<menu-bar :togo="'/home'" :icon="'icon-setting'" :height="50" :title="'设置'"></menu-bar>
+			<menu-bar :togo="'/tab/account/aaaa'" :icon="'icon-setting'" :height="50" :title="'设置'"></menu-bar>
 			<menu-bar :togo="'/home'" :icon="'icon-QA'" :height="50" :title="'常见问题'"></menu-bar>
 		</div>
 		<footer-bar></footer-bar>

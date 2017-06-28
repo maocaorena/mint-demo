@@ -81,16 +81,16 @@ const routes = [{
 			path: '/tab/home/wechatPayResult',//支付结果页
 			component: payResult
 		},{
-			path: '/tab/account/winningRecords',//中奖记录页
+			path: '/tab/account/winningRecords/:status',//中奖记录页
 			component: winningRecords
 		},{
-			path: '/tab/account/duobao-records',//夺宝记录页
+			path: '/tab/account/duobao-records/:status',//夺宝记录页
 			component: duobaorecords
 		},{
 			path: '/tab/account/receiptAddress',//收货地址页
 			component: receiptAddress
 		},{
-			path: '/tab/account/receiptAddress/:handle',//收货地址页
+			path: '/tab/account/receiptAddress/:handle',//收货地址编辑页
 			component: receiptAddressHandle
 		}
 	]

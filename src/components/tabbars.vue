@@ -8,7 +8,7 @@
 <template>
 	<div class="tabbars flex">
         <div class="tabbars-item flex-zhong" v-on:click="clickThis(index)" v-for="(item, index) of itemName">
-            <button :class="{redborder : selectthis == index}">{{item}}</button>
+            <button :class="{redborder : index == selectthis}">{{item}}</button>
             <span  v-if="index === 1 && showTop === 'y'" :class="{upOrDown : tostatus === 'surplusasc',upOrDown1 : tostatus === 'surplusdesc'}"></span>
         </div>
 	</div>
@@ -63,7 +63,8 @@
 		props: [
             "names",
             "tostatus",
-            "showTop"
+            "showTop",
+            "initTab"
         ],
         data(){
             return{
@@ -82,7 +83,10 @@
             }
         },
         created(){
-
+			console.log("111",this.initTab);
+			if(this.initTab != undefined){
+				this.selectthis = this.initTab;
+			}
         }
 	}
 </script>

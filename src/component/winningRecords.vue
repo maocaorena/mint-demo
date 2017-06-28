@@ -1,24 +1,45 @@
 <template>
 	<div id="winningRecords" class="wrapper">
-		<tabbars-v @clickThis="isThis" :names='["待收货","已收货","已过期"]'></tabbars-v>
+		<tabbars-v @clickThis="isThis" :names='["待收货","已收货","已过期"]' :initTab="$route.params.status"></tabbars-v>
 		<div class="content">
 			<ul class="page-infinite-list wr-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="60">
-				<li class="page-infinite-listitem wr-item flex" v-for="(goodsItem,index) of list" :class="{borderRight: index%2 == 0}">
-                    <div class="wr-item-img flex-zhong" @click="goProductDetail(goodsItem)">
-                    	<img class="pic" v-lazy.container="goodsItem.image1"/>
-                    	<img class="indexIcon" src="../assets/img/account/share_prize@2x.png"/>
+				<li class="page-infinite-listitem wr-item" v-for="(goodsItem,index) of list" :class="{borderRight: index%2 == 0}">
+                    <div class="flex wr-item-inwrapper">
+	                    <div class="wr-item-img flex-zhong" @click="goProductDetail(goodsItem)">
+	                    	<img class="pic" v-lazy.container="goodsItem.image1"/>
+	                    	<img class="indexIcon" src="../assets/img/account/share_prize@2x.png"/>
+	                    </div>
+	                    <div class="wr-item-right">
+	                    	<h5 class="ellipsis"><span>【{{goodsItem.periodsNumber}}期】</span>{{goodsItem.productName}}</h5>
+	                    	<div class="wr-item-main">
+	                    		<p class="db-mycount flex">本期参与：{{goodsItem.buyCount}}次</p>
+	                    		<p class="db-optime">揭晓时间：{{goodsItem.dbOpenTime}}</p>
+	                    		<p class="db-lucknum">幸运号码：{{goodsItem.winNumber}}</p>
+	                    	</div>
+	                    </div>
+	                    <!--领取奖品-->
+	                    <button class="wr-buy"  v-if="goodsItem.address == null && goodsItem.orderState != 5 && state=='2,3'" @click="getPrize(goodsItem,index)">领取奖品</button>
+	                    <button class="wr-buy" v-if="goodsItem.address != null && goodsItem.orderState == 2" >待发货</button>
+	                    <button class="wr-buy" v-if="goodsItem.address && goodsItem.orderState == 3" @click="confirmReceipt(goodsItem.orderId,index)">确认收货</button>
+	                    <button class="wr-buy" v-if="goodsItem.orderState == 4 && goodsItem.isSunOrder === 'n'" >去晒单</button>
+	                    <button class="wr-buy" v-if="goodsItem.orderState == 4 && goodsItem.isSunOrder === 'y'" >查看晒单</button>
+	                    <img v-if="goodsItem.orderState == 5" src="../assets/img/new/overdue@2x.png"/>
                     </div>
-                    <div class="wr-item-right">
-                    	<h5 class="ellipsis"><span>【{{goodsItem.periodsNumber}}期】</span>{{goodsItem.productName}}</h5>
-                    	<div class="wr-item-main">
-                    		<p class="db-mycount flex">本期参与：{{goodsItem.buyCount}}次</p>
-                    		<p class="db-optime">揭晓时间：{{goodsItem.dbOpenTime}}</p>
-                    		<p class="db-lucknum">幸运号码：{{goodsItem.winNumber}}</p>
-                    	</div>
-                    </div>
-                    <!--领取奖品-->
-                    <button class="wr-buy"  v-if="goodsItem.address == null && goodsItem.orderState != 5 && state=='2,3'" @click="getPrize(goodsItem,index)">领取奖品</button>
-                    <button class="wr-buy" v-if="goodsItem.orderState == 4&&goodsItem.isSunOrder === 'n'" >去晒单</button>
+                    <div class="wr-item-remark" v-if="goodsItem.address&&goodsItem.orderState != 5" >
+						<div class="row flex">
+							<div class="col-1">收货信息：</div>
+							<div class="col-2">{{goodsItem.province}}{{goodsItem.city}}{{goodsItem.region}}{{goodsItem.address}}</div>
+						</div>
+						<div class="row flex">
+							<div class="col-1"></div>
+							<div class="col-2">{{goodsItem.consignee}} {{goodsItem.mobile}} </div>
+						</div>
+						<div class="row flex" v-if="goodsItem.remark">
+							<div class="col-1">物流单号：</div>
+							<div class="col-2">{{goodsItem.remark}}</div>
+						</div>
+					</div>
+                    
                	</li>
 			</ul>
 			<p v-if="noMore" class="noMore">
@@ -71,6 +92,7 @@
 	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
 	import buybutton from "../components/buybutton.vue";//引入按钮
 	import tabbars from "../components/tabbars.vue";//引入选项卡
+	import { MessageBox } from 'mint-ui';//引入确认弹框
 	
 	export default{
 		data(){
@@ -85,7 +107,7 @@
 				prizeStep: 1,//选择领取方式第一步
 				itemName: '',//弹窗显示领取奖品名称
 				orderId : null,//订单id
-				orderIndex : null
+				orderIndex : null,//订单下标，用来移除list中订单
 			}
 		},
 		computed: {
@@ -98,6 +120,25 @@
 			"tabbars-v": tabbars,
 		},
 		methods:{
+			confirmReceipt(orderId,index){//确认收货
+				let that = this;
+				MessageBox.confirm('你确认要收货吗?','收货确认').then(action => {
+				  	if( action === 'confirm'){
+				  		console.log("queren")
+				  		Indicator.open();
+				  		this.api.updateOrderstate(User.getToken(),orderId,'4',function(data){
+				  			Indicator.close();
+				  			let res = data.data;
+				  			if(res.successed){
+				  				Util.myAlert("确认收货成功！");
+				  				that.list.splice(index,1);
+				  			}else{
+				  				Util.myAlert("确认收货失败，请稍后重试")
+				  			}
+				  		})
+				  	}
+				});
+			},
 			selectPrizeType(type){//选择领取方式
 				this.prizeType = type;
 			},
@@ -111,16 +152,30 @@
 					this.prizeAlert = true;
 					this.prizeStep = 1;
 					this.itemName = item.productName;
-					this.orderId = item.orderId;
 					this.index = index;
+					this.orderId = item.orderId;
+				}else{
+					this.$router.push({
+						path:"/tab/account/receiptAddress",
+						query:{
+							"orderId" : item.orderId
+						}
+					})
 				}
 			},
 			goNext(){//下一步
 				if(this.prizeType === 1){
 					this.prizeStep = 2
-					console.log(this.prizeType)
+					console.log(this.prizeType);
 				}else{
-					console.log(this.prizeType)
+					console.log(this.prizeType);
+					this.isThisPrize(1);
+					this.$router.push({
+						path:"/tab/account/receiptAddress",
+						query:{
+							"orderId" : this.orderId
+						}
+					})
 				}
 			},
 			isThisPrize(type){
@@ -150,31 +205,37 @@
 				this.$router.push("/tab/home")
 			},
 			isThis(index){//顶部选项卡
-				console.log(index);
-				switch (index){
-					case 0://待收货
-						this.state = '2,3';
-						break;
-					case 1://已收货
-						this.state = '4';
-						break;
-					case 2://已过期
-						this.state = '5';
-						break;
-					default:
-						break;
-				}
+				this.changeState(index);
+				let toUrl = "/tab/account/winningRecords/" + index
+				this.$router.replace(toUrl);
 				this.page = 1;
 				this.list = [];
 				this.loading = false;
 				this.noMore = false;
 				this.loadMore();
 			},
+			changeState(index){
+				console.log("index",index)
+				switch (index){
+					case '0'://待收货
+						this.state = '2,3';
+						break;
+					case '1'://已收货
+						this.state = '4';
+						break;
+					case '2'://已过期
+						this.state = '5';
+						break;
+					default:
+						break;
+				};
+				console.log("this.state",this.state);
+			},
 			loadMore() {//获取列表
 				Indicator.open();
 				this.loading = true;
 				let that = this;
-				
+				this.changeState(this.$route.params.status);
 				this.api.getWinRecord(this.page, '6', User.getMemberId(),this.state,
 					function(res) {
 						for(let v = 0; v < res.data.returnValue.length; v++) {
@@ -190,6 +251,9 @@
 						Indicator.close();
 					});
 			},
+		},
+		created(){
+			
 		},
 		mounted() {
 			
@@ -215,9 +279,14 @@
 			width: 100%;
 		}
 		.wr-item{
-			position: relative;
+			padding-bottom: 5px;
 			width: 100%;
+			border-bottom: 1px solid #f2f2f2;
+		}
+		.wr-item-inwrapper{
+			position: relative;
 			padding: 17px 5px;
+			width: 100%;
 		}
 		.wr-item-img{
 			position: relative;
@@ -285,6 +354,24 @@
 		}
 		.blue{
 			color: #0289ff;
+		}
+		.wr-item-remark{
+			margin:0 10px;
+			background: #f2f2f2;
+			border-radius: 5px;
+			padding:10px 10px 0;
+			.row{
+				width: 100%;
+				padding-bottom: 10px;
+				color: #999;
+				font-size: 12px;
+				.col-1{
+					width: 25%;
+				}
+				.col-2{
+					width: 75%;
+				}
+			}
 		}
 		.prize-alert{
 			position: fixed;

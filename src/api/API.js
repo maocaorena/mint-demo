@@ -292,5 +292,22 @@ class API {
 	updateAddress(params,callback){
 		this.ajaxPost("deliveryAddress/updateDeliveryAddress.json",params,callback)
 	};
+	
+	// 选择收货地址
+	selectAddress(orderId,addressId,callback){
+		this.ajaxPost("order/addOrderAddressApi.json",{
+			"orderId": orderId,
+			"addressId": addressId
+		},callback)
+	};
+	
+	// 确认收货
+	updateOrderstate(token,orderId,orderState,callback){
+		this.ajaxPost("order/updateOrderstateApi.json",{
+			"token": token,
+			"orderId": orderId,
+			"orderState": orderState
+		},callback)
+	};
 }
 export default API;

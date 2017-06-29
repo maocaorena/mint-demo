@@ -23,7 +23,9 @@ import payResult from '../component/payResult.vue'//支付结果页
 import duobaorecords from '../component/duobao-records.vue'//夺宝记录页
 import winningRecords from '../component/winningRecords.vue'//中奖记录页
 import receiptAddress from '../component/receiptAddress.vue'//收货地址
-import receiptAddressHandle from '../component/receiptAddress-handle.vue'//收货地址
+import receiptAddressHandle from '../component/receiptAddress-handle.vue'//收货地址编辑
+import myShaiDan from '../component/myShaiDan.vue'//我的晒单
+import goShaiDan from '../component/goShaiDan.vue'//去晒单
 
 const routes = [{
     path: '/',
@@ -92,6 +94,12 @@ const routes = [{
 		},{
 			path: '/tab/account/receiptAddress/:handle',//收货地址编辑页
 			component: receiptAddressHandle
+		},{
+			path: '/tab/account/myShaiDan/:status',//我的晒单
+			component: myShaiDan
+		},{
+			path: '/tab/account/goShaiDan',//去晒单
+			component: goShaiDan
 		}
 	]
 }];

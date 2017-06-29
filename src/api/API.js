@@ -49,6 +49,15 @@ class API {
 		config.data = param;
 		return axios(config);//使用post方式
 	};
+	//上传图片
+	postUp (url,param,callback,progress) {
+		let allUrl = config.baseURL + url;
+		let upconfig = {
+			onUploadProgress: progress
+			
+		}
+		return axios.post(allUrl, param,upconfig).then(callback);//使用post方式
+	};
 
 	//请求错误处理
 	errorHandle(error){
@@ -105,7 +114,7 @@ class API {
 	};
 
 	// 商品详情页晒单
-	getSingle (page_index,page_size,goodsId = '',callback){
+	getSingle (page_index,page_size,goodsId,callback){
 		this.ajax("sunorder/getSunOrderListApi.json",{
 					"goodsId":goodsId,
 					"page_index":page_index,
@@ -308,6 +317,32 @@ class API {
 			"orderId": orderId,
 			"orderState": orderState
 		},callback)
+	};
+	
+	// 获取未晒单列表
+	getNoSunOrderList(page_index,page_size,memberId,orderState,sunState,callback){
+		this.ajax("order/getWinOrderRecordApi.json",{
+			"page_index": page_index,
+			"page_size": page_size,
+			"memberId": memberId,
+			"orderState": orderState,
+			"sunState": sunState,
+		},callback)
+	};
+	
+	// 获取已晒单列表
+	getMySunOrderList(page_index,page_size,token,memberId,callback){
+		this.ajax("sunorder/getSunOrderListApi.json",{
+					"page_index":page_index,
+					"page_size":page_size,
+					"token":token,
+					"memberId":memberId,
+				},callback)
+	};
+	
+	// 晒单上传图片
+	upImg(params,callback){
+		this.ajaxPost("common/uploadApi.json",params,callback)
 	};
 }
 export default API;

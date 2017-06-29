@@ -49,6 +49,21 @@
 	display: none;
 }
 
+.color999{
+	color: #999;
+}
+
+.color666{
+	color: #999;
+}
+
+.color333{
+	color: #333;
+}
+
+.colorred{
+	color: #f93069;
+}
 /*mint-ui 提示框字体颜色*/
 .toastStyle .mint-toast-text{
 	color: #fff;

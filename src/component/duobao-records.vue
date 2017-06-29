@@ -176,7 +176,7 @@
 				};
 				console.log("this.state",this.state);
 			},
-			loadMore() {//获取商品列表
+			loadMore() {//获取列表
 				Indicator.open();
 				this.loading = true;
 				let that = this;

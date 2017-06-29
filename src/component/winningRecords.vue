@@ -99,9 +99,9 @@
 			return{
 				page: 1,//页数
 				list: [],//列表
-				state: '2,3',//订单状态
 				loading: false,//控制加载，true会停止加载
 				noMore: false,//没有更多
+				state: '2,3',//订单状态
 				prizeType: 1,//选择领奖方式，1是到余额，2是到手机号
 				prizeAlert: false,//遮罩层是否显示
 				prizeStep: 1,//选择领取方式第一步
@@ -124,7 +124,6 @@
 				let that = this;
 				MessageBox.confirm('你确认要收货吗?','收货确认').then(action => {
 				  	if( action === 'confirm'){
-				  		console.log("queren")
 				  		Indicator.open();
 				  		this.api.updateOrderstate(User.getToken(),orderId,'4',function(data){
 				  			Indicator.close();

@@ -56,6 +56,7 @@
     }
     .tabbars .redborder{
         border-color: #f93069;
+        color: #f93069;
     }
 </style>
 <script type="text/javascript">

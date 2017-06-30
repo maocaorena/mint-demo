@@ -8,7 +8,7 @@
 					<img :src="item" />
 				</li>
 			</ul>
-			<button @click="shoeList">提交</button>
+			<buy-button  @click.native="upSingle">提交</buy-button>
 		</div>
 	</div>
 </template>
@@ -17,12 +17,18 @@
 	import { User } from '../assets/js/user.js'; //引入User
 	import { Util } from '../assets/js/util.js'; //引入Util
 	import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
+	import buybutton from '../components/buybutton.vue'; //引入按钮
 	
 	export default{
 		data(){
 			return{
-				imgList:[]
+				imgList:[],
+				pendingList: [],
+				upImgUrlList: [],
 			}
+		},
+		components: {
+			"buy-button": buybutton,
 		},
 		methods:{
 			shoeList(){
@@ -32,38 +38,41 @@
 				    alert("不支持filereader");
 				}else{
 					alert("FileReader is ok");
-				}
+				};
 			},
 			upImg(){
 				let that = this;
 				let reader = new FileReader();
 				let input = document.getElementById("upfile");
 				let files = input.files;
-				console.log(files);
-				console.log(User.getToken());
-				let param = new FormData();
-				param.append('file',files[0]);
-				param.append('token',User.getToken());
-	            /*for(var k=0;k<files.length;k++){
-	                if(!/image\/\w+/.test(files[k].type)){
-	                    console.log(files[k].name+"不是图像文件!");
-	                }else{
-	                    //此处可加入文件上传的代码
-	                    console.log(files[k].name+"文件已上传")
-	                }
-	            }*/
-	            console.log(param.get('file'))
-	           	console.log(param);
-	            this.api.postUp('common/uploadApi.json',param,function(data){
-	            	console.log(data.data);
-	            },function(progressEvent){
-	            	console.log(progressEvent.loaded);
-	            });
-	            console.log(reader)
-	            reader.readAsDataURL(files[0]);
-	            reader.onload = function(){
-	                that.imgList.push(this.result)
-	            }    
+                if(!/image\/\w+/.test(files[0].type)){
+                    console.log(files[0].name+"不是图像文件!");
+                }else{
+                    reader.readAsDataURL(files[0]);
+	                reader.onload = function(){
+	                    that.imgList.push(this.result);
+	                    that.pendingList.push(files[0]);
+	                };
+                };
+			},
+			upSingle(){
+				for(let i = 0; i < this.pendingList.length; i++){
+					let param = new FormData();
+					param.append('file',files[0]);
+					param.append('token',User.getToken());
+					//此处可加入文件上传的代码
+	                this.api.postUp('common/uploadApi.json',param,function(data){
+	                	console.log(data.data);
+	                	let res = data.data;
+	                	if(res.returnValue){
+	                		
+	                	}
+	                },function(progressEvent){
+	                	console.log(progressEvent.loaded);
+	                });
+					
+				}
+                
 			}
 		},
 		mounted(){

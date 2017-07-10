@@ -27,5 +27,9 @@ const User = {
 	    };
 	    return id;
 	},
+	getMemberInfo : function(){
+		let memberInfo = Storage.getItemJson(Storage.memberInfo);
+	    return memberInfo;
+	},
 }
 export { User };

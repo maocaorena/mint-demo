@@ -3,9 +3,9 @@ import axios from 'axios';
 import config from './config';
 import qs from 'qs';
 import { Util } from '../assets/js/util.js'; //引入Util
-import { Indicator } from 'mint-ui';//引入mintUI  indicator组件
+import { Indicator } from 'mint-ui'; //引入mintUI  indicator组件
 class API {
-	getN (url,param) {
+	getN(url, param) {
 		/*防止缓存*/
 		var randomNum1 = parseInt(Math.random() * 10);
 		var randomNum2 = parseInt(Math.random() * 1000) + '' + new Date().getTime();
@@ -14,31 +14,31 @@ class API {
 		config.data = {};
 		config.params = {};
 		config.params = param;
-		return axios.get(url,config);//使用get方式
+		return axios.get(url, config); //使用get方式
 		//return axios(config);//使用post方式
 	};
-	ajax (url,param,callback){
+	ajax(url, param, callback) {
 		let that = this;
-		this.getN(url,param).then(callback).catch(function(error){
+		this.getN(url, param).then(callback).catch(function(error) {
 			that.errorHandle(error);
 		});
 	};
-	ajax1 (url,param,callback,then){
+	ajax1(url, param, callback, then) {
 		let that = this;
-		this.getN(url,param).then(callback).then(then).catch(function(error){
+		this.getN(url, param).then(callback).then(then).catch(function(error) {
 			that.errorHandle(error);
 		});
 	};
-	
-	ajaxPost (url,param,callback){
+
+	ajaxPost(url, param, callback) {
 		let that = this;
-		this.postN(url,param).then(callback).catch(function(error){
+		this.postN(url, param).then(callback).catch(function(error) {
 			that.errorHandle(error);
 		});
 	};
-	
+
 	//post请求
-	postN (url,param) {
+	postN(url, param) {
 		/*防止缓存*/
 		var randomNum1 = parseInt(Math.random() * 10);
 		var randomNum2 = parseInt(Math.random() * 1000) + '' + new Date().getTime();
@@ -47,22 +47,22 @@ class API {
 		config.params = {};
 		config.data = {};
 		config.data = param;
-		return axios(config);//使用post方式
+		return axios(config); //使用post方式
 	};
 	//上传图片
-	postUp (url,param,callback,progress) {
+	postUp(url, param, callback, progress) {
 		let allUrl = config.baseURL + url;
 		let upconfig = {
 			onUploadProgress: progress
-			
+
 		}
-		return axios.post(allUrl, param,upconfig).then(callback);//使用post方式
+		return axios.post(allUrl, param, upconfig).then(callback); //使用post方式
 	};
 
 	//请求错误处理
-	errorHandle(error){
+	errorHandle(error) {
 		Indicator.close();
-		if (error.response || error.message.indexOf("timeout") > -1) {
+		if(error.response || error.message.indexOf("timeout") > -1) {
 			//状态不在200和超时的处理
 			Indicator.close();
 			Util.myAlert("服务器未响应")
@@ -70,279 +70,284 @@ class API {
 	};
 
 	// 获取商品列表
-	getProductList (appKey,status,page_index,page_size,callback){
-		this.ajax("product/getProductListApi.json",{
+	getProductList(appKey, status, page_index, page_size, callback) {
+		this.ajax("product/getProductListApi.json", {
 			"appKey": appKey,
 			"status": status,
 			"page_index": page_index,
 			"page_size": page_size
-		},callback)
+		}, callback)
 	};
 
 	// 获取活动商品列表
-	getActiveProductList (message,callback){
-		this.ajax("product/getProductListApi.json",message,callback)
+	getActiveProductList(message, callback) {
+		this.ajax("product/getProductListApi.json", message, callback)
 	};
 
 	// 获取首页banner轮播图
-	getHomeSwiperList (appKey,callback,then){
-		this.ajax1("adv/advApi.json",{
+	getHomeSwiperList(appKey, callback, then) {
+		this.ajax1("adv/advApi.json", {
 			"appKey": appKey,
-		},callback,then)
+		}, callback, then)
 	};
 
 	// 获取首页小喇叭
-	getHomeSwiperWinList (appKey,callback,then){
-		this.ajax1("period/getwinMemberPeriodData.json",{
+	getHomeSwiperWinList(appKey, callback, then) {
+		this.ajax1("period/getwinMemberPeriodData.json", {
 			"appKey": appKey,
-		},callback,then)
+		}, callback, then)
 	};
 
 	// 获取商品商品详情页中奖人信息
-	getWinnerMessage (periodId,callback){
-		this.ajax("order/getUserByWinApi.json",{
-					"periodId":periodId
-				},callback)
+	getWinnerMessage(periodId, callback) {
+		this.ajax("order/getUserByWinApi.json", {
+			"periodId": periodId
+		}, callback)
 	};
 
 	// 图文详情
-	getImageTextMessage (periodId,goodsId,callback){
-		this.ajax("product/getProductDetailApi.json",{
-					"periodId":periodId,
-					"goodsId":goodsId
-				},callback)
+	getImageTextMessage(periodId, goodsId, callback) {
+		this.ajax("product/getProductDetailApi.json", {
+			"periodId": periodId,
+			"goodsId": goodsId
+		}, callback)
 	};
 
 	// 商品详情页晒单
-	getSingle (page_index,page_size,goodsId,callback){
-		this.ajax("sunorder/getSunOrderListApi.json",{
-					"goodsId":goodsId,
-					"page_index":page_index,
-					"page_size":page_size
-				},callback)
+	getSingle(page_index, page_size, goodsId, callback) {
+		this.ajax("sunorder/getSunOrderListApi.json", {
+			"goodsId": goodsId,
+			"page_index": page_index,
+			"page_size": page_size
+		}, callback)
 	};
 
 	// 最新揭晓
-	getLastAnnounList (page_index,page_size,callback){
-		this.ajax("period/getPeroidListByLastAnnounApi.json",{
-					"page_index":page_index,
-					"page_size":page_size
-				},callback)
+	getLastAnnounList(page_index, page_size, callback) {
+		this.ajax("period/getPeroidListByLastAnnounApi.json", {
+			"page_index": page_index,
+			"page_size": page_size
+		}, callback)
 	};
 
 	// 获取商品详情
-	getProductDetail (periodId,callback,then){
-		this.ajax1("product/getProductDetailApi.json",{
+	getProductDetail(periodId, callback, then) {
+		this.ajax1("product/getProductDetailApi.json", {
 			"periodId": periodId,
-		},callback,then)
+		}, callback, then)
 	};
 
 	// 获取分类列表
-	getClassList (periodId,callback){
-		this.ajax("productClass/getProductClassApi.json",{
+	getClassList(periodId, callback) {
+		this.ajax("productClass/getProductClassApi.json", {
 
-		},callback)
+		}, callback)
 	};
 
 	// 获取分类商品列表
-	getClassProductList (page_index,page_size,appKey,product_class_id,callback){
-		this.ajax("product/getProductListApi.json",{
+	getClassProductList(page_index, page_size, appKey, product_class_id, callback) {
+		this.ajax("product/getProductListApi.json", {
 			"page_index": page_index,
-			"page_size":page_size,
-			"appKey":appKey,
-			"product_class_id":product_class_id
-		},callback)
+			"page_size": page_size,
+			"appKey": appKey,
+			"product_class_id": product_class_id
+		}, callback)
 	};
 
 	// 获取本期历史记录
-	getHistoryRecordsList (page_index,page_size,goodsId,periodId,callback){
-		this.ajax("order/getOrderRecordByDetailApi.json",{
+	getHistoryRecordsList(page_index, page_size, goodsId, periodId, callback) {
+		this.ajax("order/getOrderRecordByDetailApi.json", {
 			"page_index": page_index,
-			"page_size":page_size,
-			"goodsId":goodsId,
-			"periodId":periodId
-		},callback)
+			"page_size": page_size,
+			"goodsId": goodsId,
+			"periodId": periodId
+		}, callback)
 	};
 
 	// 获取往期揭晓记录
-	getAnnouncedList (page_index,page_size,goodsId,callback){
-		this.ajax("period/getPeroidListOtherPeriodsApi.json",{
+	getAnnouncedList(page_index, page_size, goodsId, callback) {
+		this.ajax("period/getPeroidListOtherPeriodsApi.json", {
 			"page_index": page_index,
-			"page_size":page_size,
-			"goodsId":goodsId
-		},callback)
+			"page_size": page_size,
+			"goodsId": goodsId
+		}, callback)
 	};
-	
+
 	//账号密码登录
-	login (appKey,mobile,password,callback){
-		this.ajaxPost("userLogin/loginUserByPassword.json",{
+	login(appKey, mobile, password, callback) {
+		this.ajaxPost("userLogin/loginUserByPassword.json", {
 			"appKey": appKey,
 			"mobile": mobile,
-			"passWord":password,
-		},callback)
+			"passWord": password,
+		}, callback)
 	};
-	
+
 	//微信登录
-	wxLogin (appKey,code,callback){
-		this.ajaxPost("userLogin/weixinLogin.json",{
+	wxLogin(appKey, code, callback) {
+		this.ajaxPost("userLogin/weixinLogin.json", {
 			"appKey": appKey,
 			"code": code,
-		},callback)
+		}, callback)
 	};
-	
+
 	//QQ登录
-	qqLogin (appKey,code,callback){
-		this.ajaxPost("userLogin/qqLogin.json",{
+	qqLogin(appKey, code, callback) {
+		this.ajaxPost("userLogin/qqLogin.json", {
 			"appKey": appKey,
 			"code": code,
-		},callback)
+		}, callback)
 	};
-	
+
 	//注册获取验证码
-	registerGetCode (mobile,type,callback){
-		this.ajaxPost("userLogin/sendSMSCode.json",{
+	registerGetCode(mobile, type, callback) {
+		this.ajaxPost("userLogin/sendSMSCode.json", {
 			"mobile": mobile,
 			"type": type,
-		},callback)
+		}, callback)
 	};
-	
+
 	//注册
-	register (appKey,mobile,passWord,smsCode,callback){
-		this.ajaxPost("userLogin/phoneRegister.json",{
+	register(appKey, mobile, passWord, smsCode, callback) {
+		this.ajaxPost("userLogin/phoneRegister.json", {
 			"appKey": appKey,
 			"mobile": mobile,
 			"passWord": passWord,
 			"smsCode": smsCode
-		},callback)
+		}, callback)
 	};
-	
+
 	//个人中心获取个人信息
-	getUserInfo (token,callback){
-		this.ajaxPost("user/getUserInfo.json",{
+	getUserInfo(token, callback) {
+		this.ajaxPost("user/getUserInfo.json", {
 			"token": token
-		},callback)
+		}, callback)
 	};
-	
+
 	//获取余额
-	getAmount (token,appKey,callback){
-		this.ajaxPost("user/getUserAmount.json",{
+	getAmount(token, appKey, callback) {
+		this.ajaxPost("user/getUserAmount.json", {
 			"token": token,
 			"appKey": appKey
-		},callback)
+		}, callback)
 	};
-	
+
 	//创建订单
-	creatOrder (params,callback){
-        this.ajaxPost('order/creatOrderApi.json',params,callback)
+	creatOrder(params, callback) {
+		this.ajaxPost('order/creatOrderApi.json', params, callback)
 	};
-	
+
 	//余额支付
-	balancePay(params,callback){
-		this.ajaxPost('order/payOrderApi.json',params,callback)
+	balancePay(params, callback) {
+		this.ajaxPost('order/payOrderApi.json', params, callback)
 	};
-	
+
 	// 查询订单是否成功
-	afterPayOrder(token,orderNums,callback){
-		this.ajax("order/afterPayOrderApi.json",{
+	afterPayOrder(token, orderNums, callback) {
+		this.ajax("order/afterPayOrderApi.json", {
 			"token": token,
-			"orderNums":orderNums
-		},callback)
+			"orderNums": orderNums
+		}, callback)
 	};
-	
+
 	// 获取订单列表
-	getOrderRecord(page_index,page_size,token,state,callback){
-		this.ajax("order/getOrderRecordByMymemberApi.json",{
+	getOrderRecord(page_index, page_size, token, state, callback) {
+		this.ajax("order/getOrderRecordByMymemberApi.json", {
 			"page_index": page_index,
-			"page_size":page_size,
-			"token":token,
-			"state":state,
-		},callback)
+			"page_size": page_size,
+			"token": token,
+			"state": state,
+		}, callback)
 	};
-	
+
 	// 获取中奖列表
-	getWinRecord(page_index,page_size,memberId,orderState,callback){
-		this.ajax("order/getWinOrderRecordApi.json",{
+	getWinRecord(page_index, page_size, memberId, orderState, callback) {
+		this.ajax("order/getWinOrderRecordApi.json", {
 			"page_index": page_index,
-			"page_size":page_size,
-			"memberId":memberId,
-			"orderState":orderState,
-		},callback)
+			"page_size": page_size,
+			"memberId": memberId,
+			"orderState": orderState,
+		}, callback)
 	};
-	
+
 	// 领奖到余额
-	addUserBalance(token,orderId,callback){
-		this.ajaxPost("user/addUserBalance.json",{
-			"token" : token,
-			"orderId" : orderId
-		},callback)
+	addUserBalance(token, orderId, callback) {
+		this.ajaxPost("user/addUserBalance.json", {
+			"token": token,
+			"orderId": orderId
+		}, callback)
 	};
-	
+
 	// 获取收货地址列表
-	getDeliveryAddressList(token,callback){
-		this.ajax("deliveryAddress/getDeliveryAddressList.json",{
+	getDeliveryAddressList(token, callback) {
+		this.ajax("deliveryAddress/getDeliveryAddressList.json", {
 			"token": token
-		},callback)
+		}, callback)
 	};
-	
+
 	// 添加收货地址列表
-	addDeliveryAddress(params,callback){
-		this.ajaxPost("deliveryAddress/addDeliveryAddress.json",params,callback)
+	addDeliveryAddress(params, callback) {
+		this.ajaxPost("deliveryAddress/addDeliveryAddress.json", params, callback)
 	};
-	
+
 	// 删除收货地址
-	deleteAddress(token,id,callback){
-		this.ajaxPost("deliveryAddress/deleteDeliveryAddress.json",{
+	deleteAddress(token, id, callback) {
+		this.ajaxPost("deliveryAddress/deleteDeliveryAddress.json", {
 			"token": token,
 			"id": id
-		},callback)
+		}, callback)
 	};
-	
+
 	// 编辑收货地址
-	updateAddress(params,callback){
-		this.ajaxPost("deliveryAddress/updateDeliveryAddress.json",params,callback)
+	updateAddress(params, callback) {
+		this.ajaxPost("deliveryAddress/updateDeliveryAddress.json", params, callback)
 	};
-	
+
 	// 选择收货地址
-	selectAddress(orderId,addressId,callback){
-		this.ajaxPost("order/addOrderAddressApi.json",{
+	selectAddress(orderId, addressId, callback) {
+		this.ajaxPost("order/addOrderAddressApi.json", {
 			"orderId": orderId,
 			"addressId": addressId
-		},callback)
+		}, callback)
 	};
-	
+
 	// 确认收货
-	updateOrderstate(token,orderId,orderState,callback){
-		this.ajaxPost("order/updateOrderstateApi.json",{
+	updateOrderstate(token, orderId, orderState, callback) {
+		this.ajaxPost("order/updateOrderstateApi.json", {
 			"token": token,
 			"orderId": orderId,
 			"orderState": orderState
-		},callback)
+		}, callback)
 	};
-	
+
 	// 获取未晒单列表
-	getNoSunOrderList(page_index,page_size,memberId,orderState,sunState,callback){
-		this.ajax("order/getWinOrderRecordApi.json",{
+	getNoSunOrderList(page_index, page_size, memberId, orderState, sunState, callback) {
+		this.ajax("order/getWinOrderRecordApi.json", {
 			"page_index": page_index,
 			"page_size": page_size,
 			"memberId": memberId,
 			"orderState": orderState,
 			"sunState": sunState,
-		},callback)
+		}, callback)
 	};
-	
+
 	// 获取已晒单列表
-	getMySunOrderList(page_index,page_size,token,memberId,callback){
-		this.ajax("sunorder/getSunOrderListApi.json",{
-					"page_index":page_index,
-					"page_size":page_size,
-					"token":token,
-					"memberId":memberId,
-				},callback)
+	getMySunOrderList(page_index, page_size, token, memberId, callback) {
+		this.ajax("sunorder/getSunOrderListApi.json", {
+			"page_index": page_index,
+			"page_size": page_size,
+			"token": token,
+			"memberId": memberId,
+		}, callback)
 	};
-	
+
 	// 晒单上传图片
-	upImg(params,callback){
-		this.ajaxPost("common/uploadApi.json",params,callback)
+	upImg(params, callback) {
+		this.ajaxPost("common/uploadApi.json", params, callback)
+	};
+
+	// 提交订单
+	addSunOrder(params, callback) {
+		this.ajaxPost("sunorder/addSunOrderApi.json", params, callback)
 	};
 }
 export default API;
